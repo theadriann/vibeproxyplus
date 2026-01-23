@@ -63,11 +63,14 @@ Example: `claude-opus-4-5-20251101-thinking-32000`
 ## Commands
 
 ```bash
-make build            # Build ThinkingProxy
-make run              # Start both proxies
-make sync-models      # Regenerate model configs
-make test             # Run tests
-make clean            # Remove binaries
+make download-cliproxy  # Download CLIProxyAPIPlus
+make update-cliproxy    # Check for updates, download if newer
+make update-and-run     # Update CLIProxyAPIPlus + start proxies
+make build              # Build ThinkingProxy
+make run                # Start both proxies
+make sync-models        # Regenerate model configs
+make test               # Run tests
+make clean              # Remove binaries
 ```
 
 ## Windows
