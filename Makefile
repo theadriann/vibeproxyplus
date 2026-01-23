@@ -1,4 +1,4 @@
-.PHONY: build run run-all run-cliproxy run-thinking-proxy download-cliproxy auth-claude auth-codex auth-gemini auth-antigravity auth-copilot test clean sync-models
+.PHONY: build run run-all run-cliproxy run-thinking-proxy download-cliproxy update-cliproxy update-and-run auth-claude auth-codex auth-gemini auth-antigravity auth-copilot test clean sync-models
 
 # Detect OS and architecture
 UNAME_S := $(shell uname -s)
@@ -48,6 +48,43 @@ download-cliproxy:
 	rm -f cliproxy-archive.$(CLIPROXY_EXT) README*.md LICENSE config.example.yaml && \
 	chmod +x cli-proxy-api-plus 2>/dev/null || true
 	@echo "Done. Binary at bin/cli-proxy-api-plus"
+
+update-cliproxy:
+	@mkdir -p bin
+	@LATEST=$$(curl -sI https://github.com/router-for-me/CLIProxyAPIPlus/releases/latest | grep -i '^location:' | sed 's/.*tag\///' | tr -d '\r\n'); \
+	LATEST_NUM=$$(echo $$LATEST | sed 's/^v//'); \
+	if [ -f bin/cli-proxy-api-plus ]; then \
+		CURRENT=$$(./bin/cli-proxy-api-plus 2>&1 | head -1 | grep -oE '[0-9]+\.[0-9]+\.[0-9]+-[0-9]+' | head -1 || echo "0.0.0"); \
+		echo "Current: $$CURRENT, Latest: $$LATEST_NUM"; \
+		if [ "$$CURRENT" = "$$LATEST_NUM" ]; then \
+			echo "Already up to date."; \
+			exit 0; \
+		fi; \
+	else \
+		echo "CLIProxyAPIPlus not installed."; \
+	fi; \
+	echo "Downloading $$LATEST_NUM..."; \
+	ASSET="CLIProxyAPIPlus_$${LATEST_NUM}_$(CLIPROXY_ARCH).$(CLIPROXY_EXT)"; \
+	URL="https://github.com/router-for-me/CLIProxyAPIPlus/releases/download/$$LATEST/$$ASSET"; \
+	curl -L -o bin/cliproxy-archive.$(CLIPROXY_EXT) "$$URL" && \
+	cd bin && \
+	if [ "$(CLIPROXY_EXT)" = "tar.gz" ]; then \
+		tar -xzf cliproxy-archive.$(CLIPROXY_EXT); \
+	else \
+		unzip -o cliproxy-archive.$(CLIPROXY_EXT); \
+	fi && \
+	rm -f cliproxy-archive.$(CLIPROXY_EXT) README*.md LICENSE config.example.yaml && \
+	chmod +x cli-proxy-api-plus 2>/dev/null || true; \
+	echo "Updated to $$LATEST_NUM"
+
+update-and-run: update-cliproxy build
+	@echo "Starting CLIProxyAPIPlus on :8318 and ThinkingProxy on :8317"
+	@echo "Press Ctrl+C to stop both"
+	@./bin/cli-proxy-api-plus -config config/cliproxy.yaml & \
+	CLIPROXY_PID=$$!; \
+	sleep 1; \
+	./bin/thinking-proxy; \
+	kill $$CLIPROXY_PID 2>/dev/null || true
 
 run-cliproxy:
 	./bin/cli-proxy-api-plus -config config/cliproxy.yaml
