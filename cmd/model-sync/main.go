@@ -13,8 +13,9 @@ import (
 )
 
 const (
-	modelDefsURL  = "https://raw.githubusercontent.com/router-for-me/CLIProxyAPIPlus/main/internal/registry/model_definitions.go"
-	modelsDevURL  = "https://models.dev/api.json"
+	modelDefsURL       = "https://raw.githubusercontent.com/router-for-me/CLIProxyAPIPlus/main/internal/registry/model_definitions.go"
+	modelDefsStaticURL = "https://raw.githubusercontent.com/router-for-me/CLIProxyAPIPlus/main/internal/registry/model_definitions_static_data.go"
+	modelsDevURL       = "https://models.dev/api.json"
 )
 
 // Canonical model with merged metadata
@@ -116,7 +117,7 @@ func main() {
 	localModelsDev := flag.String("local-modelsdev", "", "Use local models.dev api.json")
 	flag.Parse()
 
-	// Download/load CLIProxyAPIPlus model definitions
+	// Download/load CLIProxyAPIPlus model definitions (both files)
 	var modelDefsSource string
 	if *localModelDefs != "" {
 		data, err := os.ReadFile(*localModelDefs)
@@ -128,14 +129,27 @@ func main() {
 		fmt.Printf("Using local model_definitions.go: %s\n", *localModelDefs)
 	} else {
 		fmt.Printf("Downloading CLIProxyAPIPlus model definitions...\n")
+		
+		// Download main model_definitions.go
 		resp, err := http.Get(modelDefsURL)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Error downloading model_definitions.go: %v\n", err)
 			os.Exit(1)
 		}
-		defer resp.Body.Close()
 		data, _ := io.ReadAll(resp.Body)
+		resp.Body.Close()
 		modelDefsSource = string(data)
+		
+		// Download model_definitions_static_data.go (contains Claude, OpenAI, Gemini, etc.)
+		fmt.Printf("Downloading CLIProxyAPIPlus static model definitions...\n")
+		resp2, err := http.Get(modelDefsStaticURL)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error downloading model_definitions_static_data.go: %v\n", err)
+			os.Exit(1)
+		}
+		data2, _ := io.ReadAll(resp2.Body)
+		resp2.Body.Close()
+		modelDefsSource += "\n" + string(data2)
 	}
 
 	// Download/load models.dev API

@@ -64,7 +64,8 @@
           "modalities": {
             "input": [
               "text",
-              "image"
+              "image",
+              "pdf"
             ],
             "output": [
               "text"
@@ -102,7 +103,8 @@
           "modalities": {
             "input": [
               "text",
-              "image"
+              "image",
+              "pdf"
             ],
             "output": [
               "text"
@@ -257,7 +259,8 @@
           "modalities": {
             "input": [
               "text",
-              "image"
+              "image",
+              "pdf"
             ],
             "output": [
               "text"
@@ -346,8 +349,7 @@
           "modalities": {
             "input": [
               "text",
-              "image",
-              "pdf"
+              "image"
             ],
             "output": [
               "text"
@@ -439,8 +441,7 @@
               "text",
               "image",
               "audio",
-              "video",
-              "pdf"
+              "video"
             ],
             "output": [
               "text"
@@ -487,7 +488,9 @@
           "modalities": {
             "input": [
               "text",
-              "image"
+              "image",
+              "audio",
+              "video"
             ],
             "output": [
               "text"
@@ -533,7 +536,10 @@
           "name": "Gemini 3 Flash (Preview)",
           "modalities": {
             "input": [
-              "text"
+              "text",
+              "image",
+              "audio",
+              "video"
             ],
             "output": [
               "text"
@@ -635,10 +641,7 @@
           "modalities": {
             "input": [
               "text",
-              "image",
-              "video",
-              "audio",
-              "pdf"
+              "image"
             ],
             "output": [
               "text"
@@ -650,7 +653,9 @@
           "modalities": {
             "input": [
               "text",
-              "image"
+              "image",
+              "audio",
+              "video"
             ],
             "output": [
               "text"
@@ -799,8 +804,7 @@
           "modalities": {
             "input": [
               "text",
-              "image",
-              "pdf"
+              "image"
             ],
             "output": [
               "text"
