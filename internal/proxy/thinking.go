@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	MaxThinkingBudget = 32000
+	MaxThinkingBudget = 32768
 	ThinkingSuffix    = "-thinking-"
 )
 
@@ -40,8 +40,26 @@ func ParseThinkingSuffix(model string) (string, int, bool) {
 	return cleanModel, budget, true
 }
 
+// HasThinkingPattern checks if a model name has any thinking pattern that
+// should trigger the beta header, even if we don't transform the body.
+// Patterns: -thinking suffix, -thinking(budget) syntax
+func HasThinkingPattern(model string) bool {
+	// Check for -thinking suffix (e.g., gemini-claude-opus-4-5-thinking)
+	if strings.HasSuffix(model, "-thinking") {
+		return true
+	}
+	// Check for -thinking(budget) syntax (e.g., gemini-claude-opus-4-5-thinking(32768))
+	if strings.Contains(model, "-thinking(") {
+		return true
+	}
+	return false
+}
+
 // TransformRequestBody modifies the JSON body if model has thinking suffix.
-// Returns: transformedBody, wasTransformed, error
+// Returns: transformedBody, needsBetaHeader, error
+// needsBetaHeader is true if either:
+// - Body was transformed with thinking parameter
+// - Model has a thinking pattern that backend will handle (needs beta header)
 func TransformRequestBody(body []byte) ([]byte, bool, error) {
 	var data map[string]interface{}
 	if err := json.Unmarshal(body, &data); err != nil {
@@ -53,30 +71,42 @@ func TransformRequestBody(body []byte) ([]byte, bool, error) {
 		return body, false, nil
 	}
 
-	cleanModel, budget, hasThinking := ParseThinkingSuffix(model)
-	if !hasThinking {
+	// Only process Claude models (including gemini-claude variants)
+	if !strings.HasPrefix(model, "claude-") && !strings.HasPrefix(model, "gemini-claude-") {
 		return body, false, nil
 	}
 
-	// Update model name
-	data["model"] = cleanModel
+	// Check for -thinking-NUMBER suffix that we handle ourselves
+	cleanModel, budget, hasThinkingSuffix := ParseThinkingSuffix(model)
+	if hasThinkingSuffix {
+		// Update model name
+		data["model"] = cleanModel
 
-	// Add thinking parameter
-	data["thinking"] = map[string]interface{}{
-		"type":          "enabled",
-		"budget_tokens": budget,
+		// Add thinking parameter
+		data["thinking"] = map[string]interface{}{
+			"type":          "enabled",
+			"budget_tokens": budget,
+		}
+
+		// Ensure max_tokens > budget
+		minMaxTokens := budget + 1024
+		if minMaxTokens > MaxThinkingBudget {
+			minMaxTokens = MaxThinkingBudget
+		}
+
+		if maxTokens, ok := data["max_tokens"].(float64); !ok || int(maxTokens) <= budget {
+			data["max_tokens"] = minMaxTokens
+		}
+
+		output, err := json.Marshal(data)
+		return output, true, err
 	}
 
-	// Ensure max_tokens > budget
-	minMaxTokens := budget + 1024
-	if minMaxTokens > MaxThinkingBudget {
-		minMaxTokens = MaxThinkingBudget
+	// Check for other thinking patterns that backend handles
+	// but still need the beta header (e.g., -thinking, -thinking(budget))
+	if HasThinkingPattern(model) {
+		return body, true, nil
 	}
 
-	if maxTokens, ok := data["max_tokens"].(float64); !ok || int(maxTokens) <= budget {
-		data["max_tokens"] = minMaxTokens
-	}
-
-	output, err := json.Marshal(data)
-	return output, true, err
+	return body, false, nil
 }

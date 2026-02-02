@@ -49,10 +49,10 @@ func TestParseThinkingSuffix(t *testing.T) {
 			wantHasThinking: false,
 		},
 		{
-			name:            "budget capped at 32000",
+			name:            "budget capped at 32768",
 			model:           "claude-opus-4-5-20251101-thinking-50000",
 			wantModel:       "claude-opus-4-5-20251101",
-			wantBudget:      32000,
+			wantBudget:      32768,
 			wantHasThinking: true,
 		},
 		{
@@ -117,5 +117,45 @@ func TestTransformRequestBody_NoThinking(t *testing.T) {
 	}
 	if string(output) != input {
 		t.Errorf("body should be unchanged")
+	}
+}
+
+func TestHasThinkingPattern(t *testing.T) {
+	tests := []struct {
+		model string
+		want  bool
+	}{
+		{"gemini-claude-opus-4-5-thinking", true},
+		{"claude-sonnet-4-5-thinking", true},
+		{"gemini-claude-opus-4-5-thinking(32768)", true},
+		{"claude-opus-4-5-20251101", false},
+		{"gpt-5.2-codex", false},
+		{"gpt-5.2(high)", false}, // parentheses without -thinking prefix
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.model, func(t *testing.T) {
+			got := HasThinkingPattern(tt.model)
+			if got != tt.want {
+				t.Errorf("HasThinkingPattern(%q) = %v, want %v", tt.model, got, tt.want)
+			}
+		})
+	}
+}
+
+func TestTransformRequestBody_ThinkingPatternNeedsHeader(t *testing.T) {
+	// Model with -thinking suffix should return needsBetaHeader=true
+	// but body should not be transformed (backend handles it)
+	input := `{"model":"gemini-claude-opus-4-5-thinking","messages":[{"role":"user","content":"hi"}]}`
+
+	output, needsHeader, err := TransformRequestBody([]byte(input))
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if !needsHeader {
+		t.Fatal("expected needsHeader=true for -thinking suffix model")
+	}
+	if string(output) != input {
+		t.Errorf("body should be unchanged for -thinking suffix (backend handles)")
 	}
 }
