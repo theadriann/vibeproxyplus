@@ -24,9 +24,7 @@
         "modalities": {
           "input": [
             "text",
-            "image",
-            "audio",
-            "video"
+            "image"
           ],
           "output": [
             "text"
@@ -34,10 +32,12 @@
         },
         "capabilities": {
           "tool_call": true,
-          "attachment": true,
           "temperature": true
         },
-        "cost": {}
+        "cost": {
+          "input": 1.654,
+          "output": 11.024
+        }
       },
       {
         "id": "gemini-2.5-flash",
@@ -57,23 +57,22 @@
         "modalities": {
           "input": [
             "text",
-            "image",
-            "audio",
-            "video"
+            "image"
           ],
           "output": [
             "text"
           ]
         },
         "capabilities": {
+          "reasoning": true,
           "tool_call": true,
-          "attachment": true,
           "temperature": true
         },
         "cost": {
-          "input": 0.075,
-          "output": 0.3,
-          "cache_read": 0.02
+          "input": 0.3,
+          "output": 2.5,
+          "cache_read": 0.075,
+          "cache_write": 0.3
         }
       },
       {
@@ -94,10 +93,7 @@
         "modalities": {
           "input": [
             "text",
-            "image",
-            "audio",
-            "video",
-            "pdf"
+            "image"
           ],
           "output": [
             "text"
@@ -106,13 +102,13 @@
         "capabilities": {
           "reasoning": true,
           "tool_call": true,
-          "attachment": true,
           "temperature": true
         },
         "cost": {
-          "input": 0.1,
-          "output": 0.4,
-          "cache_read": 0.025
+          "input": 0.09999999999999999,
+          "output": 0.39999999999999997,
+          "cache_read": 0.024999999999999998,
+          "cache_write": 0.09999999999999999
         }
       },
       {
@@ -144,11 +140,13 @@
         "capabilities": {
           "reasoning": true,
           "tool_call": true,
-          "structured_output": true,
-          "attachment": true,
           "temperature": true
         },
-        "cost": {}
+        "cost": {
+          "input": 2,
+          "output": 12,
+          "cache_read": 0.19999999999999998
+        }
       },
       {
         "id": "gemini-3-flash-preview",
@@ -170,7 +168,8 @@
             "text",
             "image",
             "audio",
-            "video"
+            "video",
+            "pdf"
           ],
           "output": [
             "text"
@@ -179,11 +178,13 @@
         "capabilities": {
           "reasoning": true,
           "tool_call": true,
-          "structured_output": true,
           "attachment": true,
           "temperature": true
         },
-        "cost": {}
+        "cost": {
+          "input": 0.5,
+          "output": 3
+        }
       },
       {
         "id": "gemini-pro-latest",
@@ -329,6 +330,7 @@
         "provider": "aistudio",
         "display_name": "Gemini 2.5 Flash Image",
         "description": "State-of-the-art image generation and editing model.",
+        "family": "gemini-flash",
         "type": "gemini",
         "owned_by": "google",
         "context_length": 1048576,
@@ -339,16 +341,19 @@
             "image"
           ],
           "output": [
-            "text"
+            "text",
+            "image"
           ]
         },
         "capabilities": {
+          "reasoning": true,
           "attachment": true,
           "temperature": true
         },
         "cost": {
           "input": 0.3,
-          "output": 30
+          "output": 30,
+          "cache_read": 0.075
         }
       }
     ],
@@ -498,31 +503,30 @@
         "family": "gemini-flash",
         "type": "antigravity",
         "owned_by": "antigravity",
-        "context_length": 1000000,
-        "max_completion_tokens": 65000,
+        "context_length": 1048576,
+        "max_completion_tokens": 65535,
         "thinking": {
           "supported": true
         },
         "modalities": {
           "input": [
             "text",
-            "image",
-            "audio",
-            "video"
+            "image"
           ],
           "output": [
             "text"
           ]
         },
         "capabilities": {
+          "reasoning": true,
           "tool_call": true,
-          "attachment": true,
           "temperature": true
         },
         "cost": {
-          "input": 0.075,
-          "output": 0.3,
-          "cache_read": 0.02
+          "input": 0.3,
+          "output": 2.5,
+          "cache_read": 0.075,
+          "cache_write": 0.3
         }
       },
       {
@@ -533,17 +537,14 @@
         "type": "antigravity",
         "owned_by": "antigravity",
         "context_length": 1048576,
-        "max_completion_tokens": 65536,
+        "max_completion_tokens": 65535,
         "thinking": {
           "supported": true
         },
         "modalities": {
           "input": [
             "text",
-            "image",
-            "audio",
-            "video",
-            "pdf"
+            "image"
           ],
           "output": [
             "text"
@@ -552,13 +553,13 @@
         "capabilities": {
           "reasoning": true,
           "tool_call": true,
-          "attachment": true,
           "temperature": true
         },
         "cost": {
-          "input": 0.1,
-          "output": 0.4,
-          "cache_read": 0.025
+          "input": 0.09999999999999999,
+          "output": 0.39999999999999997,
+          "cache_read": 0.024999999999999998,
+          "cache_write": 0.09999999999999999
         }
       },
       {
@@ -700,12 +701,7 @@
           "attachment": true,
           "temperature": true
         },
-        "cost": {
-          "input": 3,
-          "output": 15,
-          "cache_read": 0.3,
-          "cache_write": 3.75
-        }
+        "cost": {}
       },
       {
         "id": "claude-opus-4-5-thinking",
@@ -735,12 +731,7 @@
           "attachment": true,
           "temperature": true
         },
-        "cost": {
-          "input": 5,
-          "output": 25,
-          "cache_read": 0.5,
-          "cache_write": 6.25
-        }
+        "cost": {}
       },
       {
         "id": "claude-sonnet-4-5",
@@ -767,12 +758,7 @@
           "attachment": true,
           "temperature": true
         },
-        "cost": {
-          "input": 3,
-          "output": 15,
-          "cache_read": 0.3,
-          "cache_write": 3.75
-        }
+        "cost": {}
       },
       {
         "id": "gpt-oss-120b-medium",
@@ -792,12 +778,10 @@
           ]
         },
         "capabilities": {
-          "reasoning": true
+          "tool_call": true,
+          "temperature": true
         },
-        "cost": {
-          "input": 0.35,
-          "output": 0.75
-        }
+        "cost": {}
       },
       {
         "id": "tab_flash_lite_preview",
@@ -832,23 +816,20 @@
         "modalities": {
           "input": [
             "text",
-            "image",
-            "pdf"
+            "image"
           ],
           "output": [
             "text"
           ]
         },
         "capabilities": {
-          "reasoning": true,
           "tool_call": true,
-          "attachment": true,
           "temperature": true
         },
         "cost": {
           "input": 1,
           "output": 5,
-          "cache_read": 0.1,
+          "cache_read": 0.09999999999999999,
           "cache_write": 1.25
         }
       },
@@ -870,8 +851,7 @@
         "modalities": {
           "input": [
             "text",
-            "image",
-            "pdf"
+            "image"
           ],
           "output": [
             "text"
@@ -880,13 +860,12 @@
         "capabilities": {
           "reasoning": true,
           "tool_call": true,
-          "attachment": true,
           "temperature": true
         },
         "cost": {
           "input": 3,
           "output": 15,
-          "cache_read": 0.3,
+          "cache_read": 0.30000000000000004,
           "cache_write": 3.75
         }
       },
@@ -924,9 +903,7 @@
         },
         "cost": {
           "input": 5,
-          "output": 25,
-          "cache_read": 0.5,
-          "cache_write": 6.25
+          "output": 25
         }
       },
       {
@@ -946,8 +923,7 @@
         "modalities": {
           "input": [
             "text",
-            "image",
-            "pdf"
+            "image"
           ],
           "output": [
             "text"
@@ -956,7 +932,6 @@
         "capabilities": {
           "reasoning": true,
           "tool_call": true,
-          "attachment": true,
           "temperature": true
         },
         "cost": {
@@ -998,9 +973,7 @@
         },
         "cost": {
           "input": 15,
-          "output": 75,
-          "cache_read": 1.5,
-          "cache_write": 18.75
+          "output": 75
         }
       },
       {
@@ -1035,9 +1008,7 @@
         },
         "cost": {
           "input": 3,
-          "output": 15,
-          "cache_read": 0.3,
-          "cache_write": 3.75
+          "output": 15
         }
       },
       {
@@ -1072,9 +1043,7 @@
         },
         "cost": {
           "input": 3,
-          "output": 15,
-          "cache_read": 0.3,
-          "cache_write": 3.75
+          "output": 15
         }
       },
       {
@@ -1139,12 +1108,13 @@
           ]
         },
         "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "attachment": true,
-          "temperature": true
+          "tool_call": true
         },
-        "cost": {}
+        "cost": {
+          "input": 1.25,
+          "output": 10,
+          "cache_read": 0.12500000000000003
+        }
       },
       {
         "id": "gpt-5-codex",
@@ -1166,21 +1136,19 @@
         },
         "modalities": {
           "input": [
-            "text",
-            "image"
+            "text"
           ],
           "output": [
             "text"
           ]
         },
         "capabilities": {
-          "reasoning": true,
           "tool_call": true
         },
         "cost": {
           "input": 1.25,
           "output": 10,
-          "cache_read": 0.13
+          "cache_read": 0.12500000000000003
         }
       },
       {
@@ -1203,21 +1171,19 @@
         },
         "modalities": {
           "input": [
-            "text",
-            "image"
+            "text"
           ],
           "output": [
             "text"
           ]
         },
         "capabilities": {
-          "reasoning": true,
           "tool_call": true
         },
         "cost": {
           "input": 1.25,
           "output": 10,
-          "cache_read": 0.13
+          "cache_read": 0.12500000000000003
         }
       },
       {
@@ -1245,15 +1211,18 @@
             "image"
           ],
           "output": [
-            "text"
+            "text",
+            "image"
           ]
         },
         "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "attachment": true
+          "tool_call": true
         },
-        "cost": {}
+        "cost": {
+          "input": 1.25,
+          "output": 10,
+          "cache_read": 0.12500000000000003
+        }
       },
       {
         "id": "gpt-5.1-codex",
@@ -1279,14 +1248,18 @@
             "image"
           ],
           "output": [
-            "text"
+            "text",
+            "image"
           ]
         },
         "capabilities": {
-          "reasoning": true,
           "tool_call": true
         },
-        "cost": {}
+        "cost": {
+          "input": 1.25,
+          "output": 10,
+          "cache_read": 0.12500000000000003
+        }
       },
       {
         "id": "gpt-5.1-codex-mini",
@@ -1312,14 +1285,18 @@
             "image"
           ],
           "output": [
-            "text"
+            "text",
+            "image"
           ]
         },
         "capabilities": {
-          "reasoning": true,
           "tool_call": true
         },
-        "cost": {}
+        "cost": {
+          "input": 0.25,
+          "output": 2,
+          "cache_read": 0.024999999999999998
+        }
       },
       {
         "id": "gpt-5.1-codex-max",
@@ -1352,9 +1329,14 @@
         "capabilities": {
           "reasoning": true,
           "tool_call": true,
+          "structured_output": true,
           "attachment": true
         },
-        "cost": {}
+        "cost": {
+          "input": 1.25,
+          "output": 10,
+          "cache_read": 0.125
+        }
       },
       {
         "id": "gpt-5.2",
@@ -1390,7 +1372,10 @@
           "tool_call": true,
           "attachment": true
         },
-        "cost": {}
+        "cost": {
+          "input": 1.75,
+          "output": 14
+        }
       },
       {
         "id": "gpt-5.2-codex",
@@ -1414,7 +1399,8 @@
         "modalities": {
           "input": [
             "text",
-            "image"
+            "image",
+            "pdf"
           ],
           "output": [
             "text"
@@ -1422,9 +1408,15 @@
         },
         "capabilities": {
           "reasoning": true,
-          "tool_call": true
+          "tool_call": true,
+          "structured_output": true,
+          "attachment": true
         },
-        "cost": {}
+        "cost": {
+          "input": 1.75,
+          "output": 14,
+          "cache_read": 0.175
+        }
       }
     ],
     "gemini": [
@@ -1446,9 +1438,7 @@
         "modalities": {
           "input": [
             "text",
-            "image",
-            "audio",
-            "video"
+            "image"
           ],
           "output": [
             "text"
@@ -1456,10 +1446,12 @@
         },
         "capabilities": {
           "tool_call": true,
-          "attachment": true,
           "temperature": true
         },
-        "cost": {}
+        "cost": {
+          "input": 1.654,
+          "output": 11.024
+        }
       },
       {
         "id": "gemini-2.5-flash",
@@ -1479,23 +1471,22 @@
         "modalities": {
           "input": [
             "text",
-            "image",
-            "audio",
-            "video"
+            "image"
           ],
           "output": [
             "text"
           ]
         },
         "capabilities": {
+          "reasoning": true,
           "tool_call": true,
-          "attachment": true,
           "temperature": true
         },
         "cost": {
-          "input": 0.075,
-          "output": 0.3,
-          "cache_read": 0.02
+          "input": 0.3,
+          "output": 2.5,
+          "cache_read": 0.075,
+          "cache_write": 0.3
         }
       },
       {
@@ -1516,10 +1507,7 @@
         "modalities": {
           "input": [
             "text",
-            "image",
-            "audio",
-            "video",
-            "pdf"
+            "image"
           ],
           "output": [
             "text"
@@ -1528,13 +1516,13 @@
         "capabilities": {
           "reasoning": true,
           "tool_call": true,
-          "attachment": true,
           "temperature": true
         },
         "cost": {
-          "input": 0.1,
-          "output": 0.4,
-          "cache_read": 0.025
+          "input": 0.09999999999999999,
+          "output": 0.39999999999999997,
+          "cache_read": 0.024999999999999998,
+          "cache_write": 0.09999999999999999
         }
       },
       {
@@ -1570,11 +1558,13 @@
         "capabilities": {
           "reasoning": true,
           "tool_call": true,
-          "structured_output": true,
-          "attachment": true,
           "temperature": true
         },
-        "cost": {}
+        "cost": {
+          "input": 2,
+          "output": 12,
+          "cache_read": 0.19999999999999998
+        }
       },
       {
         "id": "gemini-3-flash-preview",
@@ -1602,7 +1592,8 @@
             "text",
             "image",
             "audio",
-            "video"
+            "video",
+            "pdf"
           ],
           "output": [
             "text"
@@ -1611,11 +1602,13 @@
         "capabilities": {
           "reasoning": true,
           "tool_call": true,
-          "structured_output": true,
           "attachment": true,
           "temperature": true
         },
-        "cost": {}
+        "cost": {
+          "input": 0.5,
+          "output": 3
+        }
       },
       {
         "id": "gemini-3-pro-image-preview",
@@ -1673,9 +1666,7 @@
         "modalities": {
           "input": [
             "text",
-            "image",
-            "audio",
-            "video"
+            "image"
           ],
           "output": [
             "text"
@@ -1683,10 +1674,12 @@
         },
         "capabilities": {
           "tool_call": true,
-          "attachment": true,
           "temperature": true
         },
-        "cost": {}
+        "cost": {
+          "input": 1.654,
+          "output": 11.024
+        }
       },
       {
         "id": "gemini-2.5-flash",
@@ -1706,23 +1699,22 @@
         "modalities": {
           "input": [
             "text",
-            "image",
-            "audio",
-            "video"
+            "image"
           ],
           "output": [
             "text"
           ]
         },
         "capabilities": {
+          "reasoning": true,
           "tool_call": true,
-          "attachment": true,
           "temperature": true
         },
         "cost": {
-          "input": 0.075,
-          "output": 0.3,
-          "cache_read": 0.02
+          "input": 0.3,
+          "output": 2.5,
+          "cache_read": 0.075,
+          "cache_write": 0.3
         }
       },
       {
@@ -1743,10 +1735,7 @@
         "modalities": {
           "input": [
             "text",
-            "image",
-            "audio",
-            "video",
-            "pdf"
+            "image"
           ],
           "output": [
             "text"
@@ -1755,13 +1744,13 @@
         "capabilities": {
           "reasoning": true,
           "tool_call": true,
-          "attachment": true,
           "temperature": true
         },
         "cost": {
-          "input": 0.1,
-          "output": 0.4,
-          "cache_read": 0.025
+          "input": 0.09999999999999999,
+          "output": 0.39999999999999997,
+          "cache_read": 0.024999999999999998,
+          "cache_write": 0.09999999999999999
         }
       },
       {
@@ -1797,11 +1786,13 @@
         "capabilities": {
           "reasoning": true,
           "tool_call": true,
-          "structured_output": true,
-          "attachment": true,
           "temperature": true
         },
-        "cost": {}
+        "cost": {
+          "input": 2,
+          "output": 12,
+          "cache_read": 0.19999999999999998
+        }
       },
       {
         "id": "gemini-3-flash-preview",
@@ -1829,7 +1820,8 @@
             "text",
             "image",
             "audio",
-            "video"
+            "video",
+            "pdf"
           ],
           "output": [
             "text"
@@ -1838,11 +1830,13 @@
         "capabilities": {
           "reasoning": true,
           "tool_call": true,
-          "structured_output": true,
           "attachment": true,
           "temperature": true
         },
-        "cost": {}
+        "cost": {
+          "input": 0.5,
+          "output": 3
+        }
       }
     ],
     "github-copilot": [
@@ -1867,10 +1861,12 @@
         },
         "capabilities": {
           "tool_call": true,
-          "attachment": true,
           "temperature": true
         },
-        "cost": {}
+        "cost": {
+          "input": 2.354,
+          "output": 9.417
+        }
       },
       {
         "id": "gpt-5",
@@ -1892,12 +1888,13 @@
           ]
         },
         "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "attachment": true,
-          "temperature": true
+          "tool_call": true
         },
-        "cost": {}
+        "cost": {
+          "input": 1.25,
+          "output": 10,
+          "cache_read": 0.12500000000000003
+        }
       },
       {
         "id": "gpt-5-mini",
@@ -1919,12 +1916,13 @@
           ]
         },
         "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "attachment": true,
-          "temperature": true
+          "tool_call": true
         },
-        "cost": {}
+        "cost": {
+          "input": 0.25,
+          "output": 2,
+          "cache_read": 0.024999999999999998
+        }
       },
       {
         "id": "gpt-5-codex",
@@ -1938,21 +1936,19 @@
         "max_completion_tokens": 32768,
         "modalities": {
           "input": [
-            "text",
-            "image"
+            "text"
           ],
           "output": [
             "text"
           ]
         },
         "capabilities": {
-          "reasoning": true,
           "tool_call": true
         },
         "cost": {
           "input": 1.25,
           "output": 10,
-          "cache_read": 0.13
+          "cache_read": 0.12500000000000003
         }
       },
       {
@@ -1971,15 +1967,18 @@
             "image"
           ],
           "output": [
-            "text"
+            "text",
+            "image"
           ]
         },
         "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "attachment": true
+          "tool_call": true
         },
-        "cost": {}
+        "cost": {
+          "input": 1.25,
+          "output": 10,
+          "cache_read": 0.12500000000000003
+        }
       },
       {
         "id": "gpt-5.1-codex",
@@ -1997,14 +1996,18 @@
             "image"
           ],
           "output": [
-            "text"
+            "text",
+            "image"
           ]
         },
         "capabilities": {
-          "reasoning": true,
           "tool_call": true
         },
-        "cost": {}
+        "cost": {
+          "input": 1.25,
+          "output": 10,
+          "cache_read": 0.12500000000000003
+        }
       },
       {
         "id": "gpt-5.1-codex-mini",
@@ -2022,14 +2025,18 @@
             "image"
           ],
           "output": [
-            "text"
+            "text",
+            "image"
           ]
         },
         "capabilities": {
-          "reasoning": true,
           "tool_call": true
         },
-        "cost": {}
+        "cost": {
+          "input": 0.25,
+          "output": 2,
+          "cache_read": 0.024999999999999998
+        }
       },
       {
         "id": "gpt-5.1-codex-max",
@@ -2053,9 +2060,14 @@
         "capabilities": {
           "reasoning": true,
           "tool_call": true,
+          "structured_output": true,
           "attachment": true
         },
-        "cost": {}
+        "cost": {
+          "input": 1.25,
+          "output": 10,
+          "cache_read": 0.125
+        }
       },
       {
         "id": "gpt-5.2",
@@ -2081,7 +2093,10 @@
           "tool_call": true,
           "attachment": true
         },
-        "cost": {}
+        "cost": {
+          "input": 1.75,
+          "output": 14
+        }
       },
       {
         "id": "gpt-5.2-codex",
@@ -2096,7 +2111,8 @@
         "modalities": {
           "input": [
             "text",
-            "image"
+            "image",
+            "pdf"
           ],
           "output": [
             "text"
@@ -2104,9 +2120,15 @@
         },
         "capabilities": {
           "reasoning": true,
-          "tool_call": true
+          "tool_call": true,
+          "structured_output": true,
+          "attachment": true
         },
-        "cost": {}
+        "cost": {
+          "input": 1.75,
+          "output": 14,
+          "cache_read": 0.175
+        }
       },
       {
         "id": "claude-haiku-4.5",
@@ -2198,19 +2220,21 @@
         "modalities": {
           "input": [
             "text",
-            "image"
+            "image",
+            "pdf"
           ],
           "output": [
             "text"
           ]
         },
         "capabilities": {
-          "reasoning": true,
           "tool_call": true,
-          "attachment": true,
           "temperature": true
         },
-        "cost": {}
+        "cost": {
+          "input": 3.307,
+          "output": 16.536
+        }
       },
       {
         "id": "claude-sonnet-4.5",
@@ -2252,9 +2276,7 @@
         "modalities": {
           "input": [
             "text",
-            "image",
-            "audio",
-            "video"
+            "image"
           ],
           "output": [
             "text"
@@ -2262,10 +2284,12 @@
         },
         "capabilities": {
           "tool_call": true,
-          "attachment": true,
           "temperature": true
         },
-        "cost": {}
+        "cost": {
+          "input": 1.654,
+          "output": 11.024
+        }
       },
       {
         "id": "gemini-3-pro-preview",
@@ -2291,11 +2315,13 @@
         "capabilities": {
           "reasoning": true,
           "tool_call": true,
-          "structured_output": true,
-          "attachment": true,
           "temperature": true
         },
-        "cost": {}
+        "cost": {
+          "input": 2,
+          "output": 12,
+          "cache_read": 0.19999999999999998
+        }
       },
       {
         "id": "gemini-3-flash-preview",
@@ -2312,7 +2338,8 @@
             "text",
             "image",
             "audio",
-            "video"
+            "video",
+            "pdf"
           ],
           "output": [
             "text"
@@ -2321,11 +2348,13 @@
         "capabilities": {
           "reasoning": true,
           "tool_call": true,
-          "structured_output": true,
           "attachment": true,
           "temperature": true
         },
-        "cost": {}
+        "cost": {
+          "input": 0.5,
+          "output": 3
+        }
       },
       {
         "id": "grok-code-fast-1",
@@ -2346,11 +2375,14 @@
           ]
         },
         "capabilities": {
-          "reasoning": true,
           "tool_call": true,
           "temperature": true
         },
-        "cost": {}
+        "cost": {
+          "input": 0.19999999999999998,
+          "output": 1.5,
+          "cache_read": 0.02
+        }
       },
       {
         "id": "oswe-vscode-prime",
@@ -2446,8 +2478,8 @@
           "temperature": true
         },
         "cost": {
-          "input": 0.861,
-          "output": 3.441
+          "input": 1.2,
+          "output": 6
         }
       },
       {
@@ -2475,8 +2507,8 @@
           "temperature": true
         },
         "cost": {
-          "input": 0.143353,
-          "output": 1.433525
+          "input": 0.2,
+          "output": 1.6
         }
       },
       {
@@ -2514,8 +2546,8 @@
         "family": "kimi",
         "type": "",
         "owned_by": "",
-        "context_length": 256000,
-        "max_completion_tokens": 64000,
+        "context_length": 262144,
+        "max_completion_tokens": 16384,
         "modalities": {
           "input": [
             "text"
@@ -2528,7 +2560,11 @@
           "tool_call": true,
           "temperature": true
         },
-        "cost": {}
+        "cost": {
+          "input": 0.5,
+          "output": 2,
+          "cache_read": 0.39999999999999997
+        }
       },
       {
         "id": "glm-4.6",
@@ -2556,7 +2592,10 @@
           "tool_call": true,
           "temperature": true
         },
-        "cost": {}
+        "cost": {
+          "input": 0.44999999999999996,
+          "output": 1.5
+        }
       },
       {
         "id": "glm-4.7",
@@ -2584,7 +2623,11 @@
           "tool_call": true,
           "temperature": true
         },
-        "cost": {}
+        "cost": {
+          "input": 0.27,
+          "output": 1.1,
+          "cache_read": 0.548
+        }
       },
       {
         "id": "kimi-k2",
@@ -2615,11 +2658,10 @@
         "provider": "iflow",
         "display_name": "Kimi-K2-Thinking",
         "description": "Moonshot Kimi K2 thinking model",
-        "family": "kimi",
         "type": "",
         "owned_by": "",
-        "context_length": 262144,
-        "max_completion_tokens": 16384,
+        "context_length": 262000,
+        "max_completion_tokens": 262000,
         "modalities": {
           "input": [
             "text"
@@ -2631,12 +2673,12 @@
         "capabilities": {
           "reasoning": true,
           "tool_call": true,
-          "structured_output": true,
+          "attachment": true,
           "temperature": true
         },
         "cost": {
-          "input": 0.574,
-          "output": 2.294
+          "input": 0.656,
+          "output": 2.731
         }
       },
       {
@@ -2647,8 +2689,8 @@
         "family": "deepseek",
         "type": "",
         "owned_by": "",
-        "context_length": 131000,
-        "max_completion_tokens": 64000,
+        "context_length": 163840,
+        "max_completion_tokens": 65536,
         "modalities": {
           "input": [
             "text"
@@ -2658,13 +2700,12 @@
           ]
         },
         "capabilities": {
-          "reasoning": true,
           "tool_call": true,
           "temperature": true
         },
         "cost": {
-          "input": 0.3,
-          "output": 0.45
+          "input": 0.27,
+          "output": 0.41
         }
       },
       {
@@ -2675,8 +2716,8 @@
         "family": "deepseek",
         "type": "",
         "owned_by": "",
-        "context_length": 131000,
-        "max_completion_tokens": 64000,
+        "context_length": 163840,
+        "max_completion_tokens": 65536,
         "modalities": {
           "input": [
             "text"
@@ -2686,13 +2727,12 @@
           ]
         },
         "capabilities": {
-          "reasoning": true,
           "tool_call": true,
           "temperature": true
         },
         "cost": {
-          "input": 0.3,
-          "output": 0.45
+          "input": 0.27,
+          "output": 0.41
         }
       },
       {
@@ -2703,8 +2743,8 @@
         "family": "deepseek",
         "type": "",
         "owned_by": "",
-        "context_length": 131000,
-        "max_completion_tokens": 64000,
+        "context_length": 163840,
+        "max_completion_tokens": 65536,
         "thinking": {
           "supported": true
         },
@@ -2717,13 +2757,12 @@
           ]
         },
         "capabilities": {
-          "reasoning": true,
           "tool_call": true,
           "temperature": true
         },
         "cost": {
-          "input": 0.3,
-          "output": 0.45
+          "input": 0.27,
+          "output": 0.41
         }
       },
       {
@@ -2765,8 +2804,8 @@
         "family": "deepseek-thinking",
         "type": "",
         "owned_by": "",
-        "context_length": 131072,
-        "max_completion_tokens": 16384,
+        "context_length": 128000,
+        "max_completion_tokens": 32000,
         "modalities": {
           "input": [
             "text"
@@ -2780,10 +2819,7 @@
           "tool_call": true,
           "temperature": true
         },
-        "cost": {
-          "input": 0.574,
-          "output": 2.294
-        }
+        "cost": {}
       },
       {
         "id": "deepseek-v3",
@@ -2793,7 +2829,7 @@
         "family": "deepseek",
         "type": "",
         "owned_by": "",
-        "context_length": 65536,
+        "context_length": 128000,
         "max_completion_tokens": 8192,
         "modalities": {
           "input": [
@@ -2808,8 +2844,9 @@
           "temperature": true
         },
         "cost": {
-          "input": 0.287,
-          "output": 1.147
+          "input": 0.56,
+          "output": 1.68,
+          "cache_read": 0.07
         }
       },
       {
@@ -2820,7 +2857,7 @@
         "family": "qwen",
         "type": "",
         "owned_by": "",
-        "context_length": 131072,
+        "context_length": 16384,
         "max_completion_tokens": 16384,
         "modalities": {
           "input": [
@@ -2831,13 +2868,12 @@
           ]
         },
         "capabilities": {
-          "reasoning": true,
           "tool_call": true,
           "temperature": true
         },
         "cost": {
-          "input": 0.287,
-          "output": 1.147
+          "input": 0.099,
+          "output": 0.33
         }
       },
       {
@@ -2848,8 +2884,8 @@
         "family": "qwen",
         "type": "",
         "owned_by": "",
-        "context_length": 262144,
-        "max_completion_tokens": 262144,
+        "context_length": 256000,
+        "max_completion_tokens": 64000,
         "modalities": {
           "input": [
             "text"
@@ -2863,10 +2899,7 @@
           "tool_call": true,
           "temperature": true
         },
-        "cost": {
-          "input": 0.28,
-          "output": 2.8
-        }
+        "cost": {}
       },
       {
         "id": "qwen3-235b-a22b-instruct",
@@ -3307,8 +3340,8 @@
           "temperature": true
         },
         "cost": {
-          "input": 0.144,
-          "output": 0.574
+          "input": 0.3,
+          "output": 1.5
         }
       },
       {
@@ -3354,9 +3387,7 @@
         "modalities": {
           "input": [
             "text",
-            "image",
-            "audio",
-            "video"
+            "image"
           ],
           "output": [
             "text"
@@ -3364,10 +3395,12 @@
         },
         "capabilities": {
           "tool_call": true,
-          "attachment": true,
           "temperature": true
         },
-        "cost": {}
+        "cost": {
+          "input": 1.654,
+          "output": 11.024
+        }
       },
       {
         "id": "gemini-2.5-flash",
@@ -3387,23 +3420,22 @@
         "modalities": {
           "input": [
             "text",
-            "image",
-            "audio",
-            "video"
+            "image"
           ],
           "output": [
             "text"
           ]
         },
         "capabilities": {
+          "reasoning": true,
           "tool_call": true,
-          "attachment": true,
           "temperature": true
         },
         "cost": {
-          "input": 0.075,
-          "output": 0.3,
-          "cache_read": 0.02
+          "input": 0.3,
+          "output": 2.5,
+          "cache_read": 0.075,
+          "cache_write": 0.3
         }
       },
       {
@@ -3424,10 +3456,7 @@
         "modalities": {
           "input": [
             "text",
-            "image",
-            "audio",
-            "video",
-            "pdf"
+            "image"
           ],
           "output": [
             "text"
@@ -3436,13 +3465,13 @@
         "capabilities": {
           "reasoning": true,
           "tool_call": true,
-          "attachment": true,
           "temperature": true
         },
         "cost": {
-          "input": 0.1,
-          "output": 0.4,
-          "cache_read": 0.025
+          "input": 0.09999999999999999,
+          "output": 0.39999999999999997,
+          "cache_read": 0.024999999999999998,
+          "cache_write": 0.09999999999999999
         }
       },
       {
@@ -3478,11 +3507,13 @@
         "capabilities": {
           "reasoning": true,
           "tool_call": true,
-          "structured_output": true,
-          "attachment": true,
           "temperature": true
         },
-        "cost": {}
+        "cost": {
+          "input": 2,
+          "output": 12,
+          "cache_read": 0.19999999999999998
+        }
       },
       {
         "id": "gemini-3-flash-preview",
@@ -3510,7 +3541,8 @@
             "text",
             "image",
             "audio",
-            "video"
+            "video",
+            "pdf"
           ],
           "output": [
             "text"
@@ -3519,11 +3551,13 @@
         "capabilities": {
           "reasoning": true,
           "tool_call": true,
-          "structured_output": true,
           "attachment": true,
           "temperature": true
         },
-        "cost": {}
+        "cost": {
+          "input": 0.5,
+          "output": 3
+        }
       },
       {
         "id": "gemini-3-pro-image-preview",

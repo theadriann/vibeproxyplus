@@ -618,6 +618,26 @@ func generateFactoryConfig(models map[string][]Model) FactoryConfig {
 					factoryModels = append(factoryModels, fm)
 				}
 			}
+
+			// Add reasoning effort variants for Codex/OpenAI models with thinking levels
+			if m.Provider == "codex" && m.Thinking != nil && len(m.Thinking.Levels) > 0 {
+				for _, level := range m.Thinking.Levels {
+					// Skip "none" level as it's the default/base model
+					if level == "none" {
+						continue
+					}
+					fm := FactoryModel{
+						Model:           fmt.Sprintf("%s(%s)", m.ID, level),
+						DisplayName:     fmt.Sprintf("[%s] %s (%s)", prefix, m.DisplayName, strings.Title(level)),
+						BaseURL:         cfg.baseURL,
+						APIKey:          "dummy",
+						Provider:        cfg.provider,
+						MaxOutputTokens: m.MaxCompletionTokens,
+						SupportsImages:  supportsImages,
+					}
+					factoryModels = append(factoryModels, fm)
+				}
+			}
 		}
 	}
 

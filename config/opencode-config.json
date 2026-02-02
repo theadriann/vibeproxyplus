@@ -64,8 +64,7 @@
           "modalities": {
             "input": [
               "text",
-              "image",
-              "pdf"
+              "image"
             ],
             "output": [
               "text"
@@ -103,8 +102,7 @@
           "modalities": {
             "input": [
               "text",
-              "image",
-              "pdf"
+              "image"
             ],
             "output": [
               "text"
@@ -259,8 +257,7 @@
           "modalities": {
             "input": [
               "text",
-              "image",
-              "pdf"
+              "image"
             ],
             "output": [
               "text"
@@ -349,7 +346,8 @@
           "modalities": {
             "input": [
               "text",
-              "image"
+              "image",
+              "pdf"
             ],
             "output": [
               "text"
@@ -439,9 +437,7 @@
           "modalities": {
             "input": [
               "text",
-              "image",
-              "audio",
-              "video"
+              "image"
             ],
             "output": [
               "text"
@@ -473,10 +469,7 @@
           "modalities": {
             "input": [
               "text",
-              "image",
-              "audio",
-              "video",
-              "pdf"
+              "image"
             ],
             "output": [
               "text"
@@ -488,9 +481,7 @@
           "modalities": {
             "input": [
               "text",
-              "image",
-              "audio",
-              "video"
+              "image"
             ],
             "output": [
               "text"
@@ -539,7 +530,8 @@
               "text",
               "image",
               "audio",
-              "video"
+              "video",
+              "pdf"
             ],
             "output": [
               "text"
@@ -690,8 +682,7 @@
           "name": "GPT-5 Codex",
           "modalities": {
             "input": [
-              "text",
-              "image"
+              "text"
             ],
             "output": [
               "text"
@@ -719,8 +710,7 @@
           },
           "modalities": {
             "input": [
-              "text",
-              "image"
+              "text"
             ],
             "output": [
               "text"
@@ -747,7 +737,8 @@
               "image"
             ],
             "output": [
-              "text"
+              "text",
+              "image"
             ]
           }
         },
@@ -759,7 +750,8 @@
               "image"
             ],
             "output": [
-              "text"
+              "text",
+              "image"
             ]
           }
         },
@@ -783,7 +775,8 @@
               "image"
             ],
             "output": [
-              "text"
+              "text",
+              "image"
             ]
           }
         },
@@ -804,7 +797,8 @@
           "modalities": {
             "input": [
               "text",
-              "image"
+              "image",
+              "pdf"
             ],
             "output": [
               "text"
