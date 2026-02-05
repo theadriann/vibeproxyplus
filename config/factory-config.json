@@ -87,7 +87,7 @@
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
       "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 8192
+      "maxOutputTokens": 32768
     },
     {
       "model": "rev19-uic3-1p",
@@ -568,8 +568,7 @@
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
       "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 16384,
-      "supportsImages": true
+      "maxOutputTokens": 16384
     },
     {
       "model": "oswe-vscode-prime",
@@ -732,15 +731,6 @@
       "supportsImages": true
     },
     {
-      "model": "gpt-5.1",
-      "displayName": "[OpenAI] GPT 5",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "openai",
-      "maxOutputTokens": 128000,
-      "supportsImages": true
-    },
-    {
       "model": "gpt-5",
       "displayName": "[OpenAI] GPT 5",
       "baseUrl": "http://localhost:8317/v1",
@@ -750,8 +740,8 @@
       "supportsImages": true
     },
     {
-      "model": "gpt-5.1(high)",
-      "displayName": "[OpenAI] GPT 5 (High)",
+      "model": "gpt-5.1",
+      "displayName": "[OpenAI] GPT 5",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
       "provider": "openai",
@@ -760,6 +750,15 @@
     },
     {
       "model": "gpt-5(high)",
+      "displayName": "[OpenAI] GPT 5 (High)",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "openai",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
+      "model": "gpt-5.1(high)",
       "displayName": "[OpenAI] GPT 5 (High)",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",

@@ -447,7 +447,8 @@
           "modalities": {
             "input": [
               "text",
-              "image"
+              "image",
+              "pdf"
             ],
             "output": [
               "text"
@@ -638,8 +639,8 @@
             "input": [
               "text",
               "image",
-              "audio",
               "video",
+              "audio",
               "pdf"
             ],
             "output": [
@@ -755,8 +756,9 @@
             "input": [
               "text",
               "image",
+              "video",
               "audio",
-              "video"
+              "pdf"
             ],
             "output": [
               "text"
@@ -905,7 +907,8 @@
           "modalities": {
             "input": [
               "text",
-              "image"
+              "image",
+              "pdf"
             ],
             "output": [
               "text"
@@ -962,8 +965,7 @@
           "name": "Grok Code Fast 1",
           "modalities": {
             "input": [
-              "text",
-              "image"
+              "text"
             ],
             "output": [
               "text"

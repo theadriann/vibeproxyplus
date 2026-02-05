@@ -20,27 +20,27 @@ const (
 
 // Canonical model with merged metadata
 type Model struct {
-	ID                  string      `json:"id"`
-	Provider            string      `json:"provider"`
-	DisplayName         string      `json:"display_name"`
-	Description         string      `json:"description,omitempty"`
-	Family              string      `json:"family,omitempty"`
-	Type                string      `json:"type"`
-	OwnedBy             string      `json:"owned_by"`
-	ContextLength       int         `json:"context_length,omitempty"`
-	MaxCompletionTokens int         `json:"max_completion_tokens,omitempty"`
-	Thinking            *Thinking   `json:"thinking,omitempty"`
-	Modalities          *Modalities `json:"modalities,omitempty"`
+	ID                  string        `json:"id"`
+	Provider            string        `json:"provider"`
+	DisplayName         string        `json:"display_name"`
+	Description         string        `json:"description,omitempty"`
+	Family              string        `json:"family,omitempty"`
+	Type                string        `json:"type"`
+	OwnedBy             string        `json:"owned_by"`
+	ContextLength       int           `json:"context_length,omitempty"`
+	MaxCompletionTokens int           `json:"max_completion_tokens,omitempty"`
+	Thinking            *Thinking     `json:"thinking,omitempty"`
+	Modalities          *Modalities   `json:"modalities,omitempty"`
 	Capabilities        *Capabilities `json:"capabilities,omitempty"`
-	Cost                *Cost       `json:"cost,omitempty"`
+	Cost                *Cost         `json:"cost,omitempty"`
 }
 
 type Thinking struct {
-	Supported    bool     `json:"supported"`
-	Min          int      `json:"min,omitempty"`
-	Max          int      `json:"max,omitempty"`
-	ZeroAllowed  bool     `json:"zero_allowed,omitempty"`
-	Levels       []string `json:"levels,omitempty"`
+	Supported   bool     `json:"supported"`
+	Min         int      `json:"min,omitempty"`
+	Max         int      `json:"max,omitempty"`
+	ZeroAllowed bool     `json:"zero_allowed,omitempty"`
+	Levels      []string `json:"levels,omitempty"`
 }
 
 type Modalities struct {
@@ -64,32 +64,37 @@ type Cost struct {
 }
 
 type CanonicalConfig struct {
-	Version   string             `json:"version"`
-	Sources   []string           `json:"sources"`
-	Models    map[string][]Model `json:"models"`
+	Version string             `json:"version"`
+	Sources []string           `json:"sources"`
+	Models  map[string][]Model `json:"models"`
 }
 
 // models.dev types
 type ModelsDevAPI map[string]*ModelsDevProvider
 
 type ModelsDevProvider struct {
-	ID     string                    `json:"id"`
-	Name   string                    `json:"name"`
+	ID     string                     `json:"id"`
+	Name   string                     `json:"name"`
 	Models map[string]*ModelsDevModel `json:"models"`
 }
 
 type ModelsDevModel struct {
-	ID               string                 `json:"id"`
-	Name             string                 `json:"name"`
-	Family           string                 `json:"family"`
-	Attachment       bool                   `json:"attachment"`
-	Reasoning        bool                   `json:"reasoning"`
-	ToolCall         bool                   `json:"tool_call"`
-	StructuredOutput bool                   `json:"structured_output"`
-	Temperature      bool                   `json:"temperature"`
-	Modalities       *Modalities            `json:"modalities"`
-	Cost             map[string]float64     `json:"cost"`
-	Limit            map[string]int         `json:"limit"`
+	ID               string             `json:"id"`
+	Name             string             `json:"name"`
+	Family           string             `json:"family"`
+	Attachment       bool               `json:"attachment"`
+	Reasoning        bool               `json:"reasoning"`
+	ToolCall         bool               `json:"tool_call"`
+	StructuredOutput bool               `json:"structured_output"`
+	Temperature      bool               `json:"temperature"`
+	Modalities       *Modalities        `json:"modalities"`
+	Cost             map[string]float64 `json:"cost"`
+	Limit            map[string]int     `json:"limit"`
+}
+
+type indexedModelsDevModel struct {
+	Provider string
+	Model    *ModelsDevModel
 }
 
 // Factory config types (settings.json format - camelCase)
@@ -129,7 +134,7 @@ func main() {
 		fmt.Printf("Using local model_definitions.go: %s\n", *localModelDefs)
 	} else {
 		fmt.Printf("Downloading CLIProxyAPIPlus model definitions...\n")
-		
+
 		// Download main model_definitions.go
 		resp, err := http.Get(modelDefsURL)
 		if err != nil {
@@ -139,7 +144,7 @@ func main() {
 		data, _ := io.ReadAll(resp.Body)
 		resp.Body.Close()
 		modelDefsSource = string(data)
-		
+
 		// Download model_definitions_static_data.go (contains Claude, OpenAI, Gemini, etc.)
 		fmt.Printf("Downloading CLIProxyAPIPlus static model definitions...\n")
 		resp2, err := http.Get(modelDefsStaticURL)
@@ -219,23 +224,152 @@ func main() {
 
 // buildModelsDevIndex creates a lookup map by model ID across all providers
 func buildModelsDevIndex(api ModelsDevAPI) map[string]*ModelsDevModel {
-	index := make(map[string]*ModelsDevModel)
-	
-	for _, provider := range api {
-		if provider.Models == nil {
+	index := make(map[string]indexedModelsDevModel)
+
+	providerIDs := make([]string, 0, len(api))
+	for providerID := range api {
+		providerIDs = append(providerIDs, providerID)
+	}
+	sort.Slice(providerIDs, func(i, j int) bool {
+		pi := modelsDevProviderPriority(providerIDs[i])
+		pj := modelsDevProviderPriority(providerIDs[j])
+		if pi != pj {
+			return pi < pj
+		}
+		return providerIDs[i] < providerIDs[j]
+	})
+
+	for _, providerID := range providerIDs {
+		provider := api[providerID]
+		if provider == nil || provider.Models == nil {
 			continue
 		}
-		for modelID, model := range provider.Models {
-			// Index by exact ID
-			index[modelID] = model
+
+		modelIDs := make([]string, 0, len(provider.Models))
+		for modelID := range provider.Models {
+			modelIDs = append(modelIDs, modelID)
+		}
+		sort.Strings(modelIDs)
+
+		for _, modelID := range modelIDs {
+			model := provider.Models[modelID]
+			if model == nil {
+				continue
+			}
+
+			upsertIndexedModel(index, modelID, providerID, model)
+
 			// Also index by normalized ID (lowercase, no version suffix)
 			normalized := normalizeModelID(modelID)
-			if _, exists := index[normalized]; !exists {
-				index[normalized] = model
-			}
+			upsertIndexedModel(index, normalized, providerID, model)
 		}
 	}
-	return index
+
+	flat := make(map[string]*ModelsDevModel, len(index))
+	for key, item := range index {
+		flat[key] = item.Model
+	}
+	return flat
+}
+
+func upsertIndexedModel(index map[string]indexedModelsDevModel, key, providerID string, model *ModelsDevModel) {
+	current, exists := index[key]
+	if !exists {
+		index[key] = indexedModelsDevModel{
+			Provider: providerID,
+			Model:    model,
+		}
+		return
+	}
+
+	if shouldReplaceIndexedModel(current.Provider, current.Model, providerID, model) {
+		index[key] = indexedModelsDevModel{
+			Provider: providerID,
+			Model:    model,
+		}
+	}
+}
+
+func shouldReplaceIndexedModel(currentProvider string, currentModel *ModelsDevModel, candidateProvider string, candidateModel *ModelsDevModel) bool {
+	currentPriority := modelsDevProviderPriority(currentProvider)
+	candidatePriority := modelsDevProviderPriority(candidateProvider)
+
+	if candidatePriority != currentPriority {
+		return candidatePriority < currentPriority
+	}
+
+	currentScore := modelsDevModelQualityScore(currentModel)
+	candidateScore := modelsDevModelQualityScore(candidateModel)
+	if candidateScore != currentScore {
+		return candidateScore > currentScore
+	}
+
+	// Final deterministic tie-breaker.
+	return candidateProvider < currentProvider
+}
+
+func modelsDevModelQualityScore(model *ModelsDevModel) int {
+	if model == nil {
+		return 0
+	}
+
+	score := 0
+	if model.Name != "" {
+		score++
+	}
+	if model.Family != "" {
+		score++
+	}
+	if model.Modalities != nil {
+		score += 2
+		score += len(model.Modalities.Input)
+		score += len(model.Modalities.Output)
+	}
+	if model.Limit != nil && len(model.Limit) > 0 {
+		score += 2 + len(model.Limit)
+	}
+	if model.Cost != nil && len(model.Cost) > 0 {
+		score += 2 + len(model.Cost)
+	}
+	if model.Attachment {
+		score++
+	}
+	if model.Reasoning {
+		score++
+	}
+	if model.ToolCall {
+		score++
+	}
+	if model.StructuredOutput {
+		score++
+	}
+	if model.Temperature {
+		score++
+	}
+	return score
+}
+
+func modelsDevProviderPriority(providerID string) int {
+	switch providerID {
+	case "openai":
+		return 10
+	case "anthropic":
+		return 20
+	case "google", "google-vertex":
+		return 30
+	case "google-vertex-anthropic":
+		return 40
+	case "github-copilot", "github-models":
+		return 50
+	case "amazon-bedrock":
+		return 60
+	case "alibaba", "alibaba-cn":
+		return 70
+	case "iflowcn":
+		return 80
+	default:
+		return 1000
+	}
 }
 
 func normalizeModelID(id string) string {
@@ -276,6 +410,12 @@ func parseAndEnrichModels(source string, modelsDevIndex map[string]*ModelsDevMod
 	antigravityModels := parseAntigravityModels(source, modelsDevIndex)
 	if len(antigravityModels) > 0 {
 		models["antigravity"] = antigravityModels
+	}
+
+	for provider := range models {
+		sort.Slice(models[provider], func(i, j int) bool {
+			return models[provider][i].ID < models[provider][j].ID
+		})
 	}
 
 	return models
@@ -380,12 +520,12 @@ func parseFunctionModels(source, funcName, provider string, modelsDevIndex map[s
 func enrichFromModelsDev(model *Model, index map[string]*ModelsDevModel) {
 	// Try exact match first
 	mdModel := index[model.ID]
-	
+
 	// Try normalized match
 	if mdModel == nil {
 		mdModel = index[normalizeModelID(model.ID)]
 	}
-	
+
 	// Try partial matches for common patterns
 	if mdModel == nil {
 		// claude-opus-4-5-20251101 -> claude-opus-4-5
