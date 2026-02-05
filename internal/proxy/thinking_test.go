@@ -1,6 +1,7 @@
 package proxy
 
 import (
+	"encoding/json"
 	"strings"
 	"testing"
 )
@@ -83,7 +84,7 @@ func TestParseThinkingSuffix(t *testing.T) {
 func TestTransformRequestBody(t *testing.T) {
 	input := `{"model":"claude-opus-4-5-20251101-thinking-10000","messages":[{"role":"user","content":"hi"}]}`
 
-	output, transformed, err := TransformRequestBody([]byte(input))
+	output, transformed, err := TransformRequestBody("/v1/messages", []byte(input))
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -108,7 +109,7 @@ func TestTransformRequestBody(t *testing.T) {
 func TestTransformRequestBody_NoThinking(t *testing.T) {
 	input := `{"model":"gpt-5.1-codex","messages":[{"role":"user","content":"hi"}]}`
 
-	output, transformed, err := TransformRequestBody([]byte(input))
+	output, transformed, err := TransformRequestBody("/v1/messages", []byte(input))
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -148,7 +149,7 @@ func TestTransformRequestBody_ThinkingPatternNeedsHeader(t *testing.T) {
 	// but body should not be transformed (backend handles it)
 	input := `{"model":"gemini-claude-opus-4-5-thinking","messages":[{"role":"user","content":"hi"}]}`
 
-	output, needsHeader, err := TransformRequestBody([]byte(input))
+	output, needsHeader, err := TransformRequestBody("/v1/messages", []byte(input))
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -157,5 +158,64 @@ func TestTransformRequestBody_ThinkingPatternNeedsHeader(t *testing.T) {
 	}
 	if string(output) != input {
 		t.Errorf("body should be unchanged for -thinking suffix (backend handles)")
+	}
+}
+
+func TestTransformRequestBody_CodexResponsesInputStringNormalized(t *testing.T) {
+	input := `{"model":"gpt-5.2-codex","input":"hello"}` // compact/summarize path sends input as string
+
+	output, needsHeader, err := TransformRequestBody("/v1/responses", []byte(input))
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if needsHeader {
+		t.Fatal("expected needsHeader=false for codex normalization")
+	}
+
+	var body map[string]interface{}
+	if err := json.Unmarshal(output, &body); err != nil {
+		t.Fatalf("invalid output json: %v", err)
+	}
+
+	inputField, ok := body["input"].([]interface{})
+	if !ok || len(inputField) != 1 {
+		t.Fatalf("expected input array with one item, got: %v", body["input"])
+	}
+
+	msg, ok := inputField[0].(map[string]interface{})
+	if !ok {
+		t.Fatalf("expected message object, got: %T", inputField[0])
+	}
+
+	if msg["role"] != "user" || msg["type"] != "message" {
+		t.Fatalf("unexpected message shape: %+v", msg)
+	}
+
+	content, ok := msg["content"].([]interface{})
+	if !ok || len(content) != 1 {
+		t.Fatalf("expected content array with one item, got: %v", msg["content"])
+	}
+
+	contentItem, ok := content[0].(map[string]interface{})
+	if !ok {
+		t.Fatalf("expected content object, got: %T", content[0])
+	}
+	if contentItem["type"] != "input_text" || contentItem["text"] != "hello" {
+		t.Fatalf("unexpected content item: %+v", contentItem)
+	}
+}
+
+func TestTransformRequestBody_CodexNormalizationOnlyOnResponsesPath(t *testing.T) {
+	input := `{"model":"gpt-5.2-codex","input":"hello"}`
+
+	output, needsHeader, err := TransformRequestBody("/v1/chat/completions", []byte(input))
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if needsHeader {
+		t.Fatal("expected needsHeader=false")
+	}
+	if string(output) != input {
+		t.Errorf("body should stay unchanged on non-responses path: %s", output)
 	}
 }

@@ -58,14 +58,14 @@ func (tp *ThinkingProxy) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Transform if needed
-	newBody, transformed, err := TransformRequestBody(body)
+	newBody, needsBetaHeader, err := TransformRequestBody(r.URL.Path, body)
 	if err != nil {
 		log.Printf("Warning: failed to transform body: %v", err)
 		newBody = body
 	}
 
-	// Add beta header if transformed
-	if transformed {
+	// Add beta header when Claude thinking is enabled
+	if needsBetaHeader {
 		existing := r.Header.Get(BetaHeader)
 		if existing == "" {
 			r.Header.Set(BetaHeader, BetaInterleaved)

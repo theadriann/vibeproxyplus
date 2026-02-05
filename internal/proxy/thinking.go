@@ -55,25 +55,78 @@ func HasThinkingPattern(model string) bool {
 	return false
 }
 
-// TransformRequestBody modifies the JSON body if model has thinking suffix.
+func isCodexResponsesPath(path string) bool {
+	switch path {
+	case "/v1/responses", "/v1/responses/compact":
+		return true
+	default:
+		return false
+	}
+}
+
+func isCodexModel(model string) bool {
+	return strings.HasPrefix(model, "gpt-") && strings.Contains(model, "codex")
+}
+
+func normalizeCodexResponsesInput(data map[string]interface{}, path string) bool {
+	if !isCodexResponsesPath(path) {
+		return false
+	}
+
+	model, ok := data["model"].(string)
+	if !ok || !isCodexModel(model) {
+		return false
+	}
+
+	input, ok := data["input"].(string)
+	if !ok {
+		return false
+	}
+
+	data["input"] = []interface{}{
+		map[string]interface{}{
+			"type": "message",
+			"role": "user",
+			"content": []interface{}{
+				map[string]interface{}{
+					"type": "input_text",
+					"text": input,
+				},
+			},
+		},
+	}
+	return true
+}
+
+// TransformRequestBody modifies the JSON body when needed.
 // Returns: transformedBody, needsBetaHeader, error
 // needsBetaHeader is true if either:
 // - Body was transformed with thinking parameter
 // - Model has a thinking pattern that backend will handle (needs beta header)
-func TransformRequestBody(body []byte) ([]byte, bool, error) {
+func TransformRequestBody(path string, body []byte) ([]byte, bool, error) {
 	var data map[string]interface{}
 	if err := json.Unmarshal(body, &data); err != nil {
 		return body, false, err
 	}
 
+	modified := normalizeCodexResponsesInput(data, path)
+
 	model, ok := data["model"].(string)
 	if !ok {
-		return body, false, nil
+		if !modified {
+			return body, false, nil
+		}
+		output, err := json.Marshal(data)
+		return output, false, err
 	}
 
 	// Only process Claude models (including gemini-claude variants)
 	if !strings.HasPrefix(model, "claude-") && !strings.HasPrefix(model, "gemini-claude-") {
-		return body, false, nil
+		if !modified {
+			return body, false, nil
+		}
+		output, err := json.Marshal(data)
+		return output, false, err
 	}
 
 	// Check for -thinking-NUMBER suffix that we handle ourselves
@@ -106,6 +159,11 @@ func TransformRequestBody(body []byte) ([]byte, bool, error) {
 	// but still need the beta header (e.g., -thinking, -thinking(budget))
 	if HasThinkingPattern(model) {
 		return body, true, nil
+	}
+
+	if modified {
+		output, err := json.Marshal(data)
+		return output, false, err
 	}
 
 	return body, false, nil
