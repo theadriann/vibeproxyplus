@@ -61,10 +61,37 @@
         },
         "claude-haiku-4-5-20251001": {
           "name": "Claude 4.5 Haiku",
+          "variants": {
+            "high": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 32000
+              }
+            },
+            "low": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 4000
+              }
+            },
+            "max": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 64000
+              }
+            },
+            "medium": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 10000
+              }
+            }
+          },
           "modalities": {
             "input": [
               "text",
-              "image"
+              "image",
+              "pdf"
             ],
             "output": [
               "text"
@@ -102,7 +129,8 @@
           "modalities": {
             "input": [
               "text",
-              "image"
+              "image",
+              "pdf"
             ],
             "output": [
               "text"
@@ -150,6 +178,45 @@
         },
         "claude-opus-4-5-20251101": {
           "name": "Claude 4.5 Opus",
+          "variants": {
+            "high": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 32000
+              }
+            },
+            "low": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 4000
+              }
+            },
+            "max": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 64000
+              }
+            },
+            "medium": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 10000
+              }
+            }
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "claude-opus-4-6": {
+          "name": "Claude 4.6 Opus",
           "variants": {
             "high": {
               "thinking": {
@@ -257,7 +324,8 @@
           "modalities": {
             "input": [
               "text",
-              "image"
+              "image",
+              "pdf"
             ],
             "output": [
               "text"
@@ -286,6 +354,39 @@
         },
         "claude-opus-4-5-thinking": {
           "name": "Claude Opus 4 5 Thinking",
+          "variants": {
+            "high": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 32000
+              }
+            },
+            "low": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 4000
+              }
+            },
+            "medium": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 10000
+              }
+            }
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "claude-opus-4-6-thinking": {
+          "name": "Claude Opus 4 6 Thinking",
           "variants": {
             "high": {
               "thinking": {
@@ -346,8 +447,7 @@
           "modalities": {
             "input": [
               "text",
-              "image",
-              "pdf"
+              "image"
             ],
             "output": [
               "text"
@@ -437,7 +537,10 @@
           "modalities": {
             "input": [
               "text",
-              "image"
+              "image",
+              "audio",
+              "video",
+              "pdf"
             ],
             "output": [
               "text"
@@ -469,7 +572,10 @@
           "modalities": {
             "input": [
               "text",
-              "image"
+              "image",
+              "audio",
+              "video",
+              "pdf"
             ],
             "output": [
               "text"
@@ -481,7 +587,10 @@
           "modalities": {
             "input": [
               "text",
-              "image"
+              "image",
+              "audio",
+              "video",
+              "pdf"
             ],
             "output": [
               "text"
@@ -682,7 +791,8 @@
           "name": "GPT-5 Codex",
           "modalities": {
             "input": [
-              "text"
+              "text",
+              "image"
             ],
             "output": [
               "text"
@@ -710,7 +820,8 @@
           },
           "modalities": {
             "input": [
-              "text"
+              "text",
+              "image"
             ],
             "output": [
               "text"
@@ -737,8 +848,7 @@
               "image"
             ],
             "output": [
-              "text",
-              "image"
+              "text"
             ]
           }
         },
@@ -750,8 +860,7 @@
               "image"
             ],
             "output": [
-              "text",
-              "image"
+              "text"
             ]
           }
         },
@@ -775,8 +884,7 @@
               "image"
             ],
             "output": [
-              "text",
-              "image"
+              "text"
             ]
           }
         },
@@ -794,6 +902,40 @@
         },
         "gpt-5.2-codex": {
           "name": "GPT-5.2 Codex",
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "gpt-5.3-codex": {
+          "name": "GPT 5.3 Codex",
+          "variants": {
+            "high": {
+              "reasoningEffort": "high",
+              "textVerbosity": "low",
+              "reasoningSummary": "auto"
+            },
+            "low": {
+              "reasoningEffort": "low",
+              "textVerbosity": "low",
+              "reasoningSummary": "auto"
+            },
+            "medium": {
+              "reasoningEffort": "medium",
+              "textVerbosity": "low",
+              "reasoningSummary": "auto"
+            },
+            "xhigh": {
+              "reasoningEffort": "xhigh",
+              "textVerbosity": "low",
+              "reasoningSummary": "auto"
+            }
+          },
           "modalities": {
             "input": [
               "text",
@@ -820,7 +962,8 @@
           "name": "Grok Code Fast 1",
           "modalities": {
             "input": [
-              "text"
+              "text",
+              "image"
             ],
             "output": [
               "text"
@@ -956,6 +1099,70 @@
         },
         "kiro-claude-opus-4-5-agentic": {
           "name": "Kiro Claude Opus 4.5 (Agentic)",
+          "variants": {
+            "high": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 32000
+              }
+            },
+            "low": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 4000
+              }
+            },
+            "medium": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 10000
+              }
+            }
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "kiro-claude-opus-4-6": {
+          "name": "Kiro Claude Opus 4.6",
+          "variants": {
+            "high": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 32000
+              }
+            },
+            "low": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 4000
+              }
+            },
+            "medium": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 10000
+              }
+            }
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "kiro-claude-opus-4-6-agentic": {
+          "name": "Kiro Claude Opus 4.6 (Agentic)",
           "variants": {
             "high": {
               "thinking": {
