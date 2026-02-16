@@ -1619,6 +1619,47 @@
           "output": 14,
           "cache_read": 0.175
         }
+      },
+      {
+        "id": "gpt-5.3-codex-spark",
+        "provider": "codex",
+        "display_name": "GPT 5.3 Codex Spark",
+        "description": "Ultra-fast coding model.",
+        "family": "gpt-codex-spark",
+        "type": "openai",
+        "owned_by": "openai",
+        "context_length": 128000,
+        "max_completion_tokens": 128000,
+        "thinking": {
+          "supported": true,
+          "levels": [
+            "low",
+            "medium",
+            "high",
+            "xhigh"
+          ]
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "pdf"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": true,
+          "attachment": true
+        },
+        "cost": {
+          "input": 1.75,
+          "output": 14,
+          "cache_read": 0.175
+        }
       }
     ],
     "gemini": [
@@ -2392,6 +2433,14 @@
         "owned_by": "github-copilot",
         "context_length": 200000,
         "max_completion_tokens": 32768,
+        "thinking": {
+          "supported": true,
+          "levels": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
         "modalities": {
           "input": [
             "text",
@@ -2423,6 +2472,14 @@
         "owned_by": "github-copilot",
         "context_length": 200000,
         "max_completion_tokens": 32768,
+        "thinking": {
+          "supported": true,
+          "levels": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
         "modalities": {
           "input": [
             "text",
@@ -2453,6 +2510,14 @@
         "owned_by": "github-copilot",
         "context_length": 128000,
         "max_completion_tokens": 16384,
+        "thinking": {
+          "supported": true,
+          "levels": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
         "modalities": {
           "input": [
             "text",
@@ -2484,6 +2549,15 @@
         "owned_by": "github-copilot",
         "context_length": 200000,
         "max_completion_tokens": 32768,
+        "thinking": {
+          "supported": true,
+          "levels": [
+            "none",
+            "low",
+            "medium",
+            "high"
+          ]
+        },
         "modalities": {
           "input": [
             "text",
@@ -2515,6 +2589,15 @@
         "owned_by": "github-copilot",
         "context_length": 200000,
         "max_completion_tokens": 32768,
+        "thinking": {
+          "supported": true,
+          "levels": [
+            "none",
+            "low",
+            "medium",
+            "high"
+          ]
+        },
         "modalities": {
           "input": [
             "text",
@@ -2546,6 +2629,16 @@
         "owned_by": "github-copilot",
         "context_length": 200000,
         "max_completion_tokens": 32768,
+        "thinking": {
+          "supported": true,
+          "levels": [
+            "none",
+            "low",
+            "medium",
+            "high",
+            "xhigh"
+          ]
+        },
         "modalities": {
           "input": [
             "text",
@@ -2577,6 +2670,15 @@
         "owned_by": "github-copilot",
         "context_length": 128000,
         "max_completion_tokens": 16384,
+        "thinking": {
+          "supported": true,
+          "levels": [
+            "none",
+            "low",
+            "medium",
+            "high"
+          ]
+        },
         "modalities": {
           "input": [
             "text",
@@ -2608,6 +2710,16 @@
         "owned_by": "github-copilot",
         "context_length": 200000,
         "max_completion_tokens": 32768,
+        "thinking": {
+          "supported": true,
+          "levels": [
+            "none",
+            "low",
+            "medium",
+            "high",
+            "xhigh"
+          ]
+        },
         "modalities": {
           "input": [
             "text",
@@ -2639,6 +2751,16 @@
         "owned_by": "github-copilot",
         "context_length": 200000,
         "max_completion_tokens": 32768,
+        "thinking": {
+          "supported": true,
+          "levels": [
+            "none",
+            "low",
+            "medium",
+            "high",
+            "xhigh"
+          ]
+        },
         "modalities": {
           "input": [
             "text",
@@ -2925,11 +3047,7 @@
           "tool_call": true,
           "temperature": true
         },
-        "cost": {
-          "input": 0.6,
-          "output": 2.2,
-          "cache_read": 0.11
-        }
+        "cost": {}
       },
       {
         "id": "glm-5",
@@ -2939,8 +3057,8 @@
         "family": "glm",
         "type": "",
         "owned_by": "",
-        "context_length": 204800,
-        "max_completion_tokens": 131072,
+        "context_length": 202752,
+        "max_completion_tokens": 131000,
         "thinking": {
           "supported": true
         },
@@ -2955,6 +3073,7 @@
         "capabilities": {
           "reasoning": true,
           "tool_call": true,
+          "structured_output": true,
           "temperature": true
         },
         "cost": {
@@ -3153,6 +3272,39 @@
           "input": 0.3,
           "output": 1.2,
           "cache_read": 0.1
+        }
+      },
+      {
+        "id": "minimax-m2.5",
+        "provider": "iflow",
+        "display_name": "MiniMax-M2.5",
+        "description": "MiniMax M2.5",
+        "family": "minimax",
+        "type": "",
+        "owned_by": "",
+        "context_length": 204800,
+        "max_completion_tokens": 131072,
+        "thinking": {
+          "supported": true
+        },
+        "modalities": {
+          "input": [
+            "text"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "temperature": true
+        },
+        "cost": {
+          "input": 0.3,
+          "output": 1.2,
+          "cache_read": 0.03,
+          "cache_write": 0.375
         }
       },
       {
@@ -3884,6 +4036,28 @@
       }
     ],
     "qwen": [
+      {
+        "id": "coder-model",
+        "provider": "qwen",
+        "display_name": "Qwen 3.5 Plus",
+        "description": "efficient hybrid model with leading coding performance",
+        "type": "qwen",
+        "owned_by": "qwen",
+        "context_length": 1048576,
+        "max_completion_tokens": 65536,
+        "modalities": {
+          "input": [
+            "text"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "capabilities": {
+          "tool_call": true,
+          "temperature": true
+        }
+      },
       {
         "id": "qwen3-coder-flash",
         "provider": "qwen",

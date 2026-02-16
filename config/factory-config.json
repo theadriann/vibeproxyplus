@@ -1204,6 +1204,59 @@
       "supportsImages": true
     },
     {
+      "model": "gpt-5.3-codex-spark",
+      "displayName": "[OpenAI] GPT 5.3 Codex Spark",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "openai",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
+      "model": "gpt-5.3-codex-spark(high)",
+      "displayName": "[OpenAI] GPT 5.3 Codex Spark (High)",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "openai",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
+      "model": "gpt-5.3-codex-spark(low)",
+      "displayName": "[OpenAI] GPT 5.3 Codex Spark (Low)",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "openai",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
+      "model": "gpt-5.3-codex-spark(medium)",
+      "displayName": "[OpenAI] GPT 5.3 Codex Spark (Medium)",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "openai",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
+      "model": "gpt-5.3-codex-spark(xhigh)",
+      "displayName": "[OpenAI] GPT 5.3 Codex Spark (Xhigh)",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "openai",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
+      "model": "coder-model",
+      "displayName": "[Qwen] Qwen 3.5 Plus",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 65536
+    },
+    {
       "model": "qwen3-coder-flash",
       "displayName": "[Qwen] Qwen3 Coder Flash",
       "baseUrl": "http://localhost:8317/v1",
