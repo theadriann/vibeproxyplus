@@ -442,6 +442,18 @@
             ]
           }
         },
+        "claude-opus-4.6": {
+          "name": "Claude Opus 4.6",
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
         "claude-sonnet-4": {
           "name": "Claude Sonnet 4",
           "modalities": {
@@ -1317,6 +1329,146 @@
             "input": [
               "text",
               "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "kiro-deepseek-3-2": {
+          "name": "Kiro DeepSeek 3.2",
+          "variants": {
+            "high": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 32000
+              }
+            },
+            "low": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 4000
+              }
+            },
+            "medium": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 10000
+              }
+            }
+          },
+          "modalities": {
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "kiro-gpt-3-5-turbo": {
+          "name": "Kiro GPT-3.5 Turbo",
+          "modalities": {
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "kiro-gpt-4": {
+          "name": "Kiro GPT-4",
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "kiro-gpt-4-turbo": {
+          "name": "Kiro GPT-4 Turbo",
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "kiro-gpt-4o": {
+          "name": "Kiro GPT-4o",
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "kiro-minimax-m2-1": {
+          "name": "Kiro MiniMax M2.1",
+          "variants": {
+            "high": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 32000
+              }
+            },
+            "low": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 4000
+              }
+            },
+            "medium": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 10000
+              }
+            }
+          },
+          "modalities": {
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "kiro-qwen3-coder-next": {
+          "name": "Kiro Qwen3 Coder Next",
+          "variants": {
+            "high": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 32000
+              }
+            },
+            "low": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 4000
+              }
+            },
+            "medium": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 10000
+              }
+            }
+          },
+          "modalities": {
+            "input": [
+              "text"
             ],
             "output": [
               "text"

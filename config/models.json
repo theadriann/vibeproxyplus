@@ -537,7 +537,7 @@
         "family": "claude-opus",
         "type": "antigravity",
         "owned_by": "antigravity",
-        "context_length": 1000000,
+        "context_length": 200000,
         "max_completion_tokens": 128000,
         "thinking": {
           "supported": true
@@ -840,7 +840,10 @@
           "structured_output": true,
           "temperature": true
         },
-        "cost": {}
+        "cost": {
+          "input": 0.15,
+          "output": 0.6
+        }
       },
       {
         "id": "rev19-uic3-1p",
@@ -2157,6 +2160,33 @@
         "cost": {}
       },
       {
+        "id": "claude-opus-4.6",
+        "provider": "github-copilot",
+        "display_name": "Claude Opus 4.6",
+        "description": "Anthropic Claude Opus 4.6 via GitHub Copilot",
+        "family": "claude-opus",
+        "type": "github-copilot",
+        "owned_by": "github-copilot",
+        "context_length": 200000,
+        "max_completion_tokens": 64000,
+        "modalities": {
+          "input": [
+            "text",
+            "image"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "attachment": true,
+          "temperature": true
+        },
+        "cost": {}
+      },
+      {
         "id": "claude-sonnet-4",
         "provider": "github-copilot",
         "display_name": "Claude Sonnet 4",
@@ -2902,6 +2932,38 @@
         }
       },
       {
+        "id": "glm-5",
+        "provider": "iflow",
+        "display_name": "GLM-5",
+        "description": "Zhipu GLM 5 general model",
+        "family": "glm",
+        "type": "",
+        "owned_by": "",
+        "context_length": 204800,
+        "max_completion_tokens": 131072,
+        "thinking": {
+          "supported": true
+        },
+        "modalities": {
+          "input": [
+            "text"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "temperature": true
+        },
+        "cost": {
+          "input": 1,
+          "output": 3.2,
+          "cache_read": 0.2
+        }
+      },
+      {
         "id": "iflow-rome-30ba3b",
         "provider": "iflow",
         "display_name": "iFlow-ROME",
@@ -3038,8 +3100,8 @@
         "family": "minimax",
         "type": "",
         "owned_by": "",
-        "context_length": 196608,
-        "max_completion_tokens": 128000,
+        "context_length": 400000,
+        "max_completion_tokens": 400000,
         "thinking": {
           "supported": true
         },
@@ -3057,8 +3119,8 @@
           "temperature": true
         },
         "cost": {
-          "input": 0.3,
-          "output": 1.2
+          "input": 0.39,
+          "output": 1.57
         }
       },
       {
@@ -3635,6 +3697,181 @@
           "input": [
             "text",
             "image"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "capabilities": {
+          "tool_call": true,
+          "temperature": true
+        }
+      },
+      {
+        "id": "kiro-deepseek-3-2",
+        "provider": "kiro",
+        "display_name": "Kiro DeepSeek 3.2",
+        "description": "DeepSeek 3.2 via Kiro",
+        "type": "kiro",
+        "owned_by": "aws",
+        "context_length": 128000,
+        "max_completion_tokens": 32768,
+        "thinking": {
+          "supported": true,
+          "min": 1024,
+          "max": 32000,
+          "zero_allowed": true
+        },
+        "modalities": {
+          "input": [
+            "text"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "capabilities": {
+          "tool_call": true,
+          "temperature": true
+        }
+      },
+      {
+        "id": "kiro-gpt-3-5-turbo",
+        "provider": "kiro",
+        "display_name": "Kiro GPT-3.5 Turbo",
+        "description": "OpenAI GPT-3.5 Turbo via Kiro",
+        "type": "kiro",
+        "owned_by": "aws",
+        "context_length": 16384,
+        "max_completion_tokens": 4096,
+        "modalities": {
+          "input": [
+            "text"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "capabilities": {
+          "tool_call": true,
+          "temperature": true
+        }
+      },
+      {
+        "id": "kiro-gpt-4",
+        "provider": "kiro",
+        "display_name": "Kiro GPT-4",
+        "description": "OpenAI GPT-4 via Kiro",
+        "type": "kiro",
+        "owned_by": "aws",
+        "context_length": 128000,
+        "max_completion_tokens": 8192,
+        "modalities": {
+          "input": [
+            "text",
+            "image"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "capabilities": {
+          "tool_call": true,
+          "temperature": true
+        }
+      },
+      {
+        "id": "kiro-gpt-4-turbo",
+        "provider": "kiro",
+        "display_name": "Kiro GPT-4 Turbo",
+        "description": "OpenAI GPT-4 Turbo via Kiro",
+        "type": "kiro",
+        "owned_by": "aws",
+        "context_length": 128000,
+        "max_completion_tokens": 16384,
+        "modalities": {
+          "input": [
+            "text",
+            "image"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "capabilities": {
+          "tool_call": true,
+          "temperature": true
+        }
+      },
+      {
+        "id": "kiro-gpt-4o",
+        "provider": "kiro",
+        "display_name": "Kiro GPT-4o",
+        "description": "OpenAI GPT-4o via Kiro",
+        "type": "kiro",
+        "owned_by": "aws",
+        "context_length": 128000,
+        "max_completion_tokens": 16384,
+        "modalities": {
+          "input": [
+            "text",
+            "image"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "capabilities": {
+          "tool_call": true,
+          "temperature": true
+        }
+      },
+      {
+        "id": "kiro-minimax-m2-1",
+        "provider": "kiro",
+        "display_name": "Kiro MiniMax M2.1",
+        "description": "MiniMax M2.1 via Kiro",
+        "type": "kiro",
+        "owned_by": "aws",
+        "context_length": 200000,
+        "max_completion_tokens": 64000,
+        "thinking": {
+          "supported": true,
+          "min": 1024,
+          "max": 32000,
+          "zero_allowed": true
+        },
+        "modalities": {
+          "input": [
+            "text"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "capabilities": {
+          "tool_call": true,
+          "temperature": true
+        }
+      },
+      {
+        "id": "kiro-qwen3-coder-next",
+        "provider": "kiro",
+        "display_name": "Kiro Qwen3 Coder Next",
+        "description": "Qwen3 Coder Next via Kiro",
+        "type": "kiro",
+        "owned_by": "aws",
+        "context_length": 128000,
+        "max_completion_tokens": 32768,
+        "thinking": {
+          "supported": true,
+          "min": 1024,
+          "max": 32000,
+          "zero_allowed": true
+        },
+        "modalities": {
+          "input": [
+            "text"
           ],
           "output": [
             "text"

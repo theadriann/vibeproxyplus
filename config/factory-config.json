@@ -428,6 +428,15 @@
       "supportsImages": true
     },
     {
+      "model": "claude-opus-4.6",
+      "displayName": "[Copilot] Claude Opus 4.6",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 64000,
+      "supportsImages": true
+    },
+    {
       "model": "claude-sonnet-4",
       "displayName": "[Copilot] Claude Sonnet 4",
       "baseUrl": "http://localhost:8317/v1",
@@ -731,13 +740,63 @@
       "supportsImages": true
     },
     {
-      "model": "gpt-5",
-      "displayName": "[OpenAI] GPT 5",
+      "model": "kiro-deepseek-3-2",
+      "displayName": "[Kiro] Kiro DeepSeek 3.2",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
-      "provider": "openai",
-      "maxOutputTokens": 128000,
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 32768
+    },
+    {
+      "model": "kiro-gpt-3-5-turbo",
+      "displayName": "[Kiro] Kiro GPT-3.5 Turbo",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 4096
+    },
+    {
+      "model": "kiro-gpt-4",
+      "displayName": "[Kiro] Kiro GPT-4",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 8192,
       "supportsImages": true
+    },
+    {
+      "model": "kiro-gpt-4-turbo",
+      "displayName": "[Kiro] Kiro GPT-4 Turbo",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 16384,
+      "supportsImages": true
+    },
+    {
+      "model": "kiro-gpt-4o",
+      "displayName": "[Kiro] Kiro GPT-4o",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 16384,
+      "supportsImages": true
+    },
+    {
+      "model": "kiro-minimax-m2-1",
+      "displayName": "[Kiro] Kiro MiniMax M2.1",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 64000
+    },
+    {
+      "model": "kiro-qwen3-coder-next",
+      "displayName": "[Kiro] Kiro Qwen3 Coder Next",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 32768
     },
     {
       "model": "gpt-5.1",
@@ -749,8 +808,8 @@
       "supportsImages": true
     },
     {
-      "model": "gpt-5(high)",
-      "displayName": "[OpenAI] GPT 5 (High)",
+      "model": "gpt-5",
+      "displayName": "[OpenAI] GPT 5",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
       "provider": "openai",
@@ -767,8 +826,8 @@
       "supportsImages": true
     },
     {
-      "model": "gpt-5.1(low)",
-      "displayName": "[OpenAI] GPT 5 (Low)",
+      "model": "gpt-5(high)",
+      "displayName": "[OpenAI] GPT 5 (High)",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
       "provider": "openai",
@@ -785,8 +844,8 @@
       "supportsImages": true
     },
     {
-      "model": "gpt-5.1(medium)",
-      "displayName": "[OpenAI] GPT 5 (Medium)",
+      "model": "gpt-5.1(low)",
+      "displayName": "[OpenAI] GPT 5 (Low)",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
       "provider": "openai",
@@ -795,6 +854,15 @@
     },
     {
       "model": "gpt-5(medium)",
+      "displayName": "[OpenAI] GPT 5 (Medium)",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "openai",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
+      "model": "gpt-5.1(medium)",
       "displayName": "[OpenAI] GPT 5 (Medium)",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
