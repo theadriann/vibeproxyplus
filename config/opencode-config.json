@@ -331,6 +331,45 @@
               "text"
             ]
           }
+        },
+        "claude-sonnet-4-6": {
+          "name": "Claude 4.6 Sonnet",
+          "variants": {
+            "high": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 32000
+              }
+            },
+            "low": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 4000
+              }
+            },
+            "max": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 64000
+              }
+            },
+            "medium": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 10000
+              }
+            }
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ]
+          }
         }
       }
     },
@@ -513,8 +552,66 @@
             ]
           }
         },
+        "claude-sonnet-4-6": {
+          "name": "Claude Sonnet 4 6",
+          "modalities": {
+            "input": [
+              "text",
+              "image",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "claude-sonnet-4-6-thinking": {
+          "name": "Claude Sonnet 4 6 Thinking",
+          "variants": {
+            "high": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 32000
+              }
+            },
+            "low": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 4000
+              }
+            },
+            "medium": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 10000
+              }
+            }
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
         "claude-sonnet-4.5": {
           "name": "Claude Sonnet 4.5",
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "claude-sonnet-4.6": {
+          "name": "Claude Sonnet 4.6",
           "modalities": {
             "input": [
               "text",
@@ -788,8 +885,149 @@
             ]
           }
         },
+        "gemini-3.1-flash-image": {
+          "name": "Gemini 3.1 Flash Image",
+          "variants": {
+            "high": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 32000
+              }
+            },
+            "low": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 4000
+              }
+            },
+            "medium": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 10000
+              }
+            }
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "gemini-3.1-pro-high": {
+          "name": "Gemini 3.1 Pro High",
+          "variants": {
+            "high": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 32000
+              }
+            },
+            "low": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 4000
+              }
+            },
+            "medium": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 10000
+              }
+            }
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image",
+              "video",
+              "audio",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "gemini-3.1-pro-preview": {
+          "name": "Gemini 3.1 Pro (Preview)",
+          "modalities": {
+            "input": [
+              "text",
+              "image",
+              "video",
+              "audio",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "gpt-4-o-preview": {
+          "name": "GPT-4-o Preview",
+          "modalities": {
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
         "gpt-4.1": {
           "name": "GPT-4.1",
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "gpt-4o": {
+          "name": "GPT-4o",
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "gpt-4o-2024-05-13": {
+          "name": "GPT-4o (2024-05-13)",
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "gpt-4o-2024-08-06": {
+          "name": "GPT-4o (2024-08-06)",
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "gpt-4o-2024-11-20": {
+          "name": "GPT-4o (2024-11-20)",
           "modalities": {
             "input": [
               "text",
@@ -1119,27 +1357,25 @@
           }
         },
         "gpt-5.3-codex": {
-          "name": "GPT 5.3 Codex",
+          "name": "GPT-5.3 Codex",
           "variants": {
             "high": {
-              "reasoningEffort": "high",
-              "textVerbosity": "low",
-              "reasoningSummary": "auto"
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 32000
+              }
             },
             "low": {
-              "reasoningEffort": "low",
-              "textVerbosity": "low",
-              "reasoningSummary": "auto"
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 4000
+              }
             },
             "medium": {
-              "reasoningEffort": "medium",
-              "textVerbosity": "low",
-              "reasoningSummary": "auto"
-            },
-            "xhigh": {
-              "reasoningEffort": "xhigh",
-              "textVerbosity": "low",
-              "reasoningSummary": "auto"
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 10000
+              }
             }
           },
           "modalities": {
@@ -1529,6 +1765,70 @@
             ]
           }
         },
+        "kiro-claude-sonnet-4-6": {
+          "name": "Kiro Claude Sonnet 4.6",
+          "variants": {
+            "high": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 32000
+              }
+            },
+            "low": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 4000
+              }
+            },
+            "medium": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 10000
+              }
+            }
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "kiro-claude-sonnet-4-6-agentic": {
+          "name": "Kiro Claude Sonnet 4.6 (Agentic)",
+          "variants": {
+            "high": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 32000
+              }
+            },
+            "low": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 4000
+              }
+            },
+            "medium": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 10000
+              }
+            }
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
         "kiro-claude-sonnet-4-agentic": {
           "name": "Kiro Claude Sonnet 4 (Agentic)",
           "variants": {
@@ -1563,6 +1863,37 @@
         },
         "kiro-deepseek-3-2": {
           "name": "Kiro DeepSeek 3.2",
+          "variants": {
+            "high": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 32000
+              }
+            },
+            "low": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 4000
+              }
+            },
+            "medium": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 10000
+              }
+            }
+          },
+          "modalities": {
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "kiro-deepseek-3-2-agentic": {
+          "name": "Kiro DeepSeek 3.2 (Agentic)",
           "variants": {
             "high": {
               "thinking": {
@@ -1670,8 +2001,70 @@
             ]
           }
         },
+        "kiro-minimax-m2-1-agentic": {
+          "name": "Kiro MiniMax M2.1 (Agentic)",
+          "variants": {
+            "high": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 32000
+              }
+            },
+            "low": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 4000
+              }
+            },
+            "medium": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 10000
+              }
+            }
+          },
+          "modalities": {
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
         "kiro-qwen3-coder-next": {
           "name": "Kiro Qwen3 Coder Next",
+          "variants": {
+            "high": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 32000
+              }
+            },
+            "low": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 4000
+              }
+            },
+            "medium": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 10000
+              }
+            }
+          },
+          "modalities": {
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "kiro-qwen3-coder-next-agentic": {
+          "name": "Kiro Qwen3 Coder Next (Agentic)",
           "variants": {
             "high": {
               "thinking": {

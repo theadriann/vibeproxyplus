@@ -37,6 +37,24 @@
       "supportsImages": true
     },
     {
+      "model": "claude-sonnet-4-6",
+      "displayName": "[AG] Claude Sonnet 4 6",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 64000,
+      "supportsImages": true
+    },
+    {
+      "model": "claude-sonnet-4-6-thinking",
+      "displayName": "[AG] Claude Sonnet 4 6 Thinking",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 64000,
+      "supportsImages": true
+    },
+    {
       "model": "gemini-2.5-flash",
       "displayName": "[AG] Gemini 2.5 Flash",
       "baseUrl": "http://localhost:8317/v1",
@@ -75,6 +93,23 @@
     {
       "model": "gemini-3-pro-image",
       "displayName": "[AG] Gemini 3 Pro Image",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 65536,
+      "supportsImages": true
+    },
+    {
+      "model": "gemini-3.1-flash-image",
+      "displayName": "[AG] Gemini 3.1 Flash Image",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "supportsImages": true
+    },
+    {
+      "model": "gemini-3.1-pro-high",
+      "displayName": "[AG] Gemini 3.1 Pro High",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
       "provider": "generic-chat-completion-api",
@@ -401,6 +436,78 @@
       "supportsImages": true
     },
     {
+      "model": "claude-sonnet-4-6",
+      "displayName": "[Claude] Claude 4.6 Sonnet",
+      "baseUrl": "http://localhost:8317",
+      "apiKey": "dummy",
+      "provider": "anthropic",
+      "maxOutputTokens": 64000,
+      "supportsImages": true
+    },
+    {
+      "model": "claude-sonnet-4-6",
+      "displayName": "[Claude] Claude 4.6 Sonnet",
+      "baseUrl": "http://localhost:8317",
+      "apiKey": "dummy",
+      "provider": "anthropic",
+      "maxOutputTokens": 64000,
+      "supportsImages": true
+    },
+    {
+      "model": "claude-sonnet-4-6-thinking-10000",
+      "displayName": "[Claude] Claude 4.6 Sonnet (Thinking 10k)",
+      "baseUrl": "http://localhost:8317",
+      "apiKey": "dummy",
+      "provider": "anthropic",
+      "maxOutputTokens": 64000,
+      "supportsImages": true
+    },
+    {
+      "model": "claude-sonnet-4-6-thinking-10000",
+      "displayName": "[Claude] Claude 4.6 Sonnet (Thinking 10k)",
+      "baseUrl": "http://localhost:8317",
+      "apiKey": "dummy",
+      "provider": "anthropic",
+      "maxOutputTokens": 64000,
+      "supportsImages": true
+    },
+    {
+      "model": "claude-sonnet-4-6-thinking-32000",
+      "displayName": "[Claude] Claude 4.6 Sonnet (Thinking 32k)",
+      "baseUrl": "http://localhost:8317",
+      "apiKey": "dummy",
+      "provider": "anthropic",
+      "maxOutputTokens": 64000,
+      "supportsImages": true
+    },
+    {
+      "model": "claude-sonnet-4-6-thinking-32000",
+      "displayName": "[Claude] Claude 4.6 Sonnet (Thinking 32k)",
+      "baseUrl": "http://localhost:8317",
+      "apiKey": "dummy",
+      "provider": "anthropic",
+      "maxOutputTokens": 64000,
+      "supportsImages": true
+    },
+    {
+      "model": "claude-sonnet-4-6-thinking-4000",
+      "displayName": "[Claude] Claude 4.6 Sonnet (Thinking 4k)",
+      "baseUrl": "http://localhost:8317",
+      "apiKey": "dummy",
+      "provider": "anthropic",
+      "maxOutputTokens": 64000,
+      "supportsImages": true
+    },
+    {
+      "model": "claude-sonnet-4-6-thinking-4000",
+      "displayName": "[Claude] Claude 4.6 Sonnet (Thinking 4k)",
+      "baseUrl": "http://localhost:8317",
+      "apiKey": "dummy",
+      "provider": "anthropic",
+      "maxOutputTokens": 64000,
+      "supportsImages": true
+    },
+    {
       "model": "claude-haiku-4.5",
       "displayName": "[Copilot] Claude Haiku 4.5",
       "baseUrl": "http://localhost:8317/v1",
@@ -455,8 +562,61 @@
       "supportsImages": true
     },
     {
+      "model": "claude-sonnet-4.6",
+      "displayName": "[Copilot] Claude Sonnet 4.6",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 64000,
+      "supportsImages": true
+    },
+    {
+      "model": "gpt-4-o-preview",
+      "displayName": "[Copilot] GPT-4-o Preview",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 8192
+    },
+    {
       "model": "gpt-4.1",
       "displayName": "[Copilot] GPT-4.1",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 16384,
+      "supportsImages": true
+    },
+    {
+      "model": "gpt-4o",
+      "displayName": "[Copilot] GPT-4o",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 16384,
+      "supportsImages": true
+    },
+    {
+      "model": "gpt-4o-2024-05-13",
+      "displayName": "[Copilot] GPT-4o (2024-05-13)",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 4096,
+      "supportsImages": true
+    },
+    {
+      "model": "gpt-4o-2024-08-06",
+      "displayName": "[Copilot] GPT-4o (2024-08-06)",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 16384,
+      "supportsImages": true
+    },
+    {
+      "model": "gpt-4o-2024-11-20",
+      "displayName": "[Copilot] GPT-4o (2024-11-20)",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
       "provider": "generic-chat-completion-api",
@@ -545,6 +705,15 @@
       "supportsImages": true
     },
     {
+      "model": "gpt-5.3-codex",
+      "displayName": "[Copilot] GPT-5.3 Codex",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 32768,
+      "supportsImages": true
+    },
+    {
       "model": "gemini-2.5-pro",
       "displayName": "[Copilot] Gemini 2.5 Pro",
       "baseUrl": "http://localhost:8317/v1",
@@ -565,6 +734,15 @@
     {
       "model": "gemini-3-pro-preview",
       "displayName": "[Copilot] Gemini 3 Pro (Preview)",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 65536,
+      "supportsImages": true
+    },
+    {
+      "model": "gemini-3.1-pro-preview",
+      "displayName": "[Copilot] Gemini 3.1 Pro (Preview)",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
       "provider": "generic-chat-completion-api",
@@ -635,6 +813,15 @@
     {
       "model": "gemini-3-pro-preview",
       "displayName": "[Gemini] Gemini 3 Pro Preview",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 65536,
+      "supportsImages": true
+    },
+    {
+      "model": "gemini-3.1-pro-preview",
+      "displayName": "[Gemini] Gemini 3.1 Pro Preview",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
       "provider": "generic-chat-completion-api",
@@ -740,8 +927,34 @@
       "supportsImages": true
     },
     {
+      "model": "kiro-claude-sonnet-4-6",
+      "displayName": "[Kiro] Kiro Claude Sonnet 4.6",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 64000,
+      "supportsImages": true
+    },
+    {
+      "model": "kiro-claude-sonnet-4-6-agentic",
+      "displayName": "[Kiro] Kiro Claude Sonnet 4.6 (Agentic)",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 64000,
+      "supportsImages": true
+    },
+    {
       "model": "kiro-deepseek-3-2",
       "displayName": "[Kiro] Kiro DeepSeek 3.2",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 32768
+    },
+    {
+      "model": "kiro-deepseek-3-2-agentic",
+      "displayName": "[Kiro] Kiro DeepSeek 3.2 (Agentic)",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
       "provider": "generic-chat-completion-api",
@@ -791,6 +1004,14 @@
       "maxOutputTokens": 64000
     },
     {
+      "model": "kiro-minimax-m2-1-agentic",
+      "displayName": "[Kiro] Kiro MiniMax M2.1 (Agentic)",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 64000
+    },
+    {
       "model": "kiro-qwen3-coder-next",
       "displayName": "[Kiro] Kiro Qwen3 Coder Next",
       "baseUrl": "http://localhost:8317/v1",
@@ -799,7 +1020,15 @@
       "maxOutputTokens": 32768
     },
     {
-      "model": "gpt-5.1",
+      "model": "kiro-qwen3-coder-next-agentic",
+      "displayName": "[Kiro] Kiro Qwen3 Coder Next (Agentic)",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 32768
+    },
+    {
+      "model": "gpt-5",
       "displayName": "[OpenAI] GPT 5",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
@@ -808,7 +1037,7 @@
       "supportsImages": true
     },
     {
-      "model": "gpt-5",
+      "model": "gpt-5.1",
       "displayName": "[OpenAI] GPT 5",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
@@ -853,7 +1082,7 @@
       "supportsImages": true
     },
     {
-      "model": "gpt-5(medium)",
+      "model": "gpt-5.1(medium)",
       "displayName": "[OpenAI] GPT 5 (Medium)",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
@@ -862,7 +1091,7 @@
       "supportsImages": true
     },
     {
-      "model": "gpt-5.1(medium)",
+      "model": "gpt-5(medium)",
       "displayName": "[OpenAI] GPT 5 (Medium)",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",

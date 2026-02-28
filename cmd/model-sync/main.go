@@ -114,6 +114,24 @@ type FactoryConfig struct {
 	CustomModels []FactoryModel `json:"customModels"`
 }
 
+var supportedFactoryModelFields = map[string]struct{}{
+	"model":           {},
+	"displayName":     {},
+	"baseUrl":         {},
+	"apiKey":          {},
+	"provider":        {},
+	"maxOutputTokens": {},
+	"supportsImages":  {},
+	"extraArgs":       {},
+	"extraHeaders":    {},
+}
+
+var supportedFactoryProviders = map[string]struct{}{
+	"anthropic":                   {},
+	"openai":                      {},
+	"generic-chat-completion-api": {},
+}
+
 func main() {
 	outputFile := flag.String("output", "models.json", "Output file for canonical config")
 	factoryFile := flag.String("factory", "", "Generate Factory CLI config file")
@@ -208,8 +226,15 @@ func main() {
 	// Generate Factory config
 	if *factoryFile != "" {
 		factoryConfig := generateFactoryConfig(models)
-		data, _ := json.MarshalIndent(factoryConfig, "", "  ")
-		os.WriteFile(*factoryFile, data, 0644)
+		data, err := marshalFactoryConfig(factoryConfig)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error generating Factory config: %v\n", err)
+			os.Exit(1)
+		}
+		if err := os.WriteFile(*factoryFile, data, 0644); err != nil {
+			fmt.Fprintf(os.Stderr, "Error writing Factory config: %v\n", err)
+			os.Exit(1)
+		}
 		fmt.Printf("Written Factory config to: %s (%d models)\n", *factoryFile, len(factoryConfig.CustomModels))
 	}
 
@@ -786,6 +811,109 @@ func generateFactoryConfig(models map[string][]Model) FactoryConfig {
 	})
 
 	return FactoryConfig{CustomModels: factoryModels}
+}
+
+func marshalFactoryConfig(config FactoryConfig) ([]byte, error) {
+	if err := validateFactoryConfig(config); err != nil {
+		return nil, err
+	}
+
+	return json.MarshalIndent(config, "", "  ")
+}
+
+func validateFactoryConfig(config FactoryConfig) error {
+	for i, model := range config.CustomModels {
+		data, err := json.Marshal(model)
+		if err != nil {
+			return fmt.Errorf("marshal custom model %d: %w", i, err)
+		}
+
+		var obj map[string]interface{}
+		if err := json.Unmarshal(data, &obj); err != nil {
+			return fmt.Errorf("unmarshal custom model %d: %w", i, err)
+		}
+
+		if err := validateFactoryModelObject(obj); err != nil {
+			return fmt.Errorf("customModels[%d]: %w", i, err)
+		}
+	}
+
+	return nil
+}
+
+func validateFactoryModelObject(obj map[string]interface{}) error {
+	for key := range obj {
+		if _, ok := supportedFactoryModelFields[key]; !ok {
+			return fmt.Errorf("unsupported field %q", key)
+		}
+	}
+
+	required := []string{"model", "baseUrl", "apiKey", "provider"}
+	for _, field := range required {
+		value, ok := obj[field]
+		if !ok {
+			return fmt.Errorf("missing required field %q", field)
+		}
+
+		str, ok := value.(string)
+		if !ok || strings.TrimSpace(str) == "" {
+			return fmt.Errorf("required field %q must be a non-empty string", field)
+		}
+	}
+
+	provider := obj["provider"].(string)
+	if _, ok := supportedFactoryProviders[provider]; !ok {
+		return fmt.Errorf("invalid provider %q", provider)
+	}
+
+	if value, ok := obj["supportsImages"]; ok {
+		if _, isBool := value.(bool); !isBool {
+			return fmt.Errorf("field %q must be a boolean", "supportsImages")
+		}
+	}
+
+	if value, ok := obj["maxOutputTokens"]; ok {
+		switch n := value.(type) {
+		case float64:
+			if n <= 0 {
+				return fmt.Errorf("field %q must be a positive number", "maxOutputTokens")
+			}
+		case int:
+			if n <= 0 {
+				return fmt.Errorf("field %q must be a positive number", "maxOutputTokens")
+			}
+		case int32:
+			if n <= 0 {
+				return fmt.Errorf("field %q must be a positive number", "maxOutputTokens")
+			}
+		case int64:
+			if n <= 0 {
+				return fmt.Errorf("field %q must be a positive number", "maxOutputTokens")
+			}
+		default:
+			return fmt.Errorf("field %q must be a positive number", "maxOutputTokens")
+		}
+	}
+
+	if value, ok := obj["extraArgs"]; ok {
+		if _, isObject := value.(map[string]interface{}); !isObject {
+			return fmt.Errorf("field %q must be an object", "extraArgs")
+		}
+	}
+
+	if value, ok := obj["extraHeaders"]; ok {
+		headers, isObject := value.(map[string]interface{})
+		if !isObject {
+			return fmt.Errorf("field %q must be an object", "extraHeaders")
+		}
+		for header, headerValue := range headers {
+			if _, ok := headerValue.(string); !ok {
+				return fmt.Errorf("extraHeaders[%q] must be a string", header)
+			}
+		}
+	}
+
+	return nil
 }
 
 // OpenCode config types
