@@ -391,39 +391,6 @@
             ]
           }
         },
-        "claude-opus-4-5-thinking": {
-          "name": "Claude Opus 4 5 Thinking",
-          "variants": {
-            "high": {
-              "thinking": {
-                "type": "enabled",
-                "budgetTokens": 32000
-              }
-            },
-            "low": {
-              "thinking": {
-                "type": "enabled",
-                "budgetTokens": 4000
-              }
-            },
-            "medium": {
-              "thinking": {
-                "type": "enabled",
-                "budgetTokens": 10000
-              }
-            }
-          },
-          "modalities": {
-            "input": [
-              "text",
-              "image",
-              "pdf"
-            ],
-            "output": [
-              "text"
-            ]
-          }
-        },
         "claude-opus-4-6-thinking": {
           "name": "Claude Opus 4 6 Thinking",
           "variants": {
@@ -506,67 +473,8 @@
             ]
           }
         },
-        "claude-sonnet-4-5": {
-          "name": "Claude Sonnet 4 5",
-          "modalities": {
-            "input": [
-              "text",
-              "image",
-              "pdf"
-            ],
-            "output": [
-              "text"
-            ]
-          }
-        },
-        "claude-sonnet-4-5-thinking": {
-          "name": "Claude Sonnet 4 5 Thinking",
-          "variants": {
-            "high": {
-              "thinking": {
-                "type": "enabled",
-                "budgetTokens": 32000
-              }
-            },
-            "low": {
-              "thinking": {
-                "type": "enabled",
-                "budgetTokens": 4000
-              }
-            },
-            "medium": {
-              "thinking": {
-                "type": "enabled",
-                "budgetTokens": 10000
-              }
-            }
-          },
-          "modalities": {
-            "input": [
-              "text",
-              "image",
-              "pdf"
-            ],
-            "output": [
-              "text"
-            ]
-          }
-        },
         "claude-sonnet-4-6": {
           "name": "Claude Sonnet 4 6",
-          "modalities": {
-            "input": [
-              "text",
-              "image",
-              "pdf"
-            ],
-            "output": [
-              "text"
-            ]
-          }
-        },
-        "claude-sonnet-4-6-thinking": {
-          "name": "Claude Sonnet 4 6 Thinking",
           "variants": {
             "high": {
               "thinking": {
@@ -803,8 +711,40 @@
             ]
           }
         },
-        "gemini-3-pro-image": {
-          "name": "Gemini 3 Pro Image",
+        "gemini-3-pro-image-preview": {
+          "name": "Gemini 3 Pro Image Preview",
+          "variants": {
+            "high": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 32000
+              }
+            },
+            "low": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 4000
+              }
+            },
+            "medium": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 10000
+              }
+            }
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "gemini-3-pro-low": {
+          "name": "Gemini 3 Pro Low",
           "variants": {
             "high": {
               "thinking": {
@@ -832,38 +772,6 @@
               "video",
               "audio",
               "pdf"
-            ],
-            "output": [
-              "text"
-            ]
-          }
-        },
-        "gemini-3-pro-image-preview": {
-          "name": "Gemini 3 Pro Image Preview",
-          "variants": {
-            "high": {
-              "thinking": {
-                "type": "enabled",
-                "budgetTokens": 32000
-              }
-            },
-            "low": {
-              "thinking": {
-                "type": "enabled",
-                "budgetTokens": 4000
-              }
-            },
-            "medium": {
-              "thinking": {
-                "type": "enabled",
-                "budgetTokens": 10000
-              }
-            }
-          },
-          "modalities": {
-            "input": [
-              "text",
-              "image"
             ],
             "output": [
               "text"
@@ -919,6 +827,41 @@
         },
         "gemini-3.1-pro-high": {
           "name": "Gemini 3.1 Pro High",
+          "variants": {
+            "high": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 32000
+              }
+            },
+            "low": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 4000
+              }
+            },
+            "medium": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 10000
+              }
+            }
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image",
+              "video",
+              "audio",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "gemini-3.1-pro-low": {
+          "name": "Gemini 3.1 Pro Low",
           "variants": {
             "high": {
               "thinking": {
@@ -1391,6 +1334,41 @@
         },
         "gpt-5.3-codex-spark": {
           "name": "GPT 5.3 Codex Spark",
+          "variants": {
+            "high": {
+              "reasoningEffort": "high",
+              "textVerbosity": "low",
+              "reasoningSummary": "auto"
+            },
+            "low": {
+              "reasoningEffort": "low",
+              "textVerbosity": "low",
+              "reasoningSummary": "auto"
+            },
+            "medium": {
+              "reasoningEffort": "medium",
+              "textVerbosity": "low",
+              "reasoningSummary": "auto"
+            },
+            "xhigh": {
+              "reasoningEffort": "xhigh",
+              "textVerbosity": "low",
+              "reasoningSummary": "auto"
+            }
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "gpt-5.4": {
+          "name": "GPT 5.4",
           "variants": {
             "high": {
               "reasoningEffort": "high",
@@ -2118,48 +2096,6 @@
         },
         "qwen3-coder-plus": {
           "name": "Qwen3 Coder Plus",
-          "modalities": {
-            "input": [
-              "text"
-            ],
-            "output": [
-              "text"
-            ]
-          }
-        },
-        "rev19-uic3-1p": {
-          "name": "Rev19 Uic3 1p",
-          "variants": {
-            "high": {
-              "thinking": {
-                "type": "enabled",
-                "budgetTokens": 32000
-              }
-            },
-            "low": {
-              "thinking": {
-                "type": "enabled",
-                "budgetTokens": 4000
-              }
-            },
-            "medium": {
-              "thinking": {
-                "type": "enabled",
-                "budgetTokens": 10000
-              }
-            }
-          },
-          "modalities": {
-            "input": [
-              "text"
-            ],
-            "output": [
-              "text"
-            ]
-          }
-        },
-        "tab_flash_lite_preview": {
-          "name": "Tab_flash_lite_preview",
           "modalities": {
             "input": [
               "text"

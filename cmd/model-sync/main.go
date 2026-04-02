@@ -807,6 +807,9 @@ func generateFactoryConfig(models map[string][]Model) FactoryConfig {
 	}
 
 	sort.Slice(factoryModels, func(i, j int) bool {
+		if factoryModels[i].DisplayName == factoryModels[j].DisplayName {
+			return factoryModels[i].Model < factoryModels[j].Model
+		}
 		return factoryModels[i].DisplayName < factoryModels[j].DisplayName
 	})
 

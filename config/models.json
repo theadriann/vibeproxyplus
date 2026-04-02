@@ -536,41 +536,6 @@
     ],
     "antigravity": [
       {
-        "id": "claude-opus-4-5-thinking",
-        "provider": "antigravity",
-        "display_name": "Claude Opus 4 5 Thinking",
-        "family": "claude-opus",
-        "type": "antigravity",
-        "owned_by": "antigravity",
-        "context_length": 200000,
-        "max_completion_tokens": 64000,
-        "thinking": {
-          "supported": true
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image",
-            "pdf"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "attachment": true,
-          "temperature": true
-        },
-        "cost": {
-          "input": 5,
-          "output": 25,
-          "cache_read": 0.5,
-          "cache_write": 6.25
-        }
-      },
-      {
         "id": "claude-opus-4-6-thinking",
         "provider": "antigravity",
         "display_name": "Claude Opus 4 6 Thinking",
@@ -606,108 +571,9 @@
         }
       },
       {
-        "id": "claude-sonnet-4-5",
-        "provider": "antigravity",
-        "display_name": "Claude Sonnet 4 5",
-        "family": "claude-sonnet",
-        "type": "antigravity",
-        "owned_by": "antigravity",
-        "context_length": 200000,
-        "max_completion_tokens": 64000,
-        "modalities": {
-          "input": [
-            "text",
-            "image",
-            "pdf"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "attachment": true,
-          "temperature": true
-        },
-        "cost": {
-          "input": 3,
-          "output": 15,
-          "cache_read": 0.3,
-          "cache_write": 3.75
-        }
-      },
-      {
-        "id": "claude-sonnet-4-5-thinking",
-        "provider": "antigravity",
-        "display_name": "Claude Sonnet 4 5 Thinking",
-        "family": "claude-sonnet",
-        "type": "antigravity",
-        "owned_by": "antigravity",
-        "context_length": 200000,
-        "max_completion_tokens": 64000,
-        "thinking": {
-          "supported": true
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image",
-            "pdf"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "attachment": true,
-          "temperature": true
-        },
-        "cost": {
-          "input": 3,
-          "output": 15,
-          "cache_read": 0.3,
-          "cache_write": 3.75
-        }
-      },
-      {
         "id": "claude-sonnet-4-6",
         "provider": "antigravity",
         "display_name": "Claude Sonnet 4 6",
-        "family": "claude-sonnet",
-        "type": "antigravity",
-        "owned_by": "antigravity",
-        "context_length": 200000,
-        "max_completion_tokens": 64000,
-        "modalities": {
-          "input": [
-            "text",
-            "image",
-            "pdf"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "attachment": true,
-          "temperature": true
-        },
-        "cost": {
-          "input": 3,
-          "output": 15,
-          "cache_read": 0.3,
-          "cache_write": 3.75
-        }
-      },
-      {
-        "id": "claude-sonnet-4-6-thinking",
-        "provider": "antigravity",
-        "display_name": "Claude Sonnet 4 6 Thinking",
         "family": "claude-sonnet",
         "type": "antigravity",
         "owned_by": "antigravity",
@@ -888,9 +754,9 @@
         }
       },
       {
-        "id": "gemini-3-pro-image",
+        "id": "gemini-3-pro-low",
         "provider": "antigravity",
-        "display_name": "Gemini 3 Pro Image",
+        "display_name": "Gemini 3 Pro Low",
         "family": "gemini-pro",
         "type": "antigravity",
         "owned_by": "antigravity",
@@ -985,6 +851,43 @@
         }
       },
       {
+        "id": "gemini-3.1-pro-low",
+        "provider": "antigravity",
+        "display_name": "Gemini 3.1 Pro Low",
+        "family": "gemini-pro",
+        "type": "antigravity",
+        "owned_by": "antigravity",
+        "context_length": 1048576,
+        "max_completion_tokens": 65536,
+        "thinking": {
+          "supported": true
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "video",
+            "audio",
+            "pdf"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": true,
+          "attachment": true,
+          "temperature": true
+        },
+        "cost": {
+          "input": 2,
+          "output": 12,
+          "cache_read": 0.2
+        }
+      },
+      {
         "id": "gpt-oss-120b-medium",
         "provider": "antigravity",
         "display_name": "Gpt Oss 120b Medium",
@@ -1010,47 +913,6 @@
         "cost": {
           "input": 0.15,
           "output": 0.6
-        }
-      },
-      {
-        "id": "rev19-uic3-1p",
-        "provider": "antigravity",
-        "display_name": "Rev19 Uic3 1p",
-        "type": "antigravity",
-        "owned_by": "antigravity",
-        "thinking": {
-          "supported": true
-        },
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "temperature": true
-        }
-      },
-      {
-        "id": "tab_flash_lite_preview",
-        "provider": "antigravity",
-        "display_name": "Tab_flash_lite_preview",
-        "type": "antigravity",
-        "owned_by": "antigravity",
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "temperature": true
         }
       }
     ],
@@ -1288,7 +1150,13 @@
           "supported": true,
           "min": 1024,
           "max": 128000,
-          "zero_allowed": true
+          "zero_allowed": true,
+          "levels": [
+            "low",
+            "medium",
+            "high",
+            "max"
+          ]
         },
         "modalities": {
           "input": [
@@ -1401,7 +1269,12 @@
           "supported": true,
           "min": 1024,
           "max": 128000,
-          "zero_allowed": true
+          "zero_allowed": true,
+          "levels": [
+            "low",
+            "medium",
+            "high"
+          ]
         },
         "modalities": {
           "input": [
@@ -1903,6 +1776,47 @@
           "input": 1.75,
           "output": 14,
           "cache_read": 0.175
+        }
+      },
+      {
+        "id": "gpt-5.4",
+        "provider": "codex",
+        "display_name": "GPT 5.4",
+        "description": "Stable version of GPT 5.4",
+        "family": "gpt",
+        "type": "openai",
+        "owned_by": "openai",
+        "context_length": 1,
+        "max_completion_tokens": 128000,
+        "thinking": {
+          "supported": true,
+          "levels": [
+            "low",
+            "medium",
+            "high",
+            "xhigh"
+          ]
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "pdf"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": true,
+          "attachment": true
+        },
+        "cost": {
+          "input": 2.5,
+          "output": 15,
+          "cache_read": 0.25
         }
       }
     ],
