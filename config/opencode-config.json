@@ -392,7 +392,7 @@
           }
         },
         "claude-opus-4-6-thinking": {
-          "name": "Claude Opus 4 6 Thinking",
+          "name": "Claude Opus 4.6 (Thinking)",
           "variants": {
             "high": {
               "thinking": {
@@ -474,7 +474,7 @@
           }
         },
         "claude-sonnet-4-6": {
-          "name": "Claude Sonnet 4 6",
+          "name": "Claude Sonnet 4.6 (Thinking)",
           "variants": {
             "high": {
               "thinking": {
@@ -677,7 +677,7 @@
           }
         },
         "gemini-3-pro-high": {
-          "name": "Gemini 3 Pro High",
+          "name": "Gemini 3 Pro (High)",
           "variants": {
             "high": {
               "thinking": {
@@ -739,12 +739,13 @@
               "image"
             ],
             "output": [
-              "text"
+              "text",
+              "image"
             ]
           }
         },
         "gemini-3-pro-low": {
-          "name": "Gemini 3 Pro Low",
+          "name": "Gemini 3 Pro (Low)",
           "variants": {
             "high": {
               "thinking": {
@@ -825,8 +826,77 @@
             ]
           }
         },
+        "gemini-3.1-flash-image-preview": {
+          "name": "Gemini 3.1 Flash Image Preview",
+          "variants": {
+            "high": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 32000
+              }
+            },
+            "low": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 4000
+              }
+            },
+            "medium": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 10000
+              }
+            }
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image",
+              "pdf"
+            ],
+            "output": [
+              "text",
+              "image"
+            ]
+          }
+        },
+        "gemini-3.1-flash-lite-preview": {
+          "name": "Gemini 3.1 Flash Lite Preview",
+          "variants": {
+            "high": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 32000
+              }
+            },
+            "low": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 4000
+              }
+            },
+            "medium": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 10000
+              }
+            }
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image",
+              "video",
+              "audio",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
         "gemini-3.1-pro-high": {
-          "name": "Gemini 3.1 Pro High",
+          "name": "Gemini 3.1 Pro (High)",
           "variants": {
             "high": {
               "thinking": {
@@ -861,7 +931,7 @@
           }
         },
         "gemini-3.1-pro-low": {
-          "name": "Gemini 3.1 Pro Low",
+          "name": "Gemini 3.1 Pro (Low)",
           "variants": {
             "high": {
               "thinking": {
@@ -1368,27 +1438,25 @@
           }
         },
         "gpt-5.4": {
-          "name": "GPT 5.4",
+          "name": "GPT-5.4",
           "variants": {
             "high": {
-              "reasoningEffort": "high",
-              "textVerbosity": "low",
-              "reasoningSummary": "auto"
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 32000
+              }
             },
             "low": {
-              "reasoningEffort": "low",
-              "textVerbosity": "low",
-              "reasoningSummary": "auto"
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 4000
+              }
             },
             "medium": {
-              "reasoningEffort": "medium",
-              "textVerbosity": "low",
-              "reasoningSummary": "auto"
-            },
-            "xhigh": {
-              "reasoningEffort": "xhigh",
-              "textVerbosity": "low",
-              "reasoningSummary": "auto"
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 10000
+              }
             }
           },
           "modalities": {
@@ -1402,8 +1470,40 @@
             ]
           }
         },
+        "gpt-5.4-mini": {
+          "name": "GPT-5.4 mini",
+          "variants": {
+            "high": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 32000
+              }
+            },
+            "low": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 4000
+              }
+            },
+            "medium": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 10000
+              }
+            }
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
         "gpt-oss-120b-medium": {
-          "name": "Gpt Oss 120b Medium",
+          "name": "GPT-OSS 120B (Medium)",
           "modalities": {
             "input": [
               "text"

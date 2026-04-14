@@ -16,14 +16,23 @@ const (
 )
 
 type ThinkingProxy struct {
-	target *url.URL
-	proxy  *httputil.ReverseProxy
+	target                *url.URL
+	proxy                 *httputil.ReverseProxy
+	realtimeUpstreamURL   string
+	resolveRealtimeAPIKey func() (string, error)
 }
 
 func NewThinkingProxy(targetPort int) *ThinkingProxy {
 	target, _ := url.Parse("http://127.0.0.1:" + strconv.Itoa(targetPort))
+	return newThinkingProxyWithTarget(target)
+}
 
-	tp := &ThinkingProxy{target: target}
+func newThinkingProxyWithTarget(target *url.URL) *ThinkingProxy {
+	tp := &ThinkingProxy{
+		target:                target,
+		realtimeUpstreamURL:   defaultRealtimeUpstreamURL,
+		resolveRealtimeAPIKey: resolveRealtimeAPIKey,
+	}
 	tp.proxy = &httputil.ReverseProxy{
 		Director: tp.director,
 	}
@@ -40,6 +49,11 @@ func (tp *ThinkingProxy) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// Health check endpoint
 	if r.URL.Path == "/health" {
 		tp.handleHealth(w, r)
+		return
+	}
+
+	if r.URL.Path == realtimeEndpointPath {
+		tp.handleRealtimeWebsocket(w, r)
 		return
 	}
 

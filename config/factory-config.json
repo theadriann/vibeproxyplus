@@ -2,16 +2,7 @@
   "customModels": [
     {
       "model": "claude-opus-4-6-thinking",
-      "displayName": "[AG] Claude Opus 4 6 Thinking",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 128000,
-      "supportsImages": true
-    },
-    {
-      "model": "claude-sonnet-4-6",
-      "displayName": "[AG] Claude Sonnet 4 6",
+      "displayName": "[AG] Claude Opus 4.6 (Thinking)",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
       "provider": "generic-chat-completion-api",
@@ -19,12 +10,29 @@
       "supportsImages": true
     },
     {
+      "model": "claude-sonnet-4-6",
+      "displayName": "[AG] Claude Sonnet 4.6 (Thinking)",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 64000,
+      "supportsImages": true
+    },
+    {
+      "model": "gpt-oss-120b-medium",
+      "displayName": "[AG] GPT-OSS 120B (Medium)",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 32768
+    },
+    {
       "model": "gemini-2.5-flash",
       "displayName": "[AG] Gemini 2.5 Flash",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
       "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 65536,
+      "maxOutputTokens": 65535,
       "supportsImages": true
     },
     {
@@ -33,7 +41,7 @@
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
       "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 65536,
+      "maxOutputTokens": 65535,
       "supportsImages": true
     },
     {
@@ -47,20 +55,20 @@
     },
     {
       "model": "gemini-3-pro-high",
-      "displayName": "[AG] Gemini 3 Pro High",
+      "displayName": "[AG] Gemini 3 Pro (High)",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
       "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 65536,
+      "maxOutputTokens": 65535,
       "supportsImages": true
     },
     {
       "model": "gemini-3-pro-low",
-      "displayName": "[AG] Gemini 3 Pro Low",
+      "displayName": "[AG] Gemini 3 Pro (Low)",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
       "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 65536,
+      "maxOutputTokens": 65535,
       "supportsImages": true
     },
     {
@@ -73,29 +81,21 @@
     },
     {
       "model": "gemini-3.1-pro-high",
-      "displayName": "[AG] Gemini 3.1 Pro High",
+      "displayName": "[AG] Gemini 3.1 Pro (High)",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
       "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 65536,
+      "maxOutputTokens": 65535,
       "supportsImages": true
     },
     {
       "model": "gemini-3.1-pro-low",
-      "displayName": "[AG] Gemini 3.1 Pro Low",
+      "displayName": "[AG] Gemini 3.1 Pro (Low)",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
       "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 65536,
+      "maxOutputTokens": 65535,
       "supportsImages": true
-    },
-    {
-      "model": "gpt-oss-120b-medium",
-      "displayName": "[AG] Gpt Oss 120b Medium",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 32768
     },
     {
       "model": "claude-3-5-haiku-20241022",
@@ -404,24 +404,6 @@
       "supportsImages": true
     },
     {
-      "model": "claude-sonnet-4-6",
-      "displayName": "[Claude] Claude 4.6 Sonnet",
-      "baseUrl": "http://localhost:8317",
-      "apiKey": "dummy",
-      "provider": "anthropic",
-      "maxOutputTokens": 64000,
-      "supportsImages": true
-    },
-    {
-      "model": "claude-sonnet-4-6-thinking-10000",
-      "displayName": "[Claude] Claude 4.6 Sonnet (Thinking 10k)",
-      "baseUrl": "http://localhost:8317",
-      "apiKey": "dummy",
-      "provider": "anthropic",
-      "maxOutputTokens": 64000,
-      "supportsImages": true
-    },
-    {
       "model": "claude-sonnet-4-6-thinking-10000",
       "displayName": "[Claude] Claude 4.6 Sonnet (Thinking 10k)",
       "baseUrl": "http://localhost:8317",
@@ -433,24 +415,6 @@
     {
       "model": "claude-sonnet-4-6-thinking-32000",
       "displayName": "[Claude] Claude 4.6 Sonnet (Thinking 32k)",
-      "baseUrl": "http://localhost:8317",
-      "apiKey": "dummy",
-      "provider": "anthropic",
-      "maxOutputTokens": 64000,
-      "supportsImages": true
-    },
-    {
-      "model": "claude-sonnet-4-6-thinking-32000",
-      "displayName": "[Claude] Claude 4.6 Sonnet (Thinking 32k)",
-      "baseUrl": "http://localhost:8317",
-      "apiKey": "dummy",
-      "provider": "anthropic",
-      "maxOutputTokens": 64000,
-      "supportsImages": true
-    },
-    {
-      "model": "claude-sonnet-4-6-thinking-4000",
-      "displayName": "[Claude] Claude 4.6 Sonnet (Thinking 4k)",
       "baseUrl": "http://localhost:8317",
       "apiKey": "dummy",
       "provider": "anthropic",
@@ -673,6 +637,24 @@
       "supportsImages": true
     },
     {
+      "model": "gpt-5.4",
+      "displayName": "[Copilot] GPT-5.4",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 32768,
+      "supportsImages": true
+    },
+    {
+      "model": "gpt-5.4-mini",
+      "displayName": "[Copilot] GPT-5.4 mini",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 32768,
+      "supportsImages": true
+    },
+    {
       "model": "gemini-2.5-pro",
       "displayName": "[Copilot] Gemini 2.5 Pro",
       "baseUrl": "http://localhost:8317/v1",
@@ -766,12 +748,30 @@
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
       "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 65536,
+      "maxOutputTokens": 32768,
       "supportsImages": true
     },
     {
       "model": "gemini-3-pro-preview",
       "displayName": "[Gemini] Gemini 3 Pro Preview",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 64000,
+      "supportsImages": true
+    },
+    {
+      "model": "gemini-3.1-flash-image-preview",
+      "displayName": "[Gemini] Gemini 3.1 Flash Image Preview",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 32768,
+      "supportsImages": true
+    },
+    {
+      "model": "gemini-3.1-flash-lite-preview",
+      "displayName": "[Gemini] Gemini 3.1 Flash Lite Preview",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
       "provider": "generic-chat-completion-api",

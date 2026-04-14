@@ -2,6 +2,7 @@
   "version": "2.0",
   "sources": [
     "https://raw.githubusercontent.com/router-for-me/CLIProxyAPIPlus/main/internal/registry/model_definitions.go",
+    "https://raw.githubusercontent.com/router-for-me/CLIProxyAPIPlus/main/internal/registry/models/models.json",
     "https://models.dev/api.json"
   ],
   "models": {
@@ -54,39 +55,8 @@
         "family": "gemini-flash",
         "type": "gemini",
         "owned_by": "google",
-        "context_length": 1048576,
-        "max_completion_tokens": 8192,
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text",
-            "image"
-          ]
-        },
-        "capabilities": {
-          "reasoning": true,
-          "attachment": true,
-          "temperature": true
-        },
-        "cost": {
-          "input": 0.3,
-          "output": 30,
-          "cache_read": 0.075
-        }
-      },
-      {
-        "id": "gemini-2.5-flash-image-preview",
-        "provider": "aistudio",
-        "display_name": "Gemini 2.5 Flash Image Preview",
-        "description": "State-of-the-art image generation and editing model.",
-        "family": "gemini-flash",
-        "type": "gemini",
-        "owned_by": "google",
-        "context_length": 1048576,
-        "max_completion_tokens": 8192,
+        "context_length": 32768,
+        "max_completion_tokens": 32768,
         "modalities": {
           "input": [
             "text",
@@ -236,8 +206,8 @@
         "family": "gemini-pro",
         "type": "gemini",
         "owned_by": "google",
-        "context_length": 1048576,
-        "max_completion_tokens": 65536,
+        "context_length": 1000000,
+        "max_completion_tokens": 64000,
         "thinking": {
           "supported": true,
           "min": 128,
@@ -266,6 +236,51 @@
           "input": 2,
           "output": 12,
           "cache_read": 0.2
+        }
+      },
+      {
+        "id": "gemini-3.1-flash-lite-preview",
+        "provider": "aistudio",
+        "display_name": "Gemini 3.1 Flash Lite Preview",
+        "description": "Our smallest and most cost effective model, built for at scale usage.",
+        "family": "gemini-flash-lite",
+        "type": "gemini",
+        "owned_by": "google",
+        "context_length": 1048576,
+        "max_completion_tokens": 65536,
+        "thinking": {
+          "supported": true,
+          "min": 128,
+          "max": 32768,
+          "levels": [
+            "minimal",
+            "high"
+          ]
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "video",
+            "audio",
+            "pdf"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": true,
+          "attachment": true,
+          "temperature": true
+        },
+        "cost": {
+          "input": 0.25,
+          "output": 1.5,
+          "cache_read": 0.025,
+          "cache_write": 1
         }
       },
       {
@@ -394,6 +409,7 @@
         "provider": "aistudio",
         "display_name": "Gemini Pro Latest",
         "description": "Latest release of Gemini Pro",
+        "family": "gemini",
         "type": "gemini",
         "owned_by": "google",
         "context_length": 1048576,
@@ -413,8 +429,16 @@
           ]
         },
         "capabilities": {
+          "reasoning": true,
           "tool_call": true,
+          "structured_output": true,
+          "attachment": true,
           "temperature": true
+        },
+        "cost": {
+          "input": 2,
+          "output": 12,
+          "cache_read": 0.2
         }
       }
     ],
@@ -538,14 +562,18 @@
       {
         "id": "claude-opus-4-6-thinking",
         "provider": "antigravity",
-        "display_name": "Claude Opus 4 6 Thinking",
+        "display_name": "Claude Opus 4.6 (Thinking)",
+        "description": "Claude Opus 4.6 (Thinking)",
         "family": "claude-opus",
         "type": "antigravity",
         "owned_by": "antigravity",
         "context_length": 200000,
-        "max_completion_tokens": 128000,
+        "max_completion_tokens": 64000,
         "thinking": {
-          "supported": true
+          "supported": true,
+          "min": 1024,
+          "max": 64000,
+          "zero_allowed": true
         },
         "modalities": {
           "input": [
@@ -573,14 +601,18 @@
       {
         "id": "claude-sonnet-4-6",
         "provider": "antigravity",
-        "display_name": "Claude Sonnet 4 6",
+        "display_name": "Claude Sonnet 4.6 (Thinking)",
+        "description": "Claude Sonnet 4.6 (Thinking)",
         "family": "claude-sonnet",
         "type": "antigravity",
         "owned_by": "antigravity",
         "context_length": 200000,
         "max_completion_tokens": 64000,
         "thinking": {
-          "supported": true
+          "supported": true,
+          "min": 1024,
+          "max": 64000,
+          "zero_allowed": true
         },
         "modalities": {
           "input": [
@@ -609,13 +641,16 @@
         "id": "gemini-2.5-flash",
         "provider": "antigravity",
         "display_name": "Gemini 2.5 Flash",
+        "description": "Gemini 2.5 Flash",
         "family": "gemini-flash",
         "type": "antigravity",
         "owned_by": "antigravity",
         "context_length": 1048576,
-        "max_completion_tokens": 65536,
+        "max_completion_tokens": 65535,
         "thinking": {
-          "supported": true
+          "supported": true,
+          "max": 24576,
+          "zero_allowed": true
         },
         "modalities": {
           "input": [
@@ -646,13 +681,16 @@
         "id": "gemini-2.5-flash-lite",
         "provider": "antigravity",
         "display_name": "Gemini 2.5 Flash Lite",
+        "description": "Gemini 2.5 Flash Lite",
         "family": "gemini-flash-lite",
         "type": "antigravity",
         "owned_by": "antigravity",
         "context_length": 1048576,
-        "max_completion_tokens": 65536,
+        "max_completion_tokens": 65535,
         "thinking": {
-          "supported": true
+          "supported": true,
+          "max": 24576,
+          "zero_allowed": true
         },
         "modalities": {
           "input": [
@@ -683,13 +721,22 @@
         "id": "gemini-3-flash",
         "provider": "antigravity",
         "display_name": "Gemini 3 Flash",
+        "description": "Gemini 3 Flash",
         "family": "gemini-flash",
         "type": "antigravity",
         "owned_by": "antigravity",
         "context_length": 1048576,
         "max_completion_tokens": 65536,
         "thinking": {
-          "supported": true
+          "supported": true,
+          "min": 128,
+          "max": 32768,
+          "levels": [
+            "minimal",
+            "low",
+            "medium",
+            "high"
+          ]
         },
         "modalities": {
           "input": [
@@ -719,14 +766,21 @@
       {
         "id": "gemini-3-pro-high",
         "provider": "antigravity",
-        "display_name": "Gemini 3 Pro High",
+        "display_name": "Gemini 3 Pro (High)",
+        "description": "Gemini 3 Pro (High)",
         "family": "gemini-pro",
         "type": "antigravity",
         "owned_by": "antigravity",
         "context_length": 1048576,
-        "max_completion_tokens": 65536,
+        "max_completion_tokens": 65535,
         "thinking": {
-          "supported": true
+          "supported": true,
+          "min": 128,
+          "max": 32768,
+          "levels": [
+            "low",
+            "high"
+          ]
         },
         "modalities": {
           "input": [
@@ -756,14 +810,21 @@
       {
         "id": "gemini-3-pro-low",
         "provider": "antigravity",
-        "display_name": "Gemini 3 Pro Low",
+        "display_name": "Gemini 3 Pro (Low)",
+        "description": "Gemini 3 Pro (Low)",
         "family": "gemini-pro",
         "type": "antigravity",
         "owned_by": "antigravity",
         "context_length": 1048576,
-        "max_completion_tokens": 65536,
+        "max_completion_tokens": 65535,
         "thinking": {
-          "supported": true
+          "supported": true,
+          "min": 128,
+          "max": 32768,
+          "levels": [
+            "low",
+            "high"
+          ]
         },
         "modalities": {
           "input": [
@@ -794,10 +855,17 @@
         "id": "gemini-3.1-flash-image",
         "provider": "antigravity",
         "display_name": "Gemini 3.1 Flash Image",
+        "description": "Gemini 3.1 Flash Image",
         "type": "antigravity",
         "owned_by": "antigravity",
         "thinking": {
-          "supported": true
+          "supported": true,
+          "min": 128,
+          "max": 32768,
+          "levels": [
+            "minimal",
+            "high"
+          ]
         },
         "modalities": {
           "input": [
@@ -816,14 +884,21 @@
       {
         "id": "gemini-3.1-pro-high",
         "provider": "antigravity",
-        "display_name": "Gemini 3.1 Pro High",
+        "display_name": "Gemini 3.1 Pro (High)",
+        "description": "Gemini 3.1 Pro (High)",
         "family": "gemini-pro",
         "type": "antigravity",
         "owned_by": "antigravity",
         "context_length": 1048576,
-        "max_completion_tokens": 65536,
+        "max_completion_tokens": 65535,
         "thinking": {
-          "supported": true
+          "supported": true,
+          "min": 128,
+          "max": 32768,
+          "levels": [
+            "low",
+            "high"
+          ]
         },
         "modalities": {
           "input": [
@@ -853,14 +928,21 @@
       {
         "id": "gemini-3.1-pro-low",
         "provider": "antigravity",
-        "display_name": "Gemini 3.1 Pro Low",
+        "display_name": "Gemini 3.1 Pro (Low)",
+        "description": "Gemini 3.1 Pro (Low)",
         "family": "gemini-pro",
         "type": "antigravity",
         "owned_by": "antigravity",
         "context_length": 1048576,
-        "max_completion_tokens": 65536,
+        "max_completion_tokens": 65535,
         "thinking": {
-          "supported": true
+          "supported": true,
+          "min": 128,
+          "max": 32768,
+          "levels": [
+            "low",
+            "high"
+          ]
         },
         "modalities": {
           "input": [
@@ -890,11 +972,12 @@
       {
         "id": "gpt-oss-120b-medium",
         "provider": "antigravity",
-        "display_name": "Gpt Oss 120b Medium",
+        "display_name": "GPT-OSS 120B (Medium)",
+        "description": "GPT-OSS 120B (Medium)",
         "family": "gpt-oss",
         "type": "antigravity",
         "owned_by": "antigravity",
-        "context_length": 131072,
+        "context_length": 114000,
         "max_completion_tokens": 32768,
         "modalities": {
           "input": [
@@ -1275,45 +1358,6 @@
             "medium",
             "high"
           ]
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image",
-            "pdf"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "attachment": true,
-          "temperature": true
-        },
-        "cost": {
-          "input": 3,
-          "output": 15,
-          "cache_read": 0.3,
-          "cache_write": 3.75
-        }
-      },
-      {
-        "id": "claude-sonnet-4-6",
-        "provider": "claude",
-        "display_name": "Claude 4.6 Sonnet",
-        "description": "Best combination of speed and intelligence",
-        "family": "claude-sonnet",
-        "type": "claude",
-        "owned_by": "anthropic",
-        "context_length": 200000,
-        "max_completion_tokens": 64000,
-        "thinking": {
-          "supported": true,
-          "min": 1024,
-          "max": 128000,
-          "zero_allowed": true
         },
         "modalities": {
           "input": [
@@ -1786,7 +1830,7 @@
         "family": "gpt",
         "type": "openai",
         "owned_by": "openai",
-        "context_length": 1,
+        "context_length": 1050000,
         "max_completion_tokens": 128000,
         "thinking": {
           "supported": true,
@@ -1945,7 +1989,7 @@
         "id": "gemini-3-flash-preview",
         "provider": "gemini",
         "display_name": "Gemini 3 Flash Preview",
-        "description": "Gemini 3 Flash Preview",
+        "description": "Our most intelligent model built for speed, combining frontier intelligence with superior search and grounding.",
         "family": "gemini-flash",
         "type": "gemini",
         "owned_by": "google",
@@ -1992,10 +2036,11 @@
         "provider": "gemini",
         "display_name": "Gemini 3 Pro Image Preview",
         "description": "Gemini 3 Pro Image Preview",
+        "family": "gemini",
         "type": "gemini",
         "owned_by": "google",
-        "context_length": 1048576,
-        "max_completion_tokens": 65536,
+        "context_length": 65536,
+        "max_completion_tokens": 32768,
         "thinking": {
           "supported": true,
           "min": 128,
@@ -2011,16 +2056,19 @@
             "image"
           ],
           "output": [
-            "text"
+            "text",
+            "image"
           ]
         },
         "capabilities": {
+          "structured_output": true,
           "attachment": true,
           "temperature": true
         },
         "cost": {
           "input": 2,
-          "output": 120
+          "output": 12,
+          "cache_read": 0.2
         }
       },
       {
@@ -2031,8 +2079,8 @@
         "family": "gemini-pro",
         "type": "gemini",
         "owned_by": "google",
-        "context_length": 1048576,
-        "max_completion_tokens": 65536,
+        "context_length": 1000000,
+        "max_completion_tokens": 64000,
         "thinking": {
           "supported": true,
           "min": 128,
@@ -2065,6 +2113,91 @@
           "input": 2,
           "output": 12,
           "cache_read": 0.2
+        }
+      },
+      {
+        "id": "gemini-3.1-flash-image-preview",
+        "provider": "gemini",
+        "display_name": "Gemini 3.1 Flash Image Preview",
+        "description": "Gemini 3.1 Flash Image Preview",
+        "family": "gemini-flash",
+        "type": "gemini",
+        "owned_by": "google",
+        "context_length": 131072,
+        "max_completion_tokens": 32768,
+        "thinking": {
+          "supported": true,
+          "min": 128,
+          "max": 32768,
+          "levels": [
+            "minimal",
+            "high"
+          ]
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "pdf"
+          ],
+          "output": [
+            "text",
+            "image"
+          ]
+        },
+        "capabilities": {
+          "reasoning": true,
+          "attachment": true,
+          "temperature": true
+        },
+        "cost": {
+          "input": 0.25,
+          "output": 60
+        }
+      },
+      {
+        "id": "gemini-3.1-flash-lite-preview",
+        "provider": "gemini",
+        "display_name": "Gemini 3.1 Flash Lite Preview",
+        "description": "Our smallest and most cost effective model, built for at scale usage.",
+        "family": "gemini-flash-lite",
+        "type": "gemini",
+        "owned_by": "google",
+        "context_length": 1048576,
+        "max_completion_tokens": 65536,
+        "thinking": {
+          "supported": true,
+          "min": 128,
+          "max": 32768,
+          "levels": [
+            "minimal",
+            "high"
+          ]
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "video",
+            "audio",
+            "pdf"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": true,
+          "attachment": true,
+          "temperature": true
+        },
+        "cost": {
+          "input": 0.25,
+          "output": 1.5,
+          "cache_read": 0.025,
+          "cache_write": 1
         }
       },
       {
@@ -2287,8 +2420,8 @@
         "family": "gemini-pro",
         "type": "gemini",
         "owned_by": "google",
-        "context_length": 1048576,
-        "max_completion_tokens": 65536,
+        "context_length": 1000000,
+        "max_completion_tokens": 64000,
         "thinking": {
           "supported": true,
           "min": 128,
@@ -2321,6 +2454,51 @@
           "input": 2,
           "output": 12,
           "cache_read": 0.2
+        }
+      },
+      {
+        "id": "gemini-3.1-flash-lite-preview",
+        "provider": "gemini-cli",
+        "display_name": "Gemini 3.1 Flash Lite Preview",
+        "description": "Our smallest and most cost effective model, built for at scale usage.",
+        "family": "gemini-flash-lite",
+        "type": "gemini",
+        "owned_by": "google",
+        "context_length": 1048576,
+        "max_completion_tokens": 65536,
+        "thinking": {
+          "supported": true,
+          "min": 128,
+          "max": 32768,
+          "levels": [
+            "minimal",
+            "high"
+          ]
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "video",
+            "audio",
+            "pdf"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": true,
+          "attachment": true,
+          "temperature": true
+        },
+        "cost": {
+          "input": 0.25,
+          "output": 1.5,
+          "cache_read": 0.025,
+          "cache_write": 1
         }
       },
       {
@@ -2603,7 +2781,7 @@
         "family": "gemini-flash",
         "type": "github-copilot",
         "owned_by": "github-copilot",
-        "context_length": 1048576,
+        "context_length": 173000,
         "max_completion_tokens": 65536,
         "modalities": {
           "input": [
@@ -2673,7 +2851,7 @@
         "family": "gemini-pro",
         "type": "github-copilot",
         "owned_by": "github-copilot",
-        "context_length": 1048576,
+        "context_length": 173000,
         "max_completion_tokens": 65536,
         "modalities": {
           "input": [
@@ -3285,6 +3463,89 @@
         }
       },
       {
+        "id": "gpt-5.4",
+        "provider": "github-copilot",
+        "display_name": "GPT-5.4",
+        "description": "OpenAI GPT-5.4 via GitHub Copilot",
+        "family": "gpt",
+        "type": "github-copilot",
+        "owned_by": "github-copilot",
+        "context_length": 200000,
+        "max_completion_tokens": 32768,
+        "thinking": {
+          "supported": true,
+          "levels": [
+            "none",
+            "low",
+            "medium",
+            "high",
+            "xhigh"
+          ]
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "pdf"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": true,
+          "attachment": true
+        },
+        "cost": {
+          "input": 2.5,
+          "output": 15,
+          "cache_read": 0.25
+        }
+      },
+      {
+        "id": "gpt-5.4-mini",
+        "provider": "github-copilot",
+        "display_name": "GPT-5.4 mini",
+        "description": "OpenAI GPT-5.4 mini via GitHub Copilot",
+        "family": "gpt-mini",
+        "type": "github-copilot",
+        "owned_by": "github-copilot",
+        "context_length": 200000,
+        "max_completion_tokens": 32768,
+        "thinking": {
+          "supported": true,
+          "levels": [
+            "none",
+            "low",
+            "medium",
+            "high",
+            "xhigh"
+          ]
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "image"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": true,
+          "attachment": true
+        },
+        "cost": {
+          "input": 0.75,
+          "output": 4.5,
+          "cache_read": 0.075
+        }
+      },
+      {
         "id": "grok-code-fast-1",
         "provider": "github-copilot",
         "display_name": "Grok Code Fast 1",
@@ -3339,8 +3600,8 @@
         "display_name": "DeepSeek-R1",
         "description": "DeepSeek reasoning model R1",
         "family": "deepseek-thinking",
-        "type": "",
-        "owned_by": "",
+        "type": "iflow",
+        "owned_by": "iflow",
         "context_length": 131072,
         "max_completion_tokens": 16384,
         "modalities": {
@@ -3367,8 +3628,8 @@
         "display_name": "DeepSeek-V3-671B",
         "description": "DeepSeek V3 671B",
         "family": "deepseek",
-        "type": "",
-        "owned_by": "",
+        "type": "iflow",
+        "owned_by": "iflow",
         "context_length": 65536,
         "max_completion_tokens": 8192,
         "modalities": {
@@ -3394,16 +3655,26 @@
         "display_name": "DeepSeek-V3.1-Terminus",
         "description": "DeepSeek V3.1 Terminus",
         "family": "deepseek",
-        "type": "",
-        "owned_by": "",
-        "context_length": 131072,
-        "max_completion_tokens": 131072,
+        "type": "iflow",
+        "owned_by": "iflow",
+        "context_length": 128000,
+        "max_completion_tokens": 32768,
         "thinking": {
-          "supported": true
+          "supported": true,
+          "levels": [
+            "none",
+            "auto",
+            "minimal",
+            "low",
+            "medium",
+            "high",
+            "xhigh"
+          ]
         },
         "modalities": {
           "input": [
-            "text"
+            "text",
+            "image"
           ],
           "output": [
             "text"
@@ -3412,11 +3683,14 @@
         "capabilities": {
           "reasoning": true,
           "tool_call": true,
+          "structured_output": true,
+          "attachment": true,
           "temperature": true
         },
         "cost": {
           "input": 0.56,
-          "output": 1.68
+          "output": 1.68,
+          "cache_read": 0.11
         }
       },
       {
@@ -3425,12 +3699,21 @@
         "display_name": "DeepSeek-V3.2-Exp",
         "description": "DeepSeek V3.2 experimental",
         "family": "deepseek",
-        "type": "",
-        "owned_by": "",
+        "type": "iflow",
+        "owned_by": "iflow",
         "context_length": 128000,
         "max_completion_tokens": 64000,
         "thinking": {
-          "supported": true
+          "supported": true,
+          "levels": [
+            "none",
+            "auto",
+            "minimal",
+            "low",
+            "medium",
+            "high",
+            "xhigh"
+          ]
         },
         "modalities": {
           "input": [
@@ -3452,12 +3735,21 @@
         "display_name": "GLM-4.6",
         "description": "Zhipu GLM 4.6 general model",
         "family": "glm",
-        "type": "",
-        "owned_by": "",
+        "type": "iflow",
+        "owned_by": "iflow",
         "context_length": 200000,
         "max_completion_tokens": 128000,
         "thinking": {
-          "supported": true
+          "supported": true,
+          "levels": [
+            "none",
+            "auto",
+            "minimal",
+            "low",
+            "medium",
+            "high",
+            "xhigh"
+          ]
         },
         "modalities": {
           "input": [
@@ -3479,8 +3771,8 @@
         "provider": "iflow",
         "display_name": "iFlow-ROME",
         "description": "iFlow Rome 30BA3B model",
-        "type": "",
-        "owned_by": "",
+        "type": "iflow",
+        "owned_by": "iflow",
         "modalities": {
           "input": [
             "text"
@@ -3500,8 +3792,8 @@
         "display_name": "Kimi-K2",
         "description": "Moonshot Kimi K2 general model",
         "family": "kimi",
-        "type": "",
-        "owned_by": "",
+        "type": "iflow",
+        "owned_by": "iflow",
         "context_length": 128000,
         "max_completion_tokens": 64000,
         "modalities": {
@@ -3524,8 +3816,8 @@
         "display_name": "Qwen3-235B-A22B",
         "description": "Qwen3 235B A22B",
         "family": "qwen",
-        "type": "",
-        "owned_by": "",
+        "type": "iflow",
+        "owned_by": "iflow",
         "context_length": 128000,
         "max_completion_tokens": 32000,
         "modalities": {
@@ -3549,8 +3841,8 @@
         "display_name": "Qwen3-235B-A22B-Instruct",
         "description": "Qwen3 235B A22B Instruct",
         "family": "qwen",
-        "type": "",
-        "owned_by": "",
+        "type": "iflow",
+        "owned_by": "iflow",
         "context_length": 256000,
         "max_completion_tokens": 64000,
         "modalities": {
@@ -3573,8 +3865,8 @@
         "display_name": "Qwen3-235B-A22B-Thinking",
         "description": "Qwen3 235B A22B Thinking (2507)",
         "family": "qwen",
-        "type": "",
-        "owned_by": "",
+        "type": "iflow",
+        "owned_by": "iflow",
         "context_length": 256000,
         "max_completion_tokens": 64000,
         "modalities": {
@@ -3598,8 +3890,8 @@
         "display_name": "Qwen3-32B",
         "description": "Qwen3 32B",
         "family": "qwen",
-        "type": "",
-        "owned_by": "",
+        "type": "iflow",
+        "owned_by": "iflow",
         "context_length": 131072,
         "max_completion_tokens": 16384,
         "modalities": {
@@ -3626,8 +3918,8 @@
         "display_name": "Qwen3-Coder-Plus",
         "description": "Qwen3 Coder Plus code generation",
         "family": "qwen",
-        "type": "",
-        "owned_by": "",
+        "type": "iflow",
+        "owned_by": "iflow",
         "context_length": 1048576,
         "max_completion_tokens": 65536,
         "modalities": {
@@ -3653,8 +3945,8 @@
         "display_name": "Qwen3-Max",
         "description": "Qwen3 flagship model",
         "family": "qwen",
-        "type": "",
-        "owned_by": "",
+        "type": "iflow",
+        "owned_by": "iflow",
         "context_length": 262144,
         "max_completion_tokens": 65536,
         "modalities": {
@@ -3680,12 +3972,21 @@
         "display_name": "Qwen3-Max-Preview",
         "description": "Qwen3 Max preview build",
         "family": "qwen",
-        "type": "",
-        "owned_by": "",
+        "type": "iflow",
+        "owned_by": "iflow",
         "context_length": 256000,
         "max_completion_tokens": 32000,
         "thinking": {
-          "supported": true
+          "supported": true,
+          "levels": [
+            "none",
+            "auto",
+            "minimal",
+            "low",
+            "medium",
+            "high",
+            "xhigh"
+          ]
         },
         "modalities": {
           "input": [
@@ -3707,8 +4008,8 @@
         "display_name": "Qwen3-VL-Plus",
         "description": "Qwen3 multimodal vision-language",
         "family": "qwen",
-        "type": "",
-        "owned_by": "",
+        "type": "iflow",
+        "owned_by": "iflow",
         "context_length": 262144,
         "max_completion_tokens": 32768,
         "modalities": {
@@ -3728,6 +4029,103 @@
         "cost": {
           "input": 0.2,
           "output": 1.6
+        }
+      }
+    ],
+    "kimi": [
+      {
+        "id": "kimi-k2",
+        "provider": "kimi",
+        "display_name": "Kimi K2",
+        "description": "Kimi K2 - Moonshot AI's flagship coding model",
+        "family": "kimi",
+        "type": "kimi",
+        "owned_by": "moonshot",
+        "context_length": 131072,
+        "max_completion_tokens": 32768,
+        "modalities": {
+          "input": [
+            "text"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "capabilities": {
+          "tool_call": true,
+          "temperature": true
+        },
+        "cost": {}
+      },
+      {
+        "id": "kimi-k2-thinking",
+        "provider": "kimi",
+        "display_name": "Kimi K2 Thinking",
+        "description": "Kimi K2 Thinking - Extended reasoning model",
+        "family": "kimi",
+        "type": "kimi",
+        "owned_by": "moonshot",
+        "context_length": 131072,
+        "max_completion_tokens": 32768,
+        "thinking": {
+          "supported": true,
+          "min": 1024,
+          "max": 32000,
+          "zero_allowed": true
+        },
+        "modalities": {
+          "input": [
+            "text"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": true,
+          "temperature": true
+        },
+        "cost": {
+          "input": 0.574,
+          "output": 2.294
+        }
+      },
+      {
+        "id": "kimi-k2.5",
+        "provider": "kimi",
+        "display_name": "Kimi K2.5",
+        "description": "Kimi K2.5 - Latest Moonshot AI coding model with improved capabilities",
+        "family": "kimi",
+        "type": "kimi",
+        "owned_by": "moonshot",
+        "context_length": 131072,
+        "max_completion_tokens": 32768,
+        "thinking": {
+          "supported": true,
+          "min": 1024,
+          "max": 32000,
+          "zero_allowed": true
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "video"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "temperature": true
+        },
+        "cost": {
+          "input": 0.574,
+          "output": 2.411
         }
       }
     ],
@@ -4641,10 +5039,11 @@
         "provider": "vertex",
         "display_name": "Gemini 3 Pro Image Preview",
         "description": "Gemini 3 Pro Image Preview",
+        "family": "gemini",
         "type": "gemini",
         "owned_by": "google",
-        "context_length": 1048576,
-        "max_completion_tokens": 65536,
+        "context_length": 65536,
+        "max_completion_tokens": 32768,
         "thinking": {
           "supported": true,
           "min": 128,
@@ -4660,16 +5059,19 @@
             "image"
           ],
           "output": [
-            "text"
+            "text",
+            "image"
           ]
         },
         "capabilities": {
+          "structured_output": true,
           "attachment": true,
           "temperature": true
         },
         "cost": {
           "input": 2,
-          "output": 120
+          "output": 12,
+          "cache_read": 0.2
         }
       },
       {
@@ -4680,8 +5082,8 @@
         "family": "gemini-pro",
         "type": "gemini",
         "owned_by": "google",
-        "context_length": 1048576,
-        "max_completion_tokens": 65536,
+        "context_length": 1000000,
+        "max_completion_tokens": 64000,
         "thinking": {
           "supported": true,
           "min": 128,
@@ -4714,6 +5116,91 @@
           "input": 2,
           "output": 12,
           "cache_read": 0.2
+        }
+      },
+      {
+        "id": "gemini-3.1-flash-image-preview",
+        "provider": "vertex",
+        "display_name": "Gemini 3.1 Flash Image Preview",
+        "description": "Gemini 3.1 Flash Image Preview",
+        "family": "gemini-flash",
+        "type": "gemini",
+        "owned_by": "google",
+        "context_length": 131072,
+        "max_completion_tokens": 32768,
+        "thinking": {
+          "supported": true,
+          "min": 128,
+          "max": 32768,
+          "levels": [
+            "minimal",
+            "high"
+          ]
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "pdf"
+          ],
+          "output": [
+            "text",
+            "image"
+          ]
+        },
+        "capabilities": {
+          "reasoning": true,
+          "attachment": true,
+          "temperature": true
+        },
+        "cost": {
+          "input": 0.25,
+          "output": 60
+        }
+      },
+      {
+        "id": "gemini-3.1-flash-lite-preview",
+        "provider": "vertex",
+        "display_name": "Gemini 3.1 Flash Lite Preview",
+        "description": "Our smallest and most cost effective model, built for at scale usage.",
+        "family": "gemini-flash-lite",
+        "type": "gemini",
+        "owned_by": "google",
+        "context_length": 1048576,
+        "max_completion_tokens": 65536,
+        "thinking": {
+          "supported": true,
+          "min": 128,
+          "max": 32768,
+          "levels": [
+            "minimal",
+            "high"
+          ]
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "video",
+            "audio",
+            "pdf"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": true,
+          "attachment": true,
+          "temperature": true
+        },
+        "cost": {
+          "input": 0.25,
+          "output": 1.5,
+          "cache_read": 0.025,
+          "cache_write": 1
         }
       },
       {
