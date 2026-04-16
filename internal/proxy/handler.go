@@ -8,11 +8,13 @@ import (
 	"net/http/httputil"
 	"net/url"
 	"strconv"
+	"strings"
 )
 
 const (
 	BetaHeader      = "anthropic-beta"
 	BetaInterleaved = "interleaved-thinking-2025-05-14"
+	BetaTaskBudgets = "task-budgets-2026-03-13"
 )
 
 type ThinkingProxy struct {
@@ -72,19 +74,24 @@ func (tp *ThinkingProxy) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Transform if needed
-	newBody, needsBetaHeader, err := TransformRequestBody(r.URL.Path, body)
+	newBody, requiredBetas, err := TransformRequestBody(r.URL.Path, body)
 	if err != nil {
 		log.Printf("Warning: failed to transform body: %v", err)
 		newBody = body
 	}
 
-	// Add beta header when Claude thinking is enabled
-	if needsBetaHeader {
+	if len(requiredBetas) > 0 {
 		existing := r.Header.Get(BetaHeader)
 		if existing == "" {
-			r.Header.Set(BetaHeader, BetaInterleaved)
-		} else if !contains(existing, BetaInterleaved) {
-			r.Header.Set(BetaHeader, existing+","+BetaInterleaved)
+			r.Header.Set(BetaHeader, strings.Join(requiredBetas, ","))
+		} else {
+			for _, beta := range requiredBetas {
+				if contains(existing, beta) {
+					continue
+				}
+				existing += "," + beta
+			}
+			r.Header.Set(BetaHeader, existing)
 		}
 		log.Printf("Transformed request: thinking enabled")
 	}

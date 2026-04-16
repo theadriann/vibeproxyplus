@@ -254,6 +254,8 @@
           "max": 32768,
           "levels": [
             "minimal",
+            "low",
+            "medium",
             "high"
           ]
         },
@@ -638,86 +640,6 @@
         }
       },
       {
-        "id": "gemini-2.5-flash",
-        "provider": "antigravity",
-        "display_name": "Gemini 2.5 Flash",
-        "description": "Gemini 2.5 Flash",
-        "family": "gemini-flash",
-        "type": "antigravity",
-        "owned_by": "antigravity",
-        "context_length": 1048576,
-        "max_completion_tokens": 65535,
-        "thinking": {
-          "supported": true,
-          "max": 24576,
-          "zero_allowed": true
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image",
-            "audio",
-            "video",
-            "pdf"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": true,
-          "temperature": true
-        },
-        "cost": {
-          "input": 0.3,
-          "output": 2.5,
-          "cache_read": 0.075
-        }
-      },
-      {
-        "id": "gemini-2.5-flash-lite",
-        "provider": "antigravity",
-        "display_name": "Gemini 2.5 Flash Lite",
-        "description": "Gemini 2.5 Flash Lite",
-        "family": "gemini-flash-lite",
-        "type": "antigravity",
-        "owned_by": "antigravity",
-        "context_length": 1048576,
-        "max_completion_tokens": 65535,
-        "thinking": {
-          "supported": true,
-          "max": 24576,
-          "zero_allowed": true
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image",
-            "audio",
-            "video",
-            "pdf"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": true,
-          "temperature": true
-        },
-        "cost": {
-          "input": 0.1,
-          "output": 0.4,
-          "cache_read": 0.025
-        }
-      },
-      {
         "id": "gemini-3-flash",
         "provider": "antigravity",
         "display_name": "Gemini 3 Flash",
@@ -882,6 +804,41 @@
         }
       },
       {
+        "id": "gemini-3.1-flash-lite",
+        "provider": "antigravity",
+        "display_name": "Gemini 3.1 Flash Lite",
+        "description": "Gemini 3.1 Flash Lite",
+        "type": "antigravity",
+        "owned_by": "antigravity",
+        "context_length": 1048576,
+        "max_completion_tokens": 65535,
+        "thinking": {
+          "supported": true,
+          "min": 1,
+          "max": 65535,
+          "zero_allowed": true,
+          "levels": [
+            "minimal",
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "image"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "capabilities": {
+          "tool_call": true,
+          "temperature": true
+        }
+      },
+      {
         "id": "gemini-3.1-pro-high",
         "provider": "antigravity",
         "display_name": "Gemini 3.1 Pro (High)",
@@ -893,10 +850,11 @@
         "max_completion_tokens": 65535,
         "thinking": {
           "supported": true,
-          "min": 128,
-          "max": 32768,
+          "min": 1,
+          "max": 65535,
           "levels": [
             "low",
+            "medium",
             "high"
           ]
         },
@@ -937,10 +895,11 @@
         "max_completion_tokens": 65535,
         "thinking": {
           "supported": true,
-          "min": 128,
-          "max": 32768,
+          "min": 1,
+          "max": 65535,
           "levels": [
             "low",
+            "medium",
             "high"
           ]
         },
@@ -1265,6 +1224,52 @@
         }
       },
       {
+        "id": "claude-opus-4-7",
+        "provider": "claude",
+        "display_name": "Claude Opus 4.7",
+        "description": "Premium model combining maximum intelligence with practical performance",
+        "family": "claude-opus",
+        "type": "claude",
+        "owned_by": "anthropic",
+        "context_length": 1000000,
+        "max_completion_tokens": 128000,
+        "thinking": {
+          "supported": true,
+          "min": 1024,
+          "max": 128000,
+          "zero_allowed": true,
+          "levels": [
+            "low",
+            "medium",
+            "high",
+            "xhigh",
+            "max"
+          ]
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "pdf"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "attachment": true,
+          "temperature": true
+        },
+        "cost": {
+          "input": 5,
+          "output": 25,
+          "cache_read": 0.5,
+          "cache_write": 6.25
+        }
+      },
+      {
         "id": "claude-sonnet-4-20250514",
         "provider": "claude",
         "display_name": "Claude 4 Sonnet",
@@ -1385,280 +1390,6 @@
     ],
     "codex": [
       {
-        "id": "gpt-5",
-        "provider": "codex",
-        "display_name": "GPT 5",
-        "description": "Stable version of GPT 5, The best model for coding and agentic tasks across domains.",
-        "family": "gpt",
-        "type": "openai",
-        "owned_by": "openai",
-        "context_length": 400000,
-        "max_completion_tokens": 128000,
-        "thinking": {
-          "supported": true,
-          "levels": [
-            "minimal",
-            "low",
-            "medium",
-            "high"
-          ]
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": true
-        },
-        "cost": {
-          "input": 1.25,
-          "output": 10,
-          "cache_read": 0.125
-        }
-      },
-      {
-        "id": "gpt-5-codex",
-        "provider": "codex",
-        "display_name": "GPT 5 Codex",
-        "description": "Stable version of GPT 5 Codex, The best model for coding and agentic tasks across domains.",
-        "family": "gpt-codex",
-        "type": "openai",
-        "owned_by": "openai",
-        "context_length": 400000,
-        "max_completion_tokens": 128000,
-        "thinking": {
-          "supported": true,
-          "levels": [
-            "low",
-            "medium",
-            "high"
-          ]
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": true
-        },
-        "cost": {
-          "input": 1.25,
-          "output": 10,
-          "cache_read": 0.125
-        }
-      },
-      {
-        "id": "gpt-5-codex-mini",
-        "provider": "codex",
-        "display_name": "GPT 5 Codex Mini",
-        "description": "Stable version of GPT 5 Codex Mini: cheaper, faster, but less capable version of GPT 5 Codex.",
-        "family": "gpt-codex",
-        "type": "openai",
-        "owned_by": "openai",
-        "context_length": 400000,
-        "max_completion_tokens": 128000,
-        "thinking": {
-          "supported": true,
-          "levels": [
-            "low",
-            "medium",
-            "high"
-          ]
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": true
-        },
-        "cost": {
-          "input": 1.25,
-          "output": 10,
-          "cache_read": 0.125
-        }
-      },
-      {
-        "id": "gpt-5.1",
-        "provider": "codex",
-        "display_name": "GPT 5",
-        "description": "Stable version of GPT 5, The best model for coding and agentic tasks across domains.",
-        "family": "gpt",
-        "type": "openai",
-        "owned_by": "openai",
-        "context_length": 400000,
-        "max_completion_tokens": 128000,
-        "thinking": {
-          "supported": true,
-          "levels": [
-            "none",
-            "low",
-            "medium",
-            "high"
-          ]
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": true
-        },
-        "cost": {
-          "input": 1.25,
-          "output": 10,
-          "cache_read": 0.13
-        }
-      },
-      {
-        "id": "gpt-5.1-codex",
-        "provider": "codex",
-        "display_name": "GPT 5.1 Codex",
-        "description": "Stable version of GPT 5.1 Codex, The best model for coding and agentic tasks across domains.",
-        "family": "gpt-codex",
-        "type": "openai",
-        "owned_by": "openai",
-        "context_length": 400000,
-        "max_completion_tokens": 128000,
-        "thinking": {
-          "supported": true,
-          "levels": [
-            "low",
-            "medium",
-            "high"
-          ]
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": true
-        },
-        "cost": {
-          "input": 1.25,
-          "output": 10,
-          "cache_read": 0.125
-        }
-      },
-      {
-        "id": "gpt-5.1-codex-max",
-        "provider": "codex",
-        "display_name": "GPT 5.1 Codex Max",
-        "description": "Stable version of GPT 5.1 Codex Max",
-        "family": "gpt-codex",
-        "type": "openai",
-        "owned_by": "openai",
-        "context_length": 400000,
-        "max_completion_tokens": 128000,
-        "thinking": {
-          "supported": true,
-          "levels": [
-            "low",
-            "medium",
-            "high",
-            "xhigh"
-          ]
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": true
-        },
-        "cost": {
-          "input": 1.25,
-          "output": 10,
-          "cache_read": 0.125
-        }
-      },
-      {
-        "id": "gpt-5.1-codex-mini",
-        "provider": "codex",
-        "display_name": "GPT 5.1 Codex Mini",
-        "description": "Stable version of GPT 5.1 Codex Mini: cheaper, faster, but less capable version of GPT 5.1 Codex.",
-        "family": "gpt-codex",
-        "type": "openai",
-        "owned_by": "openai",
-        "context_length": 400000,
-        "max_completion_tokens": 128000,
-        "thinking": {
-          "supported": true,
-          "levels": [
-            "low",
-            "medium",
-            "high"
-          ]
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": true
-        },
-        "cost": {
-          "input": 0.25,
-          "output": 2,
-          "cache_read": 0.025
-        }
-      },
-      {
         "id": "gpt-5.2",
         "provider": "codex",
         "display_name": "GPT 5.2",
@@ -1682,47 +1413,6 @@
           "input": [
             "text",
             "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": true
-        },
-        "cost": {
-          "input": 1.75,
-          "output": 14,
-          "cache_read": 0.175
-        }
-      },
-      {
-        "id": "gpt-5.2-codex",
-        "provider": "codex",
-        "display_name": "GPT 5.2 Codex",
-        "description": "Stable version of GPT 5.2 Codex, The best model for coding and agentic tasks across domains.",
-        "family": "gpt-codex",
-        "type": "openai",
-        "owned_by": "openai",
-        "context_length": 400000,
-        "max_completion_tokens": 128000,
-        "thinking": {
-          "supported": true,
-          "levels": [
-            "low",
-            "medium",
-            "high",
-            "xhigh"
-          ]
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image",
-            "pdf"
           ],
           "output": [
             "text"
@@ -1861,6 +1551,46 @@
           "input": 2.5,
           "output": 15,
           "cache_read": 0.25
+        }
+      },
+      {
+        "id": "gpt-5.4-mini",
+        "provider": "codex",
+        "display_name": "GPT 5.4 Mini",
+        "description": "GPT-5.4 mini brings the strengths of GPT-5.4 to a faster, more efficient model designed for high-volume workloads.",
+        "family": "gpt-mini",
+        "type": "openai",
+        "owned_by": "openai",
+        "context_length": 400000,
+        "max_completion_tokens": 128000,
+        "thinking": {
+          "supported": true,
+          "levels": [
+            "low",
+            "medium",
+            "high",
+            "xhigh"
+          ]
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "image"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": true,
+          "attachment": true
+        },
+        "cost": {
+          "input": 0.75,
+          "output": 4.5,
+          "cache_read": 0.075
         }
       }
     ],
@@ -2216,6 +1946,7 @@
           "max": 32768,
           "levels": [
             "low",
+            "medium",
             "high"
           ]
         },
@@ -2472,6 +2203,8 @@
           "max": 32768,
           "levels": [
             "minimal",
+            "low",
+            "medium",
             "high"
           ]
         },
@@ -2517,6 +2250,7 @@
           "max": 32768,
           "levels": [
             "low",
+            "medium",
             "high"
           ]
         },
@@ -2555,7 +2289,7 @@
         "family": "claude-haiku",
         "type": "github-copilot",
         "owned_by": "github-copilot",
-        "context_length": 200000,
+        "context_length": 144000,
         "max_completion_tokens": 64000,
         "modalities": {
           "input": [
@@ -2581,7 +2315,6 @@
         "description": "Anthropic Claude Opus 4.1 via GitHub Copilot",
         "type": "github-copilot",
         "owned_by": "github-copilot",
-        "context_length": 200000,
         "max_completion_tokens": 32000,
         "modalities": {
           "input": [
@@ -2605,8 +2338,16 @@
         "family": "claude-opus",
         "type": "github-copilot",
         "owned_by": "github-copilot",
-        "context_length": 200000,
+        "context_length": 160000,
         "max_completion_tokens": 64000,
+        "thinking": {
+          "supported": true,
+          "levels": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
         "modalities": {
           "input": [
             "text",
@@ -2632,8 +2373,16 @@
         "family": "claude-opus",
         "type": "github-copilot",
         "owned_by": "github-copilot",
-        "context_length": 200000,
+        "context_length": 144000,
         "max_completion_tokens": 64000,
+        "thinking": {
+          "supported": true,
+          "levels": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
         "modalities": {
           "input": [
             "text",
@@ -2661,6 +2410,14 @@
         "owned_by": "github-copilot",
         "context_length": 200000,
         "max_completion_tokens": 64000,
+        "thinking": {
+          "supported": true,
+          "levels": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
         "modalities": {
           "input": [
             "text",
@@ -2692,8 +2449,16 @@
         "family": "claude-sonnet",
         "type": "github-copilot",
         "owned_by": "github-copilot",
-        "context_length": 200000,
+        "context_length": 144000,
         "max_completion_tokens": 64000,
+        "thinking": {
+          "supported": true,
+          "levels": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
         "modalities": {
           "input": [
             "text",
@@ -2721,6 +2486,14 @@
         "owned_by": "github-copilot",
         "context_length": 200000,
         "max_completion_tokens": 64000,
+        "thinking": {
+          "supported": true,
+          "levels": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
         "modalities": {
           "input": [
             "text",
@@ -2919,7 +2692,8 @@
         "modalities": {
           "input": [
             "text",
-            "image"
+            "image",
+            "pdf"
           ],
           "output": [
             "text"
@@ -2950,7 +2724,8 @@
         "modalities": {
           "input": [
             "text",
-            "image"
+            "image",
+            "pdf"
           ],
           "output": [
             "text"
@@ -3590,445 +3365,6 @@
         "capabilities": {
           "tool_call": true,
           "temperature": true
-        }
-      }
-    ],
-    "iflow": [
-      {
-        "id": "deepseek-r1",
-        "provider": "iflow",
-        "display_name": "DeepSeek-R1",
-        "description": "DeepSeek reasoning model R1",
-        "family": "deepseek-thinking",
-        "type": "iflow",
-        "owned_by": "iflow",
-        "context_length": 131072,
-        "max_completion_tokens": 16384,
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "temperature": true
-        },
-        "cost": {
-          "input": 0.574,
-          "output": 2.294
-        }
-      },
-      {
-        "id": "deepseek-v3",
-        "provider": "iflow",
-        "display_name": "DeepSeek-V3-671B",
-        "description": "DeepSeek V3 671B",
-        "family": "deepseek",
-        "type": "iflow",
-        "owned_by": "iflow",
-        "context_length": 65536,
-        "max_completion_tokens": 8192,
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "temperature": true
-        },
-        "cost": {
-          "input": 0.287,
-          "output": 1.147
-        }
-      },
-      {
-        "id": "deepseek-v3.1",
-        "provider": "iflow",
-        "display_name": "DeepSeek-V3.1-Terminus",
-        "description": "DeepSeek V3.1 Terminus",
-        "family": "deepseek",
-        "type": "iflow",
-        "owned_by": "iflow",
-        "context_length": 128000,
-        "max_completion_tokens": 32768,
-        "thinking": {
-          "supported": true,
-          "levels": [
-            "none",
-            "auto",
-            "minimal",
-            "low",
-            "medium",
-            "high",
-            "xhigh"
-          ]
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": true,
-          "temperature": true
-        },
-        "cost": {
-          "input": 0.56,
-          "output": 1.68,
-          "cache_read": 0.11
-        }
-      },
-      {
-        "id": "deepseek-v3.2",
-        "provider": "iflow",
-        "display_name": "DeepSeek-V3.2-Exp",
-        "description": "DeepSeek V3.2 experimental",
-        "family": "deepseek",
-        "type": "iflow",
-        "owned_by": "iflow",
-        "context_length": 128000,
-        "max_completion_tokens": 64000,
-        "thinking": {
-          "supported": true,
-          "levels": [
-            "none",
-            "auto",
-            "minimal",
-            "low",
-            "medium",
-            "high",
-            "xhigh"
-          ]
-        },
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "temperature": true
-        },
-        "cost": {}
-      },
-      {
-        "id": "glm-4.6",
-        "provider": "iflow",
-        "display_name": "GLM-4.6",
-        "description": "Zhipu GLM 4.6 general model",
-        "family": "glm",
-        "type": "iflow",
-        "owned_by": "iflow",
-        "context_length": 200000,
-        "max_completion_tokens": 128000,
-        "thinking": {
-          "supported": true,
-          "levels": [
-            "none",
-            "auto",
-            "minimal",
-            "low",
-            "medium",
-            "high",
-            "xhigh"
-          ]
-        },
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "temperature": true
-        },
-        "cost": {}
-      },
-      {
-        "id": "iflow-rome-30ba3b",
-        "provider": "iflow",
-        "display_name": "iFlow-ROME",
-        "description": "iFlow Rome 30BA3B model",
-        "type": "iflow",
-        "owned_by": "iflow",
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "temperature": true
-        }
-      },
-      {
-        "id": "kimi-k2",
-        "provider": "iflow",
-        "display_name": "Kimi-K2",
-        "description": "Moonshot Kimi K2 general model",
-        "family": "kimi",
-        "type": "iflow",
-        "owned_by": "iflow",
-        "context_length": 128000,
-        "max_completion_tokens": 64000,
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "temperature": true
-        },
-        "cost": {}
-      },
-      {
-        "id": "qwen3-235b",
-        "provider": "iflow",
-        "display_name": "Qwen3-235B-A22B",
-        "description": "Qwen3 235B A22B",
-        "family": "qwen",
-        "type": "iflow",
-        "owned_by": "iflow",
-        "context_length": 128000,
-        "max_completion_tokens": 32000,
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "temperature": true
-        },
-        "cost": {}
-      },
-      {
-        "id": "qwen3-235b-a22b-instruct",
-        "provider": "iflow",
-        "display_name": "Qwen3-235B-A22B-Instruct",
-        "description": "Qwen3 235B A22B Instruct",
-        "family": "qwen",
-        "type": "iflow",
-        "owned_by": "iflow",
-        "context_length": 256000,
-        "max_completion_tokens": 64000,
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "temperature": true
-        },
-        "cost": {}
-      },
-      {
-        "id": "qwen3-235b-a22b-thinking-2507",
-        "provider": "iflow",
-        "display_name": "Qwen3-235B-A22B-Thinking",
-        "description": "Qwen3 235B A22B Thinking (2507)",
-        "family": "qwen",
-        "type": "iflow",
-        "owned_by": "iflow",
-        "context_length": 256000,
-        "max_completion_tokens": 64000,
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "temperature": true
-        },
-        "cost": {}
-      },
-      {
-        "id": "qwen3-32b",
-        "provider": "iflow",
-        "display_name": "Qwen3-32B",
-        "description": "Qwen3 32B",
-        "family": "qwen",
-        "type": "iflow",
-        "owned_by": "iflow",
-        "context_length": 131072,
-        "max_completion_tokens": 16384,
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "temperature": true
-        },
-        "cost": {
-          "input": 0.7,
-          "output": 2.8
-        }
-      },
-      {
-        "id": "qwen3-coder-plus",
-        "provider": "iflow",
-        "display_name": "Qwen3-Coder-Plus",
-        "description": "Qwen3 Coder Plus code generation",
-        "family": "qwen",
-        "type": "iflow",
-        "owned_by": "iflow",
-        "context_length": 1048576,
-        "max_completion_tokens": 65536,
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "temperature": true
-        },
-        "cost": {
-          "input": 1,
-          "output": 5
-        }
-      },
-      {
-        "id": "qwen3-max",
-        "provider": "iflow",
-        "display_name": "Qwen3-Max",
-        "description": "Qwen3 flagship model",
-        "family": "qwen",
-        "type": "iflow",
-        "owned_by": "iflow",
-        "context_length": 262144,
-        "max_completion_tokens": 65536,
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "temperature": true
-        },
-        "cost": {
-          "input": 1.2,
-          "output": 6
-        }
-      },
-      {
-        "id": "qwen3-max-preview",
-        "provider": "iflow",
-        "display_name": "Qwen3-Max-Preview",
-        "description": "Qwen3 Max preview build",
-        "family": "qwen",
-        "type": "iflow",
-        "owned_by": "iflow",
-        "context_length": 256000,
-        "max_completion_tokens": 32000,
-        "thinking": {
-          "supported": true,
-          "levels": [
-            "none",
-            "auto",
-            "minimal",
-            "low",
-            "medium",
-            "high",
-            "xhigh"
-          ]
-        },
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "temperature": true
-        },
-        "cost": {}
-      },
-      {
-        "id": "qwen3-vl-plus",
-        "provider": "iflow",
-        "display_name": "Qwen3-VL-Plus",
-        "description": "Qwen3 multimodal vision-language",
-        "family": "qwen",
-        "type": "iflow",
-        "owned_by": "iflow",
-        "context_length": 262144,
-        "max_completion_tokens": 32768,
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "temperature": true
-        },
-        "cost": {
-          "input": 0.2,
-          "output": 1.6
         }
       }
     ],
@@ -4766,107 +4102,6 @@
         }
       }
     ],
-    "qwen": [
-      {
-        "id": "coder-model",
-        "provider": "qwen",
-        "display_name": "Qwen 3.5 Plus",
-        "description": "efficient hybrid model with leading coding performance",
-        "type": "qwen",
-        "owned_by": "qwen",
-        "context_length": 1048576,
-        "max_completion_tokens": 65536,
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "temperature": true
-        }
-      },
-      {
-        "id": "qwen3-coder-flash",
-        "provider": "qwen",
-        "display_name": "Qwen3 Coder Flash",
-        "description": "Fast code generation model",
-        "family": "qwen",
-        "type": "qwen",
-        "owned_by": "qwen",
-        "context_length": 8192,
-        "max_completion_tokens": 2048,
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "temperature": true
-        },
-        "cost": {
-          "input": 0.3,
-          "output": 1.5
-        }
-      },
-      {
-        "id": "qwen3-coder-plus",
-        "provider": "qwen",
-        "display_name": "Qwen3 Coder Plus",
-        "description": "Advanced code generation and understanding model",
-        "family": "qwen",
-        "type": "qwen",
-        "owned_by": "qwen",
-        "context_length": 32768,
-        "max_completion_tokens": 8192,
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "temperature": true
-        },
-        "cost": {
-          "input": 1,
-          "output": 5
-        }
-      },
-      {
-        "id": "vision-model",
-        "provider": "qwen",
-        "display_name": "Qwen3 Vision Model",
-        "description": "Vision model model",
-        "type": "qwen",
-        "owned_by": "qwen",
-        "context_length": 32768,
-        "max_completion_tokens": 2048,
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "temperature": true
-        }
-      }
-    ],
     "vertex": [
       {
         "id": "gemini-2.5-flash",
@@ -5174,6 +4409,8 @@
           "max": 32768,
           "levels": [
             "minimal",
+            "low",
+            "medium",
             "high"
           ]
         },
@@ -5219,6 +4456,7 @@
           "max": 32768,
           "levels": [
             "low",
+            "medium",
             "high"
           ]
         },

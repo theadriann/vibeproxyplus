@@ -13,9 +13,9 @@ import (
 )
 
 const (
-	modelDefsURL       = "https://raw.githubusercontent.com/router-for-me/CLIProxyAPIPlus/main/internal/registry/model_definitions.go"
-	modelDefsStaticURL = "https://raw.githubusercontent.com/router-for-me/CLIProxyAPIPlus/main/internal/registry/model_definitions_static_data.go"
-	modelsDevURL       = "https://models.dev/api.json"
+	modelDefsURL      = "https://raw.githubusercontent.com/router-for-me/CLIProxyAPIPlus/main/internal/registry/model_definitions.go"
+	registryModelsURL = "https://raw.githubusercontent.com/router-for-me/CLIProxyAPIPlus/main/internal/registry/models/models.json"
+	modelsDevURL      = "https://models.dev/api.json"
 )
 
 // Canonical model with merged metadata
@@ -137,10 +137,11 @@ func main() {
 	factoryFile := flag.String("factory", "", "Generate Factory CLI config file")
 	opencodeFile := flag.String("opencode", "", "Generate OpenCode CLI config file")
 	localModelDefs := flag.String("local-modeldefs", "", "Use local model_definitions.go")
+	localRegistryModels := flag.String("local-registry-models", "", "Use local CLIProxyAPIPlus registry models.json")
 	localModelsDev := flag.String("local-modelsdev", "", "Use local models.dev api.json")
 	flag.Parse()
 
-	// Download/load CLIProxyAPIPlus model definitions (both files)
+	// Download/load CLIProxyAPIPlus model definitions
 	var modelDefsSource string
 	if *localModelDefs != "" {
 		data, err := os.ReadFile(*localModelDefs)
@@ -153,7 +154,6 @@ func main() {
 	} else {
 		fmt.Printf("Downloading CLIProxyAPIPlus model definitions...\n")
 
-		// Download main model_definitions.go
 		resp, err := http.Get(modelDefsURL)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Error downloading model_definitions.go: %v\n", err)
@@ -162,17 +162,27 @@ func main() {
 		data, _ := io.ReadAll(resp.Body)
 		resp.Body.Close()
 		modelDefsSource = string(data)
+	}
 
-		// Download model_definitions_static_data.go (contains Claude, OpenAI, Gemini, etc.)
-		fmt.Printf("Downloading CLIProxyAPIPlus static model definitions...\n")
-		resp2, err := http.Get(modelDefsStaticURL)
+	var registryModelsSource string
+	if *localRegistryModels != "" {
+		data, err := os.ReadFile(*localRegistryModels)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "Error downloading model_definitions_static_data.go: %v\n", err)
+			fmt.Fprintf(os.Stderr, "Error reading local registry models.json: %v\n", err)
 			os.Exit(1)
 		}
-		data2, _ := io.ReadAll(resp2.Body)
-		resp2.Body.Close()
-		modelDefsSource += "\n" + string(data2)
+		registryModelsSource = string(data)
+		fmt.Printf("Using local registry models.json: %s\n", *localRegistryModels)
+	} else {
+		fmt.Printf("Downloading CLIProxyAPIPlus registry models...\n")
+		resp, err := http.Get(registryModelsURL)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error downloading registry models.json: %v\n", err)
+			os.Exit(1)
+		}
+		data, _ := io.ReadAll(resp.Body)
+		resp.Body.Close()
+		registryModelsSource = string(data)
 	}
 
 	// Download/load models.dev API
@@ -202,11 +212,11 @@ func main() {
 	fmt.Printf("Indexed %d models from models.dev\n", len(modelsDevIndex))
 
 	// Parse CLIProxyAPIPlus models and enrich with models.dev
-	models := parseAndEnrichModels(modelDefsSource, modelsDevIndex)
+	models := parseAndEnrichModels(modelDefsSource, registryModelsSource, modelsDevIndex)
 
 	config := CanonicalConfig{
 		Version: "2.0",
-		Sources: []string{modelDefsURL, modelsDevURL},
+		Sources: []string{modelDefsURL, registryModelsURL, modelsDevURL},
 		Models:  models,
 	}
 
@@ -404,8 +414,8 @@ func normalizeModelID(id string) string {
 	return strings.ToLower(normalized)
 }
 
-func parseAndEnrichModels(source string, modelsDevIndex map[string]*ModelsDevModel) map[string][]Model {
-	models := make(map[string][]Model)
+func parseAndEnrichModels(source, registryModelsSource string, modelsDevIndex map[string]*ModelsDevModel) map[string][]Model {
+	models := parseRegistryModelsJSON(registryModelsSource, modelsDevIndex)
 
 	parsers := []struct {
 		funcName string
@@ -413,12 +423,17 @@ func parseAndEnrichModels(source string, modelsDevIndex map[string]*ModelsDevMod
 	}{
 		{"GetClaudeModels", "claude"},
 		{"GetOpenAIModels", "codex"},
+		{"GetCodexFreeModels", "codex"},
+		{"GetCodexTeamModels", "codex"},
+		{"GetCodexPlusModels", "codex"},
+		{"GetCodexProModels", "codex"},
 		{"GetGeminiModels", "gemini"},
 		{"GetGeminiCLIModels", "gemini-cli"},
 		{"GetGeminiVertexModels", "vertex"},
 		{"GetAIStudioModels", "aistudio"},
 		{"GetQwenModels", "qwen"},
 		{"GetIFlowModels", "iflow"},
+		{"GetAntigravityModels", "antigravity"},
 		{"GetGitHubCopilotModels", "github-copilot"},
 		{"GetKiroModels", "kiro"},
 		{"GetAmazonQModels", "amazonq"},
@@ -426,16 +441,12 @@ func parseAndEnrichModels(source string, modelsDevIndex map[string]*ModelsDevMod
 
 	for _, p := range parsers {
 		funcModels := parseFunctionModels(source, p.funcName, p.provider, modelsDevIndex)
-		if len(funcModels) > 0 {
-			models[p.provider] = funcModels
-		}
+		mergeModels(models, p.provider, funcModels)
 	}
 
 	// Parse Antigravity
 	antigravityModels := parseAntigravityModels(source, modelsDevIndex)
-	if len(antigravityModels) > 0 {
-		models["antigravity"] = antigravityModels
-	}
+	mergeModels(models, "antigravity", antigravityModels)
 
 	for provider := range models {
 		sort.Slice(models[provider], func(i, j int) bool {
@@ -444,6 +455,143 @@ func parseAndEnrichModels(source string, modelsDevIndex map[string]*ModelsDevMod
 	}
 
 	return models
+}
+
+func parseRegistryModelsJSON(source string, modelsDevIndex map[string]*ModelsDevModel) map[string][]Model {
+	models := make(map[string][]Model)
+	if strings.TrimSpace(source) == "" {
+		return models
+	}
+
+	var registryModels map[string][]Model
+	if err := json.Unmarshal([]byte(source), &registryModels); err != nil {
+		fmt.Fprintf(os.Stderr, "Warning: could not parse registry models.json: %v\n", err)
+		return models
+	}
+
+	providerGroups := []struct {
+		group    string
+		provider string
+	}{
+		{"claude", "claude"},
+		{"gemini", "gemini"},
+		{"vertex", "vertex"},
+		{"gemini-cli", "gemini-cli"},
+		{"aistudio", "aistudio"},
+		{"codex-pro", "codex"},
+		{"codex-plus", "codex"},
+		{"codex-team", "codex"},
+		{"codex-free", "codex"},
+		{"qwen", "qwen"},
+		{"iflow", "iflow"},
+		{"kimi", "kimi"},
+		{"antigravity", "antigravity"},
+	}
+
+	for _, group := range providerGroups {
+		groupModels := registryModels[group.group]
+		if len(groupModels) == 0 {
+			continue
+		}
+
+		normalized := make([]Model, 0, len(groupModels))
+		for _, model := range groupModels {
+			model.Provider = group.provider
+			if model.DisplayName == "" {
+				model.DisplayName = formatDisplayName(model.ID)
+			}
+			if model.Thinking != nil {
+				model.Thinking.Supported = true
+			}
+			enrichFromModelsDev(&model, modelsDevIndex)
+			normalized = append(normalized, model)
+		}
+
+		mergeModels(models, group.provider, normalized)
+	}
+
+	return models
+}
+
+func mergeModels(models map[string][]Model, provider string, incoming []Model) {
+	if len(incoming) == 0 {
+		return
+	}
+
+	merged := make(map[string]Model, len(models[provider])+len(incoming))
+	for _, model := range models[provider] {
+		merged[model.ID] = model
+	}
+
+	for _, candidate := range incoming {
+		current, exists := merged[candidate.ID]
+		if !exists || shouldReplaceMergedModel(current, candidate) {
+			merged[candidate.ID] = candidate
+		}
+	}
+
+	result := make([]Model, 0, len(merged))
+	for _, model := range merged {
+		result = append(result, model)
+	}
+	models[provider] = result
+}
+
+func shouldReplaceMergedModel(current, candidate Model) bool {
+	currentScore := mergedModelQualityScore(current)
+	candidateScore := mergedModelQualityScore(candidate)
+	if candidateScore != currentScore {
+		return candidateScore > currentScore
+	}
+
+	return false
+}
+
+func mergedModelQualityScore(model Model) int {
+	score := 0
+	if model.DisplayName != "" {
+		score++
+	}
+	if model.Description != "" {
+		score++
+	}
+	if model.Family != "" {
+		score++
+	}
+	if model.Type != "" {
+		score++
+	}
+	if model.OwnedBy != "" {
+		score++
+	}
+	if model.ContextLength > 0 {
+		score++
+	}
+	if model.MaxCompletionTokens > 0 {
+		score++
+	}
+	if model.Thinking != nil {
+		score += 1 + len(model.Thinking.Levels)
+		if model.Thinking.Min > 0 {
+			score++
+		}
+		if model.Thinking.Max > 0 {
+			score++
+		}
+		if model.Thinking.ZeroAllowed {
+			score++
+		}
+	}
+	if model.Modalities != nil {
+		score += 1 + len(model.Modalities.Input) + len(model.Modalities.Output)
+	}
+	if model.Capabilities != nil {
+		score++
+	}
+	if model.Cost != nil {
+		score++
+	}
+	return score
 }
 
 func parseFunctionModels(source, funcName, provider string, modelsDevIndex map[string]*ModelsDevModel) []Model {
@@ -768,9 +916,43 @@ func generateFactoryConfig(models map[string][]Model) FactoryConfig {
 			}
 			factoryModels = append(factoryModels, fm)
 
-			// Add thinking variants for Claude models
 			if m.Provider == "claude" && m.Thinking != nil && m.Thinking.Supported {
-				for _, budget := range []int{4000, 10000, 32000} {
+				if levels := claudeAdaptiveLevels(m); len(levels) > 0 {
+					factoryModels = append(factoryModels, FactoryModel{
+						Model:           fmt.Sprintf("%s(auto)", m.ID),
+						DisplayName:     fmt.Sprintf("[%s] %s (Auto)", prefix, m.DisplayName),
+						BaseURL:         cfg.baseURL,
+						APIKey:          "dummy",
+						Provider:        cfg.provider,
+						MaxOutputTokens: m.MaxCompletionTokens,
+						SupportsImages:  supportsImages,
+					})
+					for _, level := range levels {
+						factoryModels = append(factoryModels, FactoryModel{
+							Model:           fmt.Sprintf("%s(%s)", m.ID, level),
+							DisplayName:     fmt.Sprintf("[%s] %s (%s)", prefix, m.DisplayName, strings.Title(level)),
+							BaseURL:         cfg.baseURL,
+							APIKey:          "dummy",
+							Provider:        cfg.provider,
+							MaxOutputTokens: m.MaxCompletionTokens,
+							SupportsImages:  supportsImages,
+						})
+					}
+				}
+
+				for _, level := range claudeManualEffortLevels(m) {
+					factoryModels = append(factoryModels, FactoryModel{
+						Model:           fmt.Sprintf("%s(%s)", m.ID, level),
+						DisplayName:     fmt.Sprintf("[%s] %s (%s)", prefix, m.DisplayName, strings.Title(level)),
+						BaseURL:         cfg.baseURL,
+						APIKey:          "dummy",
+						Provider:        cfg.provider,
+						MaxOutputTokens: m.MaxCompletionTokens,
+						SupportsImages:  supportsImages,
+					})
+				}
+
+				for _, budget := range claudeLegacyBudgetVariants(m) {
 					fm := FactoryModel{
 						Model:           fmt.Sprintf("%s-thinking-%d", m.ID, budget),
 						DisplayName:     fmt.Sprintf("[%s] %s (Thinking %dk)", prefix, m.DisplayName, budget/1000),
@@ -814,6 +996,50 @@ func generateFactoryConfig(models map[string][]Model) FactoryConfig {
 	})
 
 	return FactoryConfig{CustomModels: factoryModels}
+}
+
+func isClaudeAdaptiveOnlyModel(model Model) bool {
+	return model.ID == "claude-opus-4-7"
+}
+
+func claudeAdaptiveLevels(model Model) []string {
+	if model.Provider != "claude" || model.Thinking == nil {
+		return nil
+	}
+	return append([]string(nil), model.Thinking.Levels...)
+}
+
+func claudeManualEffortLevels(model Model) []string {
+	switch model.ID {
+	case "claude-opus-4-5-20251101":
+		return []string{"low", "medium", "high"}
+	default:
+		return nil
+	}
+}
+
+func claudeLegacyBudgetVariants(model Model) []int {
+	if model.Provider != "claude" || model.Thinking == nil || !model.Thinking.Supported || isClaudeAdaptiveOnlyModel(model) {
+		return nil
+	}
+	return []int{4000, 10000, 32000}
+}
+
+func claudeManualBudgetForLevel(level string) int {
+	switch level {
+	case "low":
+		return 1024
+	case "medium":
+		return 8192
+	case "high":
+		return 24576
+	case "xhigh":
+		return 32768
+	case "max":
+		return 64000
+	default:
+		return 0
+	}
 }
 
 func marshalFactoryConfig(config FactoryConfig) ([]byte, error) {
@@ -989,12 +1215,29 @@ func generateOpenCodeConfig(models map[string][]Model) OpenCodeConfig {
 				Modalities: m.Modalities,
 			}
 
-			if m.Thinking != nil && m.Thinking.Supported {
+			if levels := claudeAdaptiveLevels(m); len(levels) > 0 {
+				ocModel.Variants = map[string]*OpenCodeVariant{
+					"auto": {Thinking: &OpenCodeThinking{Type: "adaptive"}},
+				}
+				for _, level := range levels {
+					ocModel.Variants[level] = &OpenCodeVariant{
+						Thinking:        &OpenCodeThinking{Type: "adaptive"},
+						ReasoningEffort: level,
+					}
+				}
+			} else if levels := claudeManualEffortLevels(m); len(levels) > 0 {
+				ocModel.Variants = make(map[string]*OpenCodeVariant)
+				for _, level := range levels {
+					ocModel.Variants[level] = &OpenCodeVariant{
+						Thinking:        &OpenCodeThinking{Type: "enabled", BudgetTokens: claudeManualBudgetForLevel(level)},
+						ReasoningEffort: level,
+					}
+				}
+			} else if m.Thinking != nil && m.Thinking.Supported {
 				ocModel.Variants = map[string]*OpenCodeVariant{
 					"low":    {Thinking: &OpenCodeThinking{Type: "enabled", BudgetTokens: 4000}},
 					"medium": {Thinking: &OpenCodeThinking{Type: "enabled", BudgetTokens: 10000}},
 					"high":   {Thinking: &OpenCodeThinking{Type: "enabled", BudgetTokens: 32000}},
-					"max":    {Thinking: &OpenCodeThinking{Type: "enabled", BudgetTokens: 64000}},
 				}
 			}
 

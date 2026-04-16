@@ -6,6 +6,15 @@ import (
 	"testing"
 )
 
+func hasBeta(betas []string, target string) bool {
+	for _, beta := range betas {
+		if beta == target {
+			return true
+		}
+	}
+	return false
+}
+
 func TestParseThinkingSuffix(t *testing.T) {
 	tests := []struct {
 		name            string
@@ -50,10 +59,10 @@ func TestParseThinkingSuffix(t *testing.T) {
 			wantHasThinking: false,
 		},
 		{
-			name:            "budget capped at 32768",
+			name:            "budget preserved within model range",
 			model:           "claude-opus-4-5-20251101-thinking-50000",
 			wantModel:       "claude-opus-4-5-20251101",
-			wantBudget:      32768,
+			wantBudget:      50000,
 			wantHasThinking: true,
 		},
 		{
@@ -84,12 +93,12 @@ func TestParseThinkingSuffix(t *testing.T) {
 func TestTransformRequestBody(t *testing.T) {
 	input := `{"model":"claude-opus-4-5-20251101-thinking-10000","messages":[{"role":"user","content":"hi"}]}`
 
-	output, transformed, err := TransformRequestBody("/v1/messages", []byte(input))
+	output, betas, err := TransformRequestBody("/v1/messages", []byte(input))
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if !transformed {
-		t.Fatal("expected transformed=true")
+	if !hasBeta(betas, BetaInterleaved) {
+		t.Fatalf("expected %q beta header, got %v", BetaInterleaved, betas)
 	}
 
 	// Check model was changed
@@ -109,12 +118,12 @@ func TestTransformRequestBody(t *testing.T) {
 func TestTransformRequestBody_NoThinking(t *testing.T) {
 	input := `{"model":"gpt-5.1-codex","messages":[{"role":"user","content":"hi"}]}`
 
-	output, transformed, err := TransformRequestBody("/v1/messages", []byte(input))
+	output, betas, err := TransformRequestBody("/v1/messages", []byte(input))
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if transformed {
-		t.Fatal("expected transformed=false for non-thinking model")
+	if len(betas) != 0 {
+		t.Fatalf("expected no betas for non-thinking model, got %v", betas)
 	}
 	if string(output) != input {
 		t.Errorf("body should be unchanged")
@@ -149,12 +158,12 @@ func TestTransformRequestBody_ThinkingPatternNeedsHeader(t *testing.T) {
 	// but body should not be transformed (backend handles it)
 	input := `{"model":"gemini-claude-opus-4-5-thinking","messages":[{"role":"user","content":"hi"}]}`
 
-	output, needsHeader, err := TransformRequestBody("/v1/messages", []byte(input))
+	output, betas, err := TransformRequestBody("/v1/messages", []byte(input))
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if !needsHeader {
-		t.Fatal("expected needsHeader=true for -thinking suffix model")
+	if !hasBeta(betas, BetaInterleaved) {
+		t.Fatalf("expected %q beta for -thinking suffix model, got %v", BetaInterleaved, betas)
 	}
 	if string(output) != input {
 		t.Errorf("body should be unchanged for -thinking suffix (backend handles)")
@@ -164,12 +173,12 @@ func TestTransformRequestBody_ThinkingPatternNeedsHeader(t *testing.T) {
 func TestTransformRequestBody_CodexResponsesInputStringNormalized(t *testing.T) {
 	input := `{"model":"gpt-5.2-codex","input":"hello"}` // compact/summarize path sends input as string
 
-	output, needsHeader, err := TransformRequestBody("/v1/responses", []byte(input))
+	output, betas, err := TransformRequestBody("/v1/responses", []byte(input))
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if needsHeader {
-		t.Fatal("expected needsHeader=false for codex normalization")
+	if len(betas) != 0 {
+		t.Fatalf("expected no betas for codex normalization, got %v", betas)
 	}
 
 	var body map[string]interface{}
@@ -208,14 +217,119 @@ func TestTransformRequestBody_CodexResponsesInputStringNormalized(t *testing.T) 
 func TestTransformRequestBody_CodexNormalizationOnlyOnResponsesPath(t *testing.T) {
 	input := `{"model":"gpt-5.2-codex","input":"hello"}`
 
-	output, needsHeader, err := TransformRequestBody("/v1/chat/completions", []byte(input))
+	output, betas, err := TransformRequestBody("/v1/chat/completions", []byte(input))
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if needsHeader {
-		t.Fatal("expected needsHeader=false")
+	if len(betas) != 0 {
+		t.Fatalf("expected no betas, got %v", betas)
 	}
 	if string(output) != input {
 		t.Errorf("body should stay unchanged on non-responses path: %s", output)
+	}
+}
+
+func TestTransformRequestBody_ClaudeOpus47AdaptiveSuffix(t *testing.T) {
+	input := `{"model":"claude-opus-4-7(xhigh)","messages":[{"role":"user","content":"hi"}]}`
+
+	output, betas, err := TransformRequestBody("/v1/messages", []byte(input))
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if len(betas) != 0 {
+		t.Fatalf("expected no betas for adaptive thinking, got %v", betas)
+	}
+	if !strings.Contains(string(output), `"model":"claude-opus-4-7"`) {
+		t.Fatalf("expected transformed model id, got %s", output)
+	}
+	if !strings.Contains(string(output), `"type":"adaptive"`) {
+		t.Fatalf("expected adaptive thinking, got %s", output)
+	}
+	if !strings.Contains(string(output), `"effort":"xhigh"`) {
+		t.Fatalf("expected xhigh effort, got %s", output)
+	}
+	if strings.Contains(string(output), `"budget_tokens"`) {
+		t.Fatalf("did not expect manual budget tokens, got %s", output)
+	}
+}
+
+func TestTransformRequestBody_ClaudeOpus45LevelUsesManualBudgetAndEffort(t *testing.T) {
+	input := `{"model":"claude-opus-4-5-20251101(high)","messages":[{"role":"user","content":"hi"}]}`
+
+	output, betas, err := TransformRequestBody("/v1/messages", []byte(input))
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if !hasBeta(betas, BetaInterleaved) {
+		t.Fatalf("expected %q beta for manual thinking, got %v", BetaInterleaved, betas)
+	}
+	if !strings.Contains(string(output), `"model":"claude-opus-4-5-20251101"`) {
+		t.Fatalf("expected transformed model id, got %s", output)
+	}
+	if !strings.Contains(string(output), `"type":"enabled"`) {
+		t.Fatalf("expected manual thinking enabled, got %s", output)
+	}
+	if !strings.Contains(string(output), `"budget_tokens":24576`) {
+		t.Fatalf("expected mapped manual budget, got %s", output)
+	}
+	if !strings.Contains(string(output), `"effort":"high"`) {
+		t.Fatalf("expected high effort, got %s", output)
+	}
+}
+
+func TestTransformRequestBody_ClaudeOpus47TaskBudgetAddsBetaHeader(t *testing.T) {
+	input := `{"model":"claude-opus-4-7","thinking":{"type":"adaptive"},"output_config":{"effort":"high","task_budget":{"type":"tokens","total":64000}},"messages":[{"role":"user","content":"hi"}]}`
+
+	output, betas, err := TransformRequestBody("/v1/messages", []byte(input))
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if !hasBeta(betas, BetaTaskBudgets) {
+		t.Fatalf("expected %q beta for task budgets, got %v", BetaTaskBudgets, betas)
+	}
+	if string(output) != input {
+		t.Fatalf("expected body passthrough for explicit task budget request, got %s", output)
+	}
+}
+
+func TestTransformRequestBody_GeminiClaudeOpus47LegacyBudgetUsesAdaptiveProfile(t *testing.T) {
+	input := `{"model":"gemini-claude-opus-4-7-thinking-10000","messages":[{"role":"user","content":"hi"}]}`
+
+	output, betas, err := TransformRequestBody("/v1/messages", []byte(input))
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if !hasBeta(betas, BetaInterleaved) {
+		t.Fatalf("expected %q beta header for gemini-claude thinking alias, got %v", BetaInterleaved, betas)
+	}
+	if !strings.Contains(string(output), `"model":"gemini-claude-opus-4-7-thinking"`) {
+		t.Fatalf("expected transformed gemini-claude model id, got %s", output)
+	}
+	if !strings.Contains(string(output), `"type":"adaptive"`) {
+		t.Fatalf("expected adaptive thinking for gemini-claude opus 4.7, got %s", output)
+	}
+	if !strings.Contains(string(output), `"effort":"medium"`) {
+		t.Fatalf("expected 10000 budget alias to map to medium effort, got %s", output)
+	}
+	if strings.Contains(string(output), `"budget_tokens"`) {
+		t.Fatalf("did not expect budget_tokens for gemini-claude opus 4.7, got %s", output)
+	}
+}
+
+func TestTransformRequestBody_ManualThinkingClampsBudgetAndMaxTokensToModelLimit(t *testing.T) {
+	input := `{"model":"claude-opus-4-5-20251101-thinking-100000","max_tokens":200000,"messages":[{"role":"user","content":"hi"}]}`
+
+	output, betas, err := TransformRequestBody("/v1/messages", []byte(input))
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if !hasBeta(betas, BetaInterleaved) {
+		t.Fatalf("expected %q beta header, got %v", BetaInterleaved, betas)
+	}
+	if !strings.Contains(string(output), `"budget_tokens":63999`) {
+		t.Fatalf("expected manual thinking budget to clamp to 63999, got %s", output)
+	}
+	if !strings.Contains(string(output), `"max_tokens":64000`) {
+		t.Fatalf("expected max_tokens to clamp to 64000, got %s", output)
 	}
 }

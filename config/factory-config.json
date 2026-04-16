@@ -27,24 +27,6 @@
       "maxOutputTokens": 32768
     },
     {
-      "model": "gemini-2.5-flash",
-      "displayName": "[AG] Gemini 2.5 Flash",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 65535,
-      "supportsImages": true
-    },
-    {
-      "model": "gemini-2.5-flash-lite",
-      "displayName": "[AG] Gemini 2.5 Flash Lite",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 65535,
-      "supportsImages": true
-    },
-    {
       "model": "gemini-3-flash",
       "displayName": "[AG] Gemini 3 Flash",
       "baseUrl": "http://localhost:8317/v1",
@@ -77,6 +59,15 @@
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
       "provider": "generic-chat-completion-api",
+      "supportsImages": true
+    },
+    {
+      "model": "gemini-3.1-flash-lite",
+      "displayName": "[AG] Gemini 3.1 Flash Lite",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 65535,
       "supportsImages": true
     },
     {
@@ -296,6 +287,33 @@
       "supportsImages": true
     },
     {
+      "model": "claude-opus-4-5-20251101(high)",
+      "displayName": "[Claude] Claude 4.5 Opus (High)",
+      "baseUrl": "http://localhost:8317",
+      "apiKey": "dummy",
+      "provider": "anthropic",
+      "maxOutputTokens": 64000,
+      "supportsImages": true
+    },
+    {
+      "model": "claude-opus-4-5-20251101(low)",
+      "displayName": "[Claude] Claude 4.5 Opus (Low)",
+      "baseUrl": "http://localhost:8317",
+      "apiKey": "dummy",
+      "provider": "anthropic",
+      "maxOutputTokens": 64000,
+      "supportsImages": true
+    },
+    {
+      "model": "claude-opus-4-5-20251101(medium)",
+      "displayName": "[Claude] Claude 4.5 Opus (Medium)",
+      "baseUrl": "http://localhost:8317",
+      "apiKey": "dummy",
+      "provider": "anthropic",
+      "maxOutputTokens": 64000,
+      "supportsImages": true
+    },
+    {
       "model": "claude-opus-4-5-20251101-thinking-10000",
       "displayName": "[Claude] Claude 4.5 Opus (Thinking 10k)",
       "baseUrl": "http://localhost:8317",
@@ -368,6 +386,51 @@
       "supportsImages": true
     },
     {
+      "model": "claude-opus-4-6(auto)",
+      "displayName": "[Claude] Claude 4.6 Opus (Auto)",
+      "baseUrl": "http://localhost:8317",
+      "apiKey": "dummy",
+      "provider": "anthropic",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
+      "model": "claude-opus-4-6(high)",
+      "displayName": "[Claude] Claude 4.6 Opus (High)",
+      "baseUrl": "http://localhost:8317",
+      "apiKey": "dummy",
+      "provider": "anthropic",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
+      "model": "claude-opus-4-6(low)",
+      "displayName": "[Claude] Claude 4.6 Opus (Low)",
+      "baseUrl": "http://localhost:8317",
+      "apiKey": "dummy",
+      "provider": "anthropic",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
+      "model": "claude-opus-4-6(max)",
+      "displayName": "[Claude] Claude 4.6 Opus (Max)",
+      "baseUrl": "http://localhost:8317",
+      "apiKey": "dummy",
+      "provider": "anthropic",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
+      "model": "claude-opus-4-6(medium)",
+      "displayName": "[Claude] Claude 4.6 Opus (Medium)",
+      "baseUrl": "http://localhost:8317",
+      "apiKey": "dummy",
+      "provider": "anthropic",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
       "model": "claude-opus-4-6-thinking-10000",
       "displayName": "[Claude] Claude 4.6 Opus (Thinking 10k)",
       "baseUrl": "http://localhost:8317",
@@ -404,6 +467,42 @@
       "supportsImages": true
     },
     {
+      "model": "claude-sonnet-4-6(auto)",
+      "displayName": "[Claude] Claude 4.6 Sonnet (Auto)",
+      "baseUrl": "http://localhost:8317",
+      "apiKey": "dummy",
+      "provider": "anthropic",
+      "maxOutputTokens": 64000,
+      "supportsImages": true
+    },
+    {
+      "model": "claude-sonnet-4-6(high)",
+      "displayName": "[Claude] Claude 4.6 Sonnet (High)",
+      "baseUrl": "http://localhost:8317",
+      "apiKey": "dummy",
+      "provider": "anthropic",
+      "maxOutputTokens": 64000,
+      "supportsImages": true
+    },
+    {
+      "model": "claude-sonnet-4-6(low)",
+      "displayName": "[Claude] Claude 4.6 Sonnet (Low)",
+      "baseUrl": "http://localhost:8317",
+      "apiKey": "dummy",
+      "provider": "anthropic",
+      "maxOutputTokens": 64000,
+      "supportsImages": true
+    },
+    {
+      "model": "claude-sonnet-4-6(medium)",
+      "displayName": "[Claude] Claude 4.6 Sonnet (Medium)",
+      "baseUrl": "http://localhost:8317",
+      "apiKey": "dummy",
+      "provider": "anthropic",
+      "maxOutputTokens": 64000,
+      "supportsImages": true
+    },
+    {
       "model": "claude-sonnet-4-6-thinking-10000",
       "displayName": "[Claude] Claude 4.6 Sonnet (Thinking 10k)",
       "baseUrl": "http://localhost:8317",
@@ -428,6 +527,69 @@
       "apiKey": "dummy",
       "provider": "anthropic",
       "maxOutputTokens": 64000,
+      "supportsImages": true
+    },
+    {
+      "model": "claude-opus-4-7",
+      "displayName": "[Claude] Claude Opus 4.7",
+      "baseUrl": "http://localhost:8317",
+      "apiKey": "dummy",
+      "provider": "anthropic",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
+      "model": "claude-opus-4-7(auto)",
+      "displayName": "[Claude] Claude Opus 4.7 (Auto)",
+      "baseUrl": "http://localhost:8317",
+      "apiKey": "dummy",
+      "provider": "anthropic",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
+      "model": "claude-opus-4-7(high)",
+      "displayName": "[Claude] Claude Opus 4.7 (High)",
+      "baseUrl": "http://localhost:8317",
+      "apiKey": "dummy",
+      "provider": "anthropic",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
+      "model": "claude-opus-4-7(low)",
+      "displayName": "[Claude] Claude Opus 4.7 (Low)",
+      "baseUrl": "http://localhost:8317",
+      "apiKey": "dummy",
+      "provider": "anthropic",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
+      "model": "claude-opus-4-7(max)",
+      "displayName": "[Claude] Claude Opus 4.7 (Max)",
+      "baseUrl": "http://localhost:8317",
+      "apiKey": "dummy",
+      "provider": "anthropic",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
+      "model": "claude-opus-4-7(medium)",
+      "displayName": "[Claude] Claude Opus 4.7 (Medium)",
+      "baseUrl": "http://localhost:8317",
+      "apiKey": "dummy",
+      "provider": "anthropic",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
+      "model": "claude-opus-4-7(xhigh)",
+      "displayName": "[Claude] Claude Opus 4.7 (Xhigh)",
+      "baseUrl": "http://localhost:8317",
+      "apiKey": "dummy",
+      "provider": "anthropic",
+      "maxOutputTokens": 128000,
       "supportsImages": true
     },
     {
@@ -987,276 +1149,6 @@
       "maxOutputTokens": 32768
     },
     {
-      "model": "gpt-5",
-      "displayName": "[OpenAI] GPT 5",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "openai",
-      "maxOutputTokens": 128000,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5.1",
-      "displayName": "[OpenAI] GPT 5",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "openai",
-      "maxOutputTokens": 128000,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5(high)",
-      "displayName": "[OpenAI] GPT 5 (High)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "openai",
-      "maxOutputTokens": 128000,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5.1(high)",
-      "displayName": "[OpenAI] GPT 5 (High)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "openai",
-      "maxOutputTokens": 128000,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5(low)",
-      "displayName": "[OpenAI] GPT 5 (Low)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "openai",
-      "maxOutputTokens": 128000,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5.1(low)",
-      "displayName": "[OpenAI] GPT 5 (Low)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "openai",
-      "maxOutputTokens": 128000,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5(medium)",
-      "displayName": "[OpenAI] GPT 5 (Medium)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "openai",
-      "maxOutputTokens": 128000,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5.1(medium)",
-      "displayName": "[OpenAI] GPT 5 (Medium)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "openai",
-      "maxOutputTokens": 128000,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5(minimal)",
-      "displayName": "[OpenAI] GPT 5 (Minimal)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "openai",
-      "maxOutputTokens": 128000,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5-codex",
-      "displayName": "[OpenAI] GPT 5 Codex",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "openai",
-      "maxOutputTokens": 128000,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5-codex(high)",
-      "displayName": "[OpenAI] GPT 5 Codex (High)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "openai",
-      "maxOutputTokens": 128000,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5-codex(low)",
-      "displayName": "[OpenAI] GPT 5 Codex (Low)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "openai",
-      "maxOutputTokens": 128000,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5-codex(medium)",
-      "displayName": "[OpenAI] GPT 5 Codex (Medium)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "openai",
-      "maxOutputTokens": 128000,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5-codex-mini",
-      "displayName": "[OpenAI] GPT 5 Codex Mini",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "openai",
-      "maxOutputTokens": 128000,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5-codex-mini(high)",
-      "displayName": "[OpenAI] GPT 5 Codex Mini (High)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "openai",
-      "maxOutputTokens": 128000,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5-codex-mini(low)",
-      "displayName": "[OpenAI] GPT 5 Codex Mini (Low)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "openai",
-      "maxOutputTokens": 128000,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5-codex-mini(medium)",
-      "displayName": "[OpenAI] GPT 5 Codex Mini (Medium)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "openai",
-      "maxOutputTokens": 128000,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5.1-codex",
-      "displayName": "[OpenAI] GPT 5.1 Codex",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "openai",
-      "maxOutputTokens": 128000,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5.1-codex(high)",
-      "displayName": "[OpenAI] GPT 5.1 Codex (High)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "openai",
-      "maxOutputTokens": 128000,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5.1-codex(low)",
-      "displayName": "[OpenAI] GPT 5.1 Codex (Low)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "openai",
-      "maxOutputTokens": 128000,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5.1-codex(medium)",
-      "displayName": "[OpenAI] GPT 5.1 Codex (Medium)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "openai",
-      "maxOutputTokens": 128000,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5.1-codex-max",
-      "displayName": "[OpenAI] GPT 5.1 Codex Max",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "openai",
-      "maxOutputTokens": 128000,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5.1-codex-max(high)",
-      "displayName": "[OpenAI] GPT 5.1 Codex Max (High)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "openai",
-      "maxOutputTokens": 128000,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5.1-codex-max(low)",
-      "displayName": "[OpenAI] GPT 5.1 Codex Max (Low)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "openai",
-      "maxOutputTokens": 128000,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5.1-codex-max(medium)",
-      "displayName": "[OpenAI] GPT 5.1 Codex Max (Medium)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "openai",
-      "maxOutputTokens": 128000,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5.1-codex-max(xhigh)",
-      "displayName": "[OpenAI] GPT 5.1 Codex Max (Xhigh)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "openai",
-      "maxOutputTokens": 128000,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5.1-codex-mini",
-      "displayName": "[OpenAI] GPT 5.1 Codex Mini",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "openai",
-      "maxOutputTokens": 128000,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5.1-codex-mini(high)",
-      "displayName": "[OpenAI] GPT 5.1 Codex Mini (High)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "openai",
-      "maxOutputTokens": 128000,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5.1-codex-mini(low)",
-      "displayName": "[OpenAI] GPT 5.1 Codex Mini (Low)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "openai",
-      "maxOutputTokens": 128000,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5.1-codex-mini(medium)",
-      "displayName": "[OpenAI] GPT 5.1 Codex Mini (Medium)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "openai",
-      "maxOutputTokens": 128000,
-      "supportsImages": true
-    },
-    {
       "model": "gpt-5.2",
       "displayName": "[OpenAI] GPT 5.2",
       "baseUrl": "http://localhost:8317/v1",
@@ -1295,51 +1187,6 @@
     {
       "model": "gpt-5.2(xhigh)",
       "displayName": "[OpenAI] GPT 5.2 (Xhigh)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "openai",
-      "maxOutputTokens": 128000,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5.2-codex",
-      "displayName": "[OpenAI] GPT 5.2 Codex",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "openai",
-      "maxOutputTokens": 128000,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5.2-codex(high)",
-      "displayName": "[OpenAI] GPT 5.2 Codex (High)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "openai",
-      "maxOutputTokens": 128000,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5.2-codex(low)",
-      "displayName": "[OpenAI] GPT 5.2 Codex (Low)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "openai",
-      "maxOutputTokens": 128000,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5.2-codex(medium)",
-      "displayName": "[OpenAI] GPT 5.2 Codex (Medium)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "openai",
-      "maxOutputTokens": 128000,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5.2-codex(xhigh)",
-      "displayName": "[OpenAI] GPT 5.2 Codex (Xhigh)",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
       "provider": "openai",
@@ -1482,36 +1329,48 @@
       "supportsImages": true
     },
     {
-      "model": "coder-model",
-      "displayName": "[Qwen] Qwen 3.5 Plus",
+      "model": "gpt-5.4-mini",
+      "displayName": "[OpenAI] GPT 5.4 Mini",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 65536
+      "provider": "openai",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
     },
     {
-      "model": "qwen3-coder-flash",
-      "displayName": "[Qwen] Qwen3 Coder Flash",
+      "model": "gpt-5.4-mini(high)",
+      "displayName": "[OpenAI] GPT 5.4 Mini (High)",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 2048
+      "provider": "openai",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
     },
     {
-      "model": "qwen3-coder-plus",
-      "displayName": "[Qwen] Qwen3 Coder Plus",
+      "model": "gpt-5.4-mini(low)",
+      "displayName": "[OpenAI] GPT 5.4 Mini (Low)",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 8192
+      "provider": "openai",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
     },
     {
-      "model": "vision-model",
-      "displayName": "[Qwen] Qwen3 Vision Model",
+      "model": "gpt-5.4-mini(medium)",
+      "displayName": "[OpenAI] GPT 5.4 Mini (Medium)",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 2048,
+      "provider": "openai",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
+      "model": "gpt-5.4-mini(xhigh)",
+      "displayName": "[OpenAI] GPT 5.4 Mini (Xhigh)",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "openai",
+      "maxOutputTokens": 128000,
       "supportsImages": true
     }
   ]

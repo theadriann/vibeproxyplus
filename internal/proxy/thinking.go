@@ -7,9 +7,33 @@ import (
 )
 
 const (
-	MaxThinkingBudget = 32768
+	MaxThinkingBudget = 128000
 	ThinkingSuffix    = "-thinking-"
 )
+
+type claudeThinkingMode string
+
+const (
+	claudeThinkingModeNone    claudeThinkingMode = "none"
+	claudeThinkingModeAuto    claudeThinkingMode = "auto"
+	claudeThinkingModeLevel   claudeThinkingMode = "level"
+	claudeThinkingModeBudget  claudeThinkingMode = "budget"
+	claudeThinkingModeUnknown claudeThinkingMode = ""
+)
+
+type claudeThinkingConfig struct {
+	Mode   claudeThinkingMode
+	Level  string
+	Budget int
+}
+
+type claudeThinkingProfile struct {
+	MaxOutputTokens    int
+	AdaptiveOnly       bool
+	SupportsAdaptive   bool
+	AdaptiveLevels     []string
+	ManualEffortLevels []string
+}
 
 // ParseThinkingSuffix extracts thinking budget from model name.
 // Returns: cleanModel, budgetTokens, hasThinking
@@ -26,15 +50,14 @@ func ParseThinkingSuffix(model string) (string, int, bool) {
 		return model[:idx], 0, false
 	}
 
-	// Cap budget
-	if budget > MaxThinkingBudget {
-		budget = MaxThinkingBudget
-	}
-
 	// For gemini-claude-* models, keep "-thinking" in the name
 	cleanModel := model[:idx]
 	if strings.HasPrefix(model, "gemini-claude-") {
 		cleanModel = model[:idx] + "-thinking"
+	}
+
+	if budget > MaxThinkingBudget {
+		budget = MaxThinkingBudget
 	}
 
 	return cleanModel, budget, true
@@ -98,15 +121,343 @@ func normalizeCodexResponsesInput(data map[string]interface{}, path string) bool
 	return true
 }
 
+func parseParentheticalThinkingSuffix(model string) (string, claudeThinkingConfig, bool) {
+	lastOpen := strings.LastIndex(model, "(")
+	if lastOpen == -1 || !strings.HasSuffix(model, ")") {
+		return model, claudeThinkingConfig{}, false
+	}
+
+	cleanModel := model[:lastOpen]
+	rawSuffix := strings.ToLower(strings.TrimSpace(model[lastOpen+1 : len(model)-1]))
+	if rawSuffix == "" {
+		return model, claudeThinkingConfig{}, false
+	}
+
+	switch rawSuffix {
+	case "none":
+		return cleanModel, claudeThinkingConfig{Mode: claudeThinkingModeNone}, true
+	case "auto", "-1":
+		return cleanModel, claudeThinkingConfig{Mode: claudeThinkingModeAuto}, true
+	case "low", "medium", "high", "xhigh", "max":
+		return cleanModel, claudeThinkingConfig{Mode: claudeThinkingModeLevel, Level: rawSuffix}, true
+	}
+
+	budget, err := strconv.Atoi(rawSuffix)
+	if err != nil {
+		return model, claudeThinkingConfig{}, false
+	}
+	if budget == 0 {
+		return cleanModel, claudeThinkingConfig{Mode: claudeThinkingModeNone}, true
+	}
+	if budget > 0 {
+		if budget > MaxThinkingBudget {
+			budget = MaxThinkingBudget
+		}
+		return cleanModel, claudeThinkingConfig{Mode: claudeThinkingModeBudget, Budget: budget}, true
+	}
+
+	return model, claudeThinkingConfig{}, false
+}
+
+func containsString(values []string, target string) bool {
+	for _, value := range values {
+		if value == target {
+			return true
+		}
+	}
+	return false
+}
+
+func isClaudeModel(model string) bool {
+	return strings.HasPrefix(model, "claude-") || strings.HasPrefix(model, "gemini-claude-")
+}
+
+func claudeProfileForModel(model string) claudeThinkingProfile {
+	if strings.HasPrefix(model, "gemini-claude-") {
+		model = strings.TrimPrefix(model, "gemini-")
+	}
+
+	switch {
+	case strings.HasPrefix(model, "claude-opus-4-7"):
+		return claudeThinkingProfile{
+			MaxOutputTokens:  128000,
+			AdaptiveOnly:     true,
+			SupportsAdaptive: true,
+			AdaptiveLevels:   []string{"low", "medium", "high", "xhigh", "max"},
+		}
+	case strings.HasPrefix(model, "claude-opus-4-6"):
+		return claudeThinkingProfile{
+			MaxOutputTokens:  128000,
+			SupportsAdaptive: true,
+			AdaptiveLevels:   []string{"low", "medium", "high", "max"},
+		}
+	case strings.HasPrefix(model, "claude-sonnet-4-6"):
+		return claudeThinkingProfile{
+			MaxOutputTokens:  64000,
+			SupportsAdaptive: true,
+			AdaptiveLevels:   []string{"low", "medium", "high"},
+		}
+	case strings.HasPrefix(model, "claude-opus-4-5-20251101"):
+		return claudeThinkingProfile{
+			MaxOutputTokens:    64000,
+			ManualEffortLevels: []string{"low", "medium", "high"},
+		}
+	case strings.HasPrefix(model, "claude-sonnet-4-5-20250929"), strings.HasPrefix(model, "claude-haiku-4-5-20251001"):
+		return claudeThinkingProfile{MaxOutputTokens: 64000}
+	case strings.HasPrefix(model, "claude-opus-4-20250514"), strings.HasPrefix(model, "claude-sonnet-4-20250514"):
+		return claudeThinkingProfile{MaxOutputTokens: 32000}
+	case strings.HasPrefix(model, "claude-3-7-sonnet-20250219"), strings.HasPrefix(model, "claude-3-5-haiku-20241022"):
+		return claudeThinkingProfile{MaxOutputTokens: 8192}
+	default:
+		return claudeThinkingProfile{MaxOutputTokens: 64000}
+	}
+}
+
+func mapLevelToLegacyBudget(level string) int {
+	switch level {
+	case "low":
+		return 1024
+	case "medium":
+		return 8192
+	case "high":
+		return 24576
+	case "xhigh":
+		return 32768
+	case "max":
+		return 128000
+	default:
+		return 0
+	}
+}
+
+func mapBudgetToAdaptiveLevel(budget int, levels []string) string {
+	switch {
+	case containsString(levels, "xhigh") && containsString(levels, "max"):
+		switch {
+		case budget <= 4000:
+			return "low"
+		case budget <= 10000:
+			return "medium"
+		case budget <= 32000:
+			return "high"
+		case budget <= 64000:
+			return "xhigh"
+		default:
+			return "max"
+		}
+	case containsString(levels, "max"):
+		switch {
+		case budget <= 4000:
+			return "low"
+		case budget <= 10000:
+			return "medium"
+		case budget <= 32000:
+			return "high"
+		default:
+			return "max"
+		}
+	default:
+		switch {
+		case budget <= 4000:
+			return "low"
+		case budget <= 10000:
+			return "medium"
+		default:
+			return "high"
+		}
+	}
+}
+
+func deletePath(data map[string]interface{}, path ...string) {
+	if len(path) == 0 {
+		return
+	}
+	current := data
+	for i := 0; i < len(path)-1; i++ {
+		next, ok := current[path[i]].(map[string]interface{})
+		if !ok {
+			return
+		}
+		current = next
+	}
+	delete(current, path[len(path)-1])
+}
+
+func setOutputConfigField(data map[string]interface{}, key string, value interface{}) {
+	outputConfig, _ := data["output_config"].(map[string]interface{})
+	if outputConfig == nil {
+		outputConfig = make(map[string]interface{})
+		data["output_config"] = outputConfig
+	}
+	outputConfig[key] = value
+}
+
+func cleanupOutputConfig(data map[string]interface{}) {
+	outputConfig, _ := data["output_config"].(map[string]interface{})
+	if outputConfig != nil && len(outputConfig) == 0 {
+		delete(data, "output_config")
+	}
+}
+
+func applyDisabledThinking(data map[string]interface{}) {
+	data["thinking"] = map[string]interface{}{"type": "disabled"}
+	deletePath(data, "thinking", "budget_tokens")
+	deletePath(data, "output_config", "effort")
+	cleanupOutputConfig(data)
+}
+
+func applyAdaptiveThinking(data map[string]interface{}, level string) {
+	data["thinking"] = map[string]interface{}{"type": "adaptive"}
+	deletePath(data, "thinking", "budget_tokens")
+	if level == "" {
+		deletePath(data, "output_config", "effort")
+	} else {
+		setOutputConfigField(data, "effort", level)
+	}
+	cleanupOutputConfig(data)
+}
+
+func applyManualThinking(data map[string]interface{}, budget, maxOutputTokens int, effort string) {
+	if budget <= 0 {
+		applyDisabledThinking(data)
+		return
+	}
+
+	if budget > MaxThinkingBudget {
+		budget = MaxThinkingBudget
+	}
+
+	if maxOutputTokens > 0 && budget >= maxOutputTokens {
+		budget = maxOutputTokens - 1
+	}
+	if budget <= 0 {
+		applyDisabledThinking(data)
+		return
+	}
+
+	requestMaxTokens := 0
+	if maxTokens, ok := data["max_tokens"].(float64); ok && int(maxTokens) > 0 {
+		requestMaxTokens = int(maxTokens)
+	}
+
+	effectiveMaxTokens := requestMaxTokens
+	if effectiveMaxTokens == 0 || effectiveMaxTokens <= budget {
+		effectiveMaxTokens = budget + 1024
+	}
+	if maxOutputTokens > 0 && effectiveMaxTokens > maxOutputTokens {
+		effectiveMaxTokens = maxOutputTokens
+	}
+	if effectiveMaxTokens <= budget {
+		budget = effectiveMaxTokens - 1
+	}
+	if budget <= 0 {
+		applyDisabledThinking(data)
+		return
+	}
+
+	data["thinking"] = map[string]interface{}{
+		"type":          "enabled",
+		"budget_tokens": budget,
+	}
+	if effort == "" {
+		deletePath(data, "output_config", "effort")
+	} else {
+		setOutputConfigField(data, "effort", effort)
+	}
+
+	if requestMaxTokens != effectiveMaxTokens {
+		data["max_tokens"] = effectiveMaxTokens
+	}
+	cleanupOutputConfig(data)
+}
+
+func applyClaudeThinkingConfig(data map[string]interface{}, model string, config claudeThinkingConfig) {
+	profile := claudeProfileForModel(model)
+
+	switch config.Mode {
+	case claudeThinkingModeNone:
+		applyDisabledThinking(data)
+	case claudeThinkingModeAuto:
+		if profile.SupportsAdaptive {
+			applyAdaptiveThinking(data, "")
+			return
+		}
+		applyManualThinking(data, 0, profile.MaxOutputTokens, "")
+	case claudeThinkingModeLevel:
+		if profile.SupportsAdaptive {
+			level := config.Level
+			if !containsString(profile.AdaptiveLevels, level) {
+				level = profile.AdaptiveLevels[len(profile.AdaptiveLevels)-1]
+			}
+			applyAdaptiveThinking(data, level)
+			return
+		}
+
+		effort := ""
+		if containsString(profile.ManualEffortLevels, config.Level) {
+			effort = config.Level
+		}
+		applyManualThinking(data, mapLevelToLegacyBudget(config.Level), profile.MaxOutputTokens, effort)
+	case claudeThinkingModeBudget:
+		if profile.AdaptiveOnly {
+			applyAdaptiveThinking(data, mapBudgetToAdaptiveLevel(config.Budget, profile.AdaptiveLevels))
+			return
+		}
+		applyManualThinking(data, config.Budget, profile.MaxOutputTokens, "")
+	}
+}
+
+func getThinkingType(data map[string]interface{}) string {
+	thinking, ok := data["thinking"].(map[string]interface{})
+	if !ok {
+		return ""
+	}
+	value, _ := thinking["type"].(string)
+	return strings.ToLower(value)
+}
+
+func hasTaskBudget(data map[string]interface{}) bool {
+	outputConfig, ok := data["output_config"].(map[string]interface{})
+	if !ok {
+		return false
+	}
+	_, ok = outputConfig["task_budget"].(map[string]interface{})
+	return ok
+}
+
+func requiredAnthropicBetas(model string, data map[string]interface{}) []string {
+	var betas []string
+
+	if HasThinkingPattern(model) {
+		betas = append(betas, BetaInterleaved)
+	}
+
+	thinkingType := getThinkingType(data)
+	if thinkingType == "enabled" {
+		betas = append(betas, BetaInterleaved)
+	}
+	if hasTaskBudget(data) {
+		betas = append(betas, BetaTaskBudgets)
+	}
+
+	deduped := make([]string, 0, len(betas))
+	seen := make(map[string]struct{}, len(betas))
+	for _, beta := range betas {
+		if _, ok := seen[beta]; ok {
+			continue
+		}
+		seen[beta] = struct{}{}
+		deduped = append(deduped, beta)
+	}
+	return deduped
+}
+
 // TransformRequestBody modifies the JSON body when needed.
-// Returns: transformedBody, needsBetaHeader, error
-// needsBetaHeader is true if either:
-// - Body was transformed with thinking parameter
-// - Model has a thinking pattern that backend will handle (needs beta header)
-func TransformRequestBody(path string, body []byte) ([]byte, bool, error) {
+// Returns: transformedBody, requiredAnthropicBetas, error.
+func TransformRequestBody(path string, body []byte) ([]byte, []string, error) {
 	var data map[string]interface{}
 	if err := json.Unmarshal(body, &data); err != nil {
-		return body, false, err
+		return body, nil, err
 	}
 
 	modified := normalizeCodexResponsesInput(data, path)
@@ -114,57 +465,47 @@ func TransformRequestBody(path string, body []byte) ([]byte, bool, error) {
 	model, ok := data["model"].(string)
 	if !ok {
 		if !modified {
-			return body, false, nil
+			return body, nil, nil
 		}
 		output, err := json.Marshal(data)
-		return output, false, err
+		return output, nil, err
 	}
 
 	// Only process Claude models (including gemini-claude variants)
-	if !strings.HasPrefix(model, "claude-") && !strings.HasPrefix(model, "gemini-claude-") {
+	if !isClaudeModel(model) {
 		if !modified {
-			return body, false, nil
+			return body, nil, nil
 		}
 		output, err := json.Marshal(data)
-		return output, false, err
+		return output, nil, err
 	}
 
-	// Check for -thinking-NUMBER suffix that we handle ourselves
-	cleanModel, budget, hasThinkingSuffix := ParseThinkingSuffix(model)
-	if hasThinkingSuffix {
-		// Update model name
+	if strings.HasPrefix(model, "claude-") {
+		if cleanModel, config, hasConfigSuffix := parseParentheticalThinkingSuffix(model); hasConfigSuffix {
+			data["model"] = cleanModel
+			applyClaudeThinkingConfig(data, cleanModel, config)
+			output, err := json.Marshal(data)
+			return output, requiredAnthropicBetas(cleanModel, data), err
+		}
+	}
+
+	if cleanModel, budget, hasThinkingSuffix := ParseThinkingSuffix(model); hasThinkingSuffix {
 		data["model"] = cleanModel
-
-		// Add thinking parameter
-		data["thinking"] = map[string]interface{}{
-			"type":          "enabled",
-			"budget_tokens": budget,
-		}
-
-		// Ensure max_tokens > budget
-		minMaxTokens := budget + 1024
-		if minMaxTokens > MaxThinkingBudget {
-			minMaxTokens = MaxThinkingBudget
-		}
-
-		if maxTokens, ok := data["max_tokens"].(float64); !ok || int(maxTokens) <= budget {
-			data["max_tokens"] = minMaxTokens
-		}
-
+		applyClaudeThinkingConfig(data, cleanModel, claudeThinkingConfig{Mode: claudeThinkingModeBudget, Budget: budget})
 		output, err := json.Marshal(data)
-		return output, true, err
+		return output, requiredAnthropicBetas(cleanModel, data), err
 	}
 
 	// Check for other thinking patterns that backend handles
 	// but still need the beta header (e.g., -thinking, -thinking(budget))
 	if HasThinkingPattern(model) {
-		return body, true, nil
+		return body, requiredAnthropicBetas(model, data), nil
 	}
 
 	if modified {
 		output, err := json.Marshal(data)
-		return output, false, err
+		return output, requiredAnthropicBetas(model, data), err
 	}
 
-	return body, false, nil
+	return body, requiredAnthropicBetas(model, data), nil
 }

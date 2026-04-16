@@ -145,3 +145,214 @@ func TestGenerateFactoryConfig_SortsDeterministicallyWhenDisplayNamesMatch(t *te
 		t.Fatalf("expected second model to be z-model, got %q", got)
 	}
 }
+
+func TestParseAndEnrichModels_UsesStaticModelsJSONForGetterBackedProviders(t *testing.T) {
+	source := `
+func GetClaudeModels() []*ModelInfo {
+	return cloneModelInfos(getModels().Claude)
+}
+
+func GetCodexFreeModels() []*ModelInfo {
+	return cloneModelInfos(getModels().CodexFree)
+}
+
+func GetCodexProModels() []*ModelInfo {
+	return cloneModelInfos(getModels().CodexPro)
+}
+`
+
+	staticModelsJSON := `{
+  "claude": [
+    {
+      "id": "claude-sonnet-4-5-20250929",
+      "owned_by": "anthropic",
+      "type": "claude",
+      "display_name": "Claude Sonnet 4.5",
+      "max_completion_tokens": 64000,
+      "thinking": {
+        "min": 1024,
+        "max": 128000,
+        "zero_allowed": true
+      }
+    }
+  ],
+  "codex-free": [
+    {
+      "id": "gpt-5",
+      "owned_by": "openai",
+      "type": "codex",
+      "display_name": "GPT-5",
+      "max_completion_tokens": 32768
+    }
+  ],
+  "codex-pro": [
+    {
+      "id": "gpt-5",
+      "owned_by": "openai",
+      "type": "codex",
+      "display_name": "GPT-5",
+      "max_completion_tokens": 32768
+    },
+    {
+      "id": "gpt-5.4",
+      "owned_by": "openai",
+      "type": "codex",
+      "display_name": "GPT-5.4",
+      "max_completion_tokens": 32768,
+      "thinking": {
+        "levels": ["none", "low", "medium", "high"]
+      }
+    }
+  ]
+}`
+
+	models := parseAndEnrichModels(source, staticModelsJSON, nil)
+
+	if got := len(models["claude"]); got != 1 {
+		t.Fatalf("expected 1 claude model, got %d", got)
+	}
+
+	if got := len(models["codex"]); got != 2 {
+		t.Fatalf("expected 2 deduplicated codex models, got %d", got)
+	}
+
+	config := generateFactoryConfig(models)
+
+	var anthropicCount, openaiCount int
+	for _, model := range config.CustomModels {
+		switch model.Provider {
+		case "anthropic":
+			anthropicCount++
+		case "openai":
+			openaiCount++
+		}
+	}
+
+	if anthropicCount == 0 {
+		t.Fatal("expected generated Factory config to include anthropic models")
+	}
+	if openaiCount == 0 {
+		t.Fatal("expected generated Factory config to include openai models")
+	}
+}
+
+func TestGenerateFactoryConfig_ClaudeAdaptiveAndManualVariants(t *testing.T) {
+	models := map[string][]Model{
+		"claude": {
+			{
+				ID:                  "claude-opus-4-7",
+				Provider:            "claude",
+				DisplayName:         "Claude Opus 4.7",
+				MaxCompletionTokens: 128000,
+				Thinking: &Thinking{
+					Supported: true,
+					Levels:    []string{"low", "medium", "high", "xhigh", "max"},
+				},
+			},
+			{
+				ID:                  "claude-opus-4-5-20251101",
+				Provider:            "claude",
+				DisplayName:         "Claude 4.5 Opus",
+				MaxCompletionTokens: 64000,
+				Thinking: &Thinking{
+					Supported:   true,
+					Min:         1024,
+					Max:         128000,
+					ZeroAllowed: true,
+				},
+			},
+		},
+	}
+
+	config := generateFactoryConfig(models)
+
+	var foundAdaptiveAuto, foundAdaptiveXHigh, foundManualHigh, foundLegacyBudget bool
+	for _, model := range config.CustomModels {
+		switch model.Model {
+		case "claude-opus-4-7(auto)":
+			foundAdaptiveAuto = true
+		case "claude-opus-4-7(xhigh)":
+			foundAdaptiveXHigh = true
+		case "claude-opus-4-5-20251101(high)":
+			foundManualHigh = true
+		case "claude-opus-4-5-20251101-thinking-10000":
+			foundLegacyBudget = true
+		}
+	}
+
+	if !foundAdaptiveAuto {
+		t.Fatal("expected Claude Opus 4.7 auto adaptive Factory variant")
+	}
+	if !foundAdaptiveXHigh {
+		t.Fatal("expected Claude Opus 4.7 xhigh adaptive Factory variant")
+	}
+	if !foundManualHigh {
+		t.Fatal("expected Claude Opus 4.5 high Factory variant")
+	}
+	if !foundLegacyBudget {
+		t.Fatal("expected Claude Opus 4.5 legacy budget Factory variant")
+	}
+}
+
+func TestGenerateOpenCodeConfig_ClaudeVariantsMatchThinkingMode(t *testing.T) {
+	models := map[string][]Model{
+		"claude": {
+			{
+				ID:                  "claude-opus-4-7",
+				Provider:            "claude",
+				DisplayName:         "Claude Opus 4.7",
+				MaxCompletionTokens: 128000,
+				Thinking: &Thinking{
+					Supported: true,
+					Levels:    []string{"low", "medium", "high", "xhigh", "max"},
+				},
+			},
+			{
+				ID:                  "claude-opus-4-5-20251101",
+				Provider:            "claude",
+				DisplayName:         "Claude 4.5 Opus",
+				MaxCompletionTokens: 64000,
+				Thinking: &Thinking{
+					Supported:   true,
+					Min:         1024,
+					Max:         128000,
+					ZeroAllowed: true,
+				},
+			},
+		},
+	}
+
+	config := generateOpenCodeConfig(models)
+	claudeProvider := config.Provider["ai-proxy-claude"]
+	if claudeProvider == nil {
+		t.Fatal("expected anthropic provider in OpenCode config")
+	}
+
+	opus47 := claudeProvider.Models["claude-opus-4-7"]
+	if opus47 == nil {
+		t.Fatal("expected Claude Opus 4.7 model")
+	}
+	if opus47.Variants["auto"] == nil || opus47.Variants["auto"].Thinking == nil || opus47.Variants["auto"].Thinking.Type != "adaptive" {
+		t.Fatalf("expected Claude Opus 4.7 auto variant to use adaptive thinking, got %#v", opus47.Variants["auto"])
+	}
+	if opus47.Variants["xhigh"] == nil || opus47.Variants["xhigh"].ReasoningEffort != "xhigh" {
+		t.Fatalf("expected Claude Opus 4.7 xhigh effort variant, got %#v", opus47.Variants["xhigh"])
+	}
+
+	opus45 := claudeProvider.Models["claude-opus-4-5-20251101"]
+	if opus45 == nil {
+		t.Fatal("expected Claude Opus 4.5 model")
+	}
+	if opus45.Variants["high"] == nil || opus45.Variants["high"].Thinking == nil {
+		t.Fatalf("expected Claude Opus 4.5 high variant, got %#v", opus45.Variants["high"])
+	}
+	if got := opus45.Variants["high"].Thinking.Type; got != "enabled" {
+		t.Fatalf("expected Claude Opus 4.5 high variant to use manual thinking, got %q", got)
+	}
+	if got := opus45.Variants["high"].Thinking.BudgetTokens; got != 24576 {
+		t.Fatalf("expected Claude Opus 4.5 high variant to map to 24576 budget tokens, got %d", got)
+	}
+	if got := opus45.Variants["high"].ReasoningEffort; got != "high" {
+		t.Fatalf("expected Claude Opus 4.5 high variant to keep high effort, got %q", got)
+	}
+}
