@@ -10,7 +10,7 @@ else
 
     ifeq ($(UNAME_S),Darwin)
         ifeq ($(UNAME_M),arm64)
-            CLIPROXY_ARCH := darwin_arm64
+            CLIPROXY_ARCH := darwin_aarch64
             CLIPROXY_EXT := tar.gz
         else
             CLIPROXY_ARCH := darwin_amd64
@@ -18,7 +18,7 @@ else
         endif
     else ifeq ($(UNAME_S),Linux)
         ifeq ($(UNAME_M),aarch64)
-            CLIPROXY_ARCH := linux_arm64
+            CLIPROXY_ARCH := linux_aarch64
         else
             CLIPROXY_ARCH := linux_amd64
         endif
@@ -48,7 +48,7 @@ else
 	ASSET="CLIProxyAPI_$${VERSION_NUM}_$(CLIPROXY_ARCH).$(CLIPROXY_EXT)"; \
 	URL="https://github.com/router-for-me/CLIProxyAPI/releases/download/$$VERSION/$$ASSET"; \
 	echo "Downloading $$URL"; \
-	curl -L -o bin/cliproxy-archive.$(CLIPROXY_EXT) "$$URL" && \
+	curl -fL -o bin/cliproxy-archive.$(CLIPROXY_EXT) "$$URL" && \
 	cd bin && \
 	if [ "$(CLIPROXY_EXT)" = "tar.gz" ]; then \
 		tar -xzf cliproxy-archive.$(CLIPROXY_EXT); \
@@ -56,14 +56,14 @@ else
 		unzip -o cliproxy-archive.$(CLIPROXY_EXT); \
 	fi && \
 	rm -f cliproxy-archive.$(CLIPROXY_EXT) README*.md LICENSE config.example.yaml && \
-	chmod +x cli-proxy-api 2>/dev/null || true
+	chmod +x cli-proxy-api 2>/dev/null
 	@echo "Done. Binary at bin/cli-proxy-api"
 endif
 
 update-cliproxy:
 
 ifeq ($(OS),Windows_NT)
-	@powershell -NoProfile -ExecutionPolicy Bypass -Command "$$ErrorActionPreference = 'Stop'; New-Item -ItemType Directory -Force -Path bin | Out-Null; $$json = Invoke-RestMethod -Uri 'https://api.github.com/repos/router-for-me/CLIProxyAPI/releases/latest'; $$version = $$json.tag_name; $$versionNum = $$version.TrimStart('v'); $$exe = 'bin/cli-proxy-api.exe'; if (Test-Path $$exe) { $$firstLine = & $$exe 2>&1 | Select-Object -First 1; $$match = [regex]::Match($$firstLine, '\\d+\\.\\d+\\.\\d+-\\d+'); if ($$match.Success) { $$current = $$match.Value } else { $$current = '0.0.0' }; Write-Host \"Current: $${current}, Latest: $${versionNum}\"; if ($$current -eq $$versionNum) { Write-Host 'Already up to date.'; exit 0 } } else { Write-Host 'CLIProxyAPI not installed.' }; Write-Host \"Downloading $${versionNum}...\"; $$asset = \"CLIProxyAPI_$${versionNum}_$(CLIPROXY_ARCH).$(CLIPROXY_EXT)\"; $$url = \"https://github.com/router-for-me/CLIProxyAPI/releases/download/$${version}/$${asset}\"; $$archive = \"bin/cliproxy-archive.$(CLIPROXY_EXT)\"; Invoke-WebRequest -Uri $${url} -OutFile $${archive}; Expand-Archive -Path $${archive} -DestinationPath bin -Force; Remove-Item -Force $${archive}; Remove-Item -Force -ErrorAction SilentlyContinue bin/README*.md, bin/README_CN.md, bin/README_JA.md, bin/LICENSE, bin/config.example.yaml; Write-Host \"Updated to $${versionNum}\""
+	@powershell -NoProfile -ExecutionPolicy Bypass -Command "$$ErrorActionPreference = 'Stop'; New-Item -ItemType Directory -Force -Path bin | Out-Null; $$json = Invoke-RestMethod -Uri 'https://api.github.com/repos/router-for-me/CLIProxyAPI/releases/latest'; $$version = $$json.tag_name; $$versionNum = $$version.TrimStart('v'); $$exe = 'bin/cli-proxy-api.exe'; if (Test-Path $$exe) { $$firstLine = & $$exe 2>&1 | Select-Object -First 1; $$match = [regex]::Match($$firstLine, '\\d+\\.\\d+\\.\\d+(?:-\\d+)?'); if ($$match.Success) { $$current = $$match.Value } else { $$current = '0.0.0' }; Write-Host \"Current: $${current}, Latest: $${versionNum}\"; if ($$current -eq $$versionNum) { Write-Host 'Already up to date.'; exit 0 } } else { Write-Host 'CLIProxyAPI not installed.' }; Write-Host \"Downloading $${versionNum}...\"; $$asset = \"CLIProxyAPI_$${versionNum}_$(CLIPROXY_ARCH).$(CLIPROXY_EXT)\"; $$url = \"https://github.com/router-for-me/CLIProxyAPI/releases/download/$${version}/$${asset}\"; $$archive = \"bin/cliproxy-archive.$(CLIPROXY_EXT)\"; Invoke-WebRequest -Uri $${url} -OutFile $${archive}; Expand-Archive -Path $${archive} -DestinationPath bin -Force; Remove-Item -Force $${archive}; Remove-Item -Force -ErrorAction SilentlyContinue bin/README*.md, bin/README_CN.md, bin/README_JA.md, bin/LICENSE, bin/config.example.yaml; Write-Host \"Updated to $${versionNum}\""
 else
 	@mkdir -p bin
 	@LATEST=$$(curl -sI https://github.com/router-for-me/CLIProxyAPI/releases/latest | grep -i '^location:' | sed 's/.*tag\///' | tr -d '\r\n'); \
@@ -81,7 +81,7 @@ else
 	echo "Downloading $$LATEST_NUM..."; \
 	ASSET="CLIProxyAPI_$${LATEST_NUM}_$(CLIPROXY_ARCH).$(CLIPROXY_EXT)"; \
 	URL="https://github.com/router-for-me/CLIProxyAPI/releases/download/$$LATEST/$$ASSET"; \
-	curl -L -o bin/cliproxy-archive.$(CLIPROXY_EXT) "$$URL" && \
+	curl -fL -o bin/cliproxy-archive.$(CLIPROXY_EXT) "$$URL" && \
 	cd bin && \
 	if [ "$(CLIPROXY_EXT)" = "tar.gz" ]; then \
 		tar -xzf cliproxy-archive.$(CLIPROXY_EXT); \
@@ -89,7 +89,7 @@ else
 		unzip -o cliproxy-archive.$(CLIPROXY_EXT); \
 	fi && \
 	rm -f cliproxy-archive.$(CLIPROXY_EXT) README*.md LICENSE config.example.yaml && \
-	chmod +x cli-proxy-api 2>/dev/null || true; \
+	chmod +x cli-proxy-api 2>/dev/null && \
 	echo "Updated to $$LATEST_NUM"
 endif
 

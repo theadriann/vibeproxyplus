@@ -63,7 +63,7 @@ func TestRepositoryTargetsCLIProxyAPIInsteadOfPlus(t *testing.T) {
 		{
 			name:     "makefile download/update",
 			path:     "../../Makefile",
-			want:     []string{"router-for-me/CLIProxyAPI", "cli-proxy-api"},
+			want:     []string{"router-for-me/CLIProxyAPI", "cli-proxy-api", "darwin_aarch64", "linux_aarch64", "curl -fL"},
 			unwanted: []string{"CLIProxyAPIPlus", "cli-proxy-api-plus"},
 		},
 		{
