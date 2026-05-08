@@ -1,8 +1,8 @@
 {
   "version": "2.0",
   "sources": [
-    "https://raw.githubusercontent.com/router-for-me/CLIProxyAPIPlus/main/internal/registry/model_definitions.go",
-    "https://raw.githubusercontent.com/router-for-me/CLIProxyAPIPlus/main/internal/registry/models/models.json",
+    "https://raw.githubusercontent.com/router-for-me/CLIProxyAPI/main/internal/registry/model_definitions.go",
+    "https://raw.githubusercontent.com/router-for-me/models/refs/heads/main/models.json",
     "https://models.dev/api.json"
   ],
   "models": {
@@ -44,7 +44,7 @@
         "cost": {
           "input": 0.3,
           "output": 2.5,
-          "cache_read": 0.075
+          "cache_read": 0.03
         }
       },
       {
@@ -155,7 +155,7 @@
         "cost": {
           "input": 1.25,
           "output": 10,
-          "cache_read": 0.31
+          "cache_read": 0.125
         }
       },
       {
@@ -444,129 +444,12 @@
         }
       }
     ],
-    "amazonq": [
-      {
-        "id": "amazonq-auto",
-        "provider": "amazonq",
-        "display_name": "Amazon Q Auto",
-        "description": "Automatic model selection by Amazon Q",
-        "type": "kiro",
-        "owned_by": "aws",
-        "context_length": 200000,
-        "max_completion_tokens": 64000,
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "temperature": true
-        }
-      },
-      {
-        "id": "amazonq-claude-haiku-4.5",
-        "provider": "amazonq",
-        "display_name": "Amazon Q Claude Haiku 4.5",
-        "description": "Claude Haiku 4.5 via Amazon Q (0.4x credit)",
-        "type": "kiro",
-        "owned_by": "aws",
-        "context_length": 200000,
-        "max_completion_tokens": 64000,
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "temperature": true
-        }
-      },
-      {
-        "id": "amazonq-claude-opus-4.5",
-        "provider": "amazonq",
-        "display_name": "Amazon Q Claude Opus 4.5",
-        "description": "Claude Opus 4.5 via Amazon Q (2.2x credit)",
-        "type": "kiro",
-        "owned_by": "aws",
-        "context_length": 200000,
-        "max_completion_tokens": 64000,
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "temperature": true
-        }
-      },
-      {
-        "id": "amazonq-claude-sonnet-4",
-        "provider": "amazonq",
-        "display_name": "Amazon Q Claude Sonnet 4",
-        "description": "Claude Sonnet 4 via Amazon Q (1.3x credit)",
-        "type": "kiro",
-        "owned_by": "aws",
-        "context_length": 200000,
-        "max_completion_tokens": 64000,
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "temperature": true
-        }
-      },
-      {
-        "id": "amazonq-claude-sonnet-4.5",
-        "provider": "amazonq",
-        "display_name": "Amazon Q Claude Sonnet 4.5",
-        "description": "Claude Sonnet 4.5 via Amazon Q (1.3x credit)",
-        "type": "kiro",
-        "owned_by": "aws",
-        "context_length": 200000,
-        "max_completion_tokens": 64000,
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "temperature": true
-        }
-      }
-    ],
     "antigravity": [
       {
         "id": "claude-opus-4-6-thinking",
         "provider": "antigravity",
         "display_name": "Claude Opus 4.6 (Thinking)",
         "description": "Claude Opus 4.6 (Thinking)",
-        "family": "claude-opus",
         "type": "antigravity",
         "owned_by": "antigravity",
         "context_length": 200000,
@@ -595,9 +478,7 @@
         },
         "cost": {
           "input": 5,
-          "output": 25,
-          "cache_read": 0.5,
-          "cache_write": 6.25
+          "output": 25
         }
       },
       {
@@ -1259,8 +1140,7 @@
         "capabilities": {
           "reasoning": true,
           "tool_call": true,
-          "attachment": true,
-          "temperature": true
+          "attachment": true
         },
         "cost": {
           "input": 5,
@@ -1389,6 +1269,37 @@
       }
     ],
     "codex": [
+      {
+        "id": "codex-auto-review",
+        "provider": "codex",
+        "display_name": "Codex Auto Review",
+        "description": "Automatic approval review model for Codex.",
+        "type": "openai",
+        "owned_by": "openai",
+        "context_length": 272000,
+        "max_completion_tokens": 128000,
+        "thinking": {
+          "supported": true,
+          "levels": [
+            "low",
+            "medium",
+            "high",
+            "xhigh"
+          ]
+        },
+        "modalities": {
+          "input": [
+            "text"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "capabilities": {
+          "tool_call": true,
+          "temperature": true
+        }
+      },
       {
         "id": "gpt-5.2",
         "provider": "codex",
@@ -1592,6 +1503,47 @@
           "output": 4.5,
           "cache_read": 0.075
         }
+      },
+      {
+        "id": "gpt-5.5",
+        "provider": "codex",
+        "display_name": "GPT 5.5",
+        "description": "Frontier model for complex coding, research, and real-world work.",
+        "family": "gpt",
+        "type": "openai",
+        "owned_by": "openai",
+        "context_length": 272000,
+        "max_completion_tokens": 128000,
+        "thinking": {
+          "supported": true,
+          "levels": [
+            "low",
+            "medium",
+            "high",
+            "xhigh"
+          ]
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "pdf"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": true,
+          "attachment": true
+        },
+        "cost": {
+          "input": 5,
+          "output": 30,
+          "cache_read": 0.5
+        }
       }
     ],
     "gemini": [
@@ -1632,7 +1584,7 @@
         "cost": {
           "input": 0.3,
           "output": 2.5,
-          "cache_read": 0.075
+          "cache_read": 0.03
         }
       },
       {
@@ -1712,7 +1664,7 @@
         "cost": {
           "input": 1.25,
           "output": 10,
-          "cache_read": 0.31
+          "cache_read": 0.125
         }
       },
       {
@@ -1766,11 +1718,10 @@
         "provider": "gemini",
         "display_name": "Gemini 3 Pro Image Preview",
         "description": "Gemini 3 Pro Image Preview",
-        "family": "gemini",
         "type": "gemini",
         "owned_by": "google",
-        "context_length": 65536,
-        "max_completion_tokens": 32768,
+        "context_length": 32768,
+        "max_completion_tokens": 64000,
         "thinking": {
           "supported": true,
           "min": 128,
@@ -1786,19 +1737,16 @@
             "image"
           ],
           "output": [
-            "text",
-            "image"
+            "text"
           ]
         },
         "capabilities": {
-          "structured_output": true,
           "attachment": true,
           "temperature": true
         },
         "cost": {
           "input": 2,
-          "output": 12,
-          "cache_read": 0.2
+          "output": 120
         }
       },
       {
@@ -2014,7 +1962,7 @@
         "cost": {
           "input": 0.3,
           "output": 2.5,
-          "cache_read": 0.075
+          "cache_read": 0.03
         }
       },
       {
@@ -2094,7 +2042,7 @@
         "cost": {
           "input": 1.25,
           "output": 10,
-          "cache_read": 0.31
+          "cache_read": 0.125
         }
       },
       {
@@ -2280,1094 +2228,6 @@
         }
       }
     ],
-    "github-copilot": [
-      {
-        "id": "claude-haiku-4.5",
-        "provider": "github-copilot",
-        "display_name": "Claude Haiku 4.5",
-        "description": "Anthropic Claude Haiku 4.5 via GitHub Copilot",
-        "family": "claude-haiku",
-        "type": "github-copilot",
-        "owned_by": "github-copilot",
-        "context_length": 144000,
-        "max_completion_tokens": 64000,
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "attachment": true,
-          "temperature": true
-        },
-        "cost": {}
-      },
-      {
-        "id": "claude-opus-4.1",
-        "provider": "github-copilot",
-        "display_name": "Claude Opus 4.1",
-        "description": "Anthropic Claude Opus 4.1 via GitHub Copilot",
-        "type": "github-copilot",
-        "owned_by": "github-copilot",
-        "max_completion_tokens": 32000,
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "temperature": true
-        }
-      },
-      {
-        "id": "claude-opus-4.5",
-        "provider": "github-copilot",
-        "display_name": "Claude Opus 4.5",
-        "description": "Anthropic Claude Opus 4.5 via GitHub Copilot",
-        "family": "claude-opus",
-        "type": "github-copilot",
-        "owned_by": "github-copilot",
-        "context_length": 160000,
-        "max_completion_tokens": 64000,
-        "thinking": {
-          "supported": true,
-          "levels": [
-            "low",
-            "medium",
-            "high"
-          ]
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "attachment": true,
-          "temperature": true
-        },
-        "cost": {}
-      },
-      {
-        "id": "claude-opus-4.6",
-        "provider": "github-copilot",
-        "display_name": "Claude Opus 4.6",
-        "description": "Anthropic Claude Opus 4.6 via GitHub Copilot",
-        "family": "claude-opus",
-        "type": "github-copilot",
-        "owned_by": "github-copilot",
-        "context_length": 144000,
-        "max_completion_tokens": 64000,
-        "thinking": {
-          "supported": true,
-          "levels": [
-            "low",
-            "medium",
-            "high"
-          ]
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "attachment": true,
-          "temperature": true
-        },
-        "cost": {}
-      },
-      {
-        "id": "claude-sonnet-4",
-        "provider": "github-copilot",
-        "display_name": "Claude Sonnet 4",
-        "description": "Anthropic Claude Sonnet 4 via GitHub Copilot",
-        "family": "claude-sonnet",
-        "type": "github-copilot",
-        "owned_by": "github-copilot",
-        "context_length": 200000,
-        "max_completion_tokens": 64000,
-        "thinking": {
-          "supported": true,
-          "levels": [
-            "low",
-            "medium",
-            "high"
-          ]
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image",
-            "pdf"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "attachment": true,
-          "temperature": true
-        },
-        "cost": {
-          "input": 3,
-          "output": 15,
-          "cache_read": 0.3,
-          "cache_write": 3.75
-        }
-      },
-      {
-        "id": "claude-sonnet-4.5",
-        "provider": "github-copilot",
-        "display_name": "Claude Sonnet 4.5",
-        "description": "Anthropic Claude Sonnet 4.5 via GitHub Copilot",
-        "family": "claude-sonnet",
-        "type": "github-copilot",
-        "owned_by": "github-copilot",
-        "context_length": 144000,
-        "max_completion_tokens": 64000,
-        "thinking": {
-          "supported": true,
-          "levels": [
-            "low",
-            "medium",
-            "high"
-          ]
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "attachment": true,
-          "temperature": true
-        },
-        "cost": {}
-      },
-      {
-        "id": "claude-sonnet-4.6",
-        "provider": "github-copilot",
-        "display_name": "Claude Sonnet 4.6",
-        "description": "Anthropic Claude Sonnet 4.6 via GitHub Copilot",
-        "family": "claude-sonnet",
-        "type": "github-copilot",
-        "owned_by": "github-copilot",
-        "context_length": 200000,
-        "max_completion_tokens": 64000,
-        "thinking": {
-          "supported": true,
-          "levels": [
-            "low",
-            "medium",
-            "high"
-          ]
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "attachment": true,
-          "temperature": true
-        },
-        "cost": {}
-      },
-      {
-        "id": "gemini-2.5-pro",
-        "provider": "github-copilot",
-        "display_name": "Gemini 2.5 Pro",
-        "description": "Google Gemini 2.5 Pro via GitHub Copilot",
-        "family": "gemini-pro",
-        "type": "github-copilot",
-        "owned_by": "github-copilot",
-        "context_length": 1048576,
-        "max_completion_tokens": 65536,
-        "modalities": {
-          "input": [
-            "text",
-            "image",
-            "audio",
-            "video",
-            "pdf"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": true,
-          "temperature": true
-        },
-        "cost": {
-          "input": 1.25,
-          "output": 10,
-          "cache_read": 0.31
-        }
-      },
-      {
-        "id": "gemini-3-flash-preview",
-        "provider": "github-copilot",
-        "display_name": "Gemini 3 Flash (Preview)",
-        "description": "Google Gemini 3 Flash Preview via GitHub Copilot",
-        "family": "gemini-flash",
-        "type": "github-copilot",
-        "owned_by": "github-copilot",
-        "context_length": 173000,
-        "max_completion_tokens": 65536,
-        "modalities": {
-          "input": [
-            "text",
-            "image",
-            "video",
-            "audio",
-            "pdf"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": true,
-          "temperature": true
-        },
-        "cost": {
-          "input": 0.5,
-          "output": 3,
-          "cache_read": 0.05
-        }
-      },
-      {
-        "id": "gemini-3-pro-preview",
-        "provider": "github-copilot",
-        "display_name": "Gemini 3 Pro (Preview)",
-        "description": "Google Gemini 3 Pro Preview via GitHub Copilot",
-        "family": "gemini-pro",
-        "type": "github-copilot",
-        "owned_by": "github-copilot",
-        "context_length": 1048576,
-        "max_completion_tokens": 65536,
-        "modalities": {
-          "input": [
-            "text",
-            "image",
-            "video",
-            "audio",
-            "pdf"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": true,
-          "temperature": true
-        },
-        "cost": {
-          "input": 2,
-          "output": 12,
-          "cache_read": 0.2
-        }
-      },
-      {
-        "id": "gemini-3.1-pro-preview",
-        "provider": "github-copilot",
-        "display_name": "Gemini 3.1 Pro (Preview)",
-        "description": "Google Gemini 3.1 Pro Preview via GitHub Copilot",
-        "family": "gemini-pro",
-        "type": "github-copilot",
-        "owned_by": "github-copilot",
-        "context_length": 173000,
-        "max_completion_tokens": 65536,
-        "modalities": {
-          "input": [
-            "text",
-            "image",
-            "video",
-            "audio",
-            "pdf"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": true,
-          "temperature": true
-        },
-        "cost": {
-          "input": 2,
-          "output": 12,
-          "cache_read": 0.2
-        }
-      },
-      {
-        "id": "gpt-4-o-preview",
-        "provider": "github-copilot",
-        "display_name": "GPT-4-o Preview",
-        "description": "OpenAI GPT-4-o Preview via GitHub Copilot",
-        "family": "gpt",
-        "type": "",
-        "owned_by": "",
-        "context_length": 8192,
-        "max_completion_tokens": 8192,
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "attachment": true,
-          "temperature": true
-        },
-        "cost": {
-          "input": 30,
-          "output": 60
-        }
-      },
-      {
-        "id": "gpt-4.1",
-        "provider": "github-copilot",
-        "display_name": "GPT-4.1",
-        "description": "OpenAI GPT-4.1 via GitHub Copilot",
-        "family": "gpt",
-        "type": "github-copilot",
-        "owned_by": "github-copilot",
-        "context_length": 128000,
-        "max_completion_tokens": 16384,
-        "modalities": {
-          "input": [
-            "text",
-            "image",
-            "pdf"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": true,
-          "temperature": true
-        },
-        "cost": {
-          "input": 2,
-          "output": 8,
-          "cache_read": 0.5
-        }
-      },
-      {
-        "id": "gpt-4o",
-        "provider": "github-copilot",
-        "display_name": "GPT-4o",
-        "description": "OpenAI GPT-4o via GitHub Copilot",
-        "family": "gpt",
-        "type": "",
-        "owned_by": "",
-        "context_length": 128000,
-        "max_completion_tokens": 16384,
-        "modalities": {
-          "input": [
-            "text",
-            "image",
-            "pdf"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": true,
-          "temperature": true
-        },
-        "cost": {
-          "input": 2.5,
-          "output": 10,
-          "cache_read": 1.25
-        }
-      },
-      {
-        "id": "gpt-4o-2024-05-13",
-        "provider": "github-copilot",
-        "display_name": "GPT-4o (2024-05-13)",
-        "description": "OpenAI GPT-4o 2024-05-13 via GitHub Copilot",
-        "family": "gpt",
-        "type": "",
-        "owned_by": "",
-        "context_length": 128000,
-        "max_completion_tokens": 4096,
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": true,
-          "temperature": true
-        },
-        "cost": {
-          "input": 5,
-          "output": 15
-        }
-      },
-      {
-        "id": "gpt-4o-2024-08-06",
-        "provider": "github-copilot",
-        "display_name": "GPT-4o (2024-08-06)",
-        "description": "OpenAI GPT-4o 2024-08-06 via GitHub Copilot",
-        "family": "gpt",
-        "type": "",
-        "owned_by": "",
-        "context_length": 128000,
-        "max_completion_tokens": 16384,
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": true,
-          "temperature": true
-        },
-        "cost": {
-          "input": 2.5,
-          "output": 10,
-          "cache_read": 1.25
-        }
-      },
-      {
-        "id": "gpt-4o-2024-11-20",
-        "provider": "github-copilot",
-        "display_name": "GPT-4o (2024-11-20)",
-        "description": "OpenAI GPT-4o 2024-11-20 via GitHub Copilot",
-        "family": "gpt",
-        "type": "",
-        "owned_by": "",
-        "context_length": 128000,
-        "max_completion_tokens": 16384,
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": true,
-          "temperature": true
-        },
-        "cost": {
-          "input": 2.5,
-          "output": 10,
-          "cache_read": 1.25
-        }
-      },
-      {
-        "id": "gpt-5",
-        "provider": "github-copilot",
-        "display_name": "GPT-5",
-        "description": "OpenAI GPT-5 via GitHub Copilot",
-        "family": "gpt",
-        "type": "github-copilot",
-        "owned_by": "github-copilot",
-        "context_length": 200000,
-        "max_completion_tokens": 32768,
-        "thinking": {
-          "supported": true,
-          "levels": [
-            "low",
-            "medium",
-            "high"
-          ]
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": true
-        },
-        "cost": {
-          "input": 1.25,
-          "output": 10,
-          "cache_read": 0.125
-        }
-      },
-      {
-        "id": "gpt-5-codex",
-        "provider": "github-copilot",
-        "display_name": "GPT-5 Codex",
-        "description": "OpenAI GPT-5 Codex via GitHub Copilot",
-        "family": "gpt-codex",
-        "type": "github-copilot",
-        "owned_by": "github-copilot",
-        "context_length": 200000,
-        "max_completion_tokens": 32768,
-        "thinking": {
-          "supported": true,
-          "levels": [
-            "low",
-            "medium",
-            "high"
-          ]
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": true
-        },
-        "cost": {
-          "input": 1.25,
-          "output": 10,
-          "cache_read": 0.125
-        }
-      },
-      {
-        "id": "gpt-5-mini",
-        "provider": "github-copilot",
-        "display_name": "GPT-5 Mini",
-        "description": "OpenAI GPT-5 Mini via GitHub Copilot",
-        "family": "gpt-mini",
-        "type": "github-copilot",
-        "owned_by": "github-copilot",
-        "context_length": 128000,
-        "max_completion_tokens": 16384,
-        "thinking": {
-          "supported": true,
-          "levels": [
-            "low",
-            "medium",
-            "high"
-          ]
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": true
-        },
-        "cost": {
-          "input": 0.25,
-          "output": 2,
-          "cache_read": 0.025
-        }
-      },
-      {
-        "id": "gpt-5.1",
-        "provider": "github-copilot",
-        "display_name": "GPT-5.1",
-        "description": "OpenAI GPT-5.1 via GitHub Copilot",
-        "family": "gpt",
-        "type": "github-copilot",
-        "owned_by": "github-copilot",
-        "context_length": 200000,
-        "max_completion_tokens": 32768,
-        "thinking": {
-          "supported": true,
-          "levels": [
-            "none",
-            "low",
-            "medium",
-            "high"
-          ]
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": true
-        },
-        "cost": {
-          "input": 1.25,
-          "output": 10,
-          "cache_read": 0.13
-        }
-      },
-      {
-        "id": "gpt-5.1-codex",
-        "provider": "github-copilot",
-        "display_name": "GPT-5.1 Codex",
-        "description": "OpenAI GPT-5.1 Codex via GitHub Copilot",
-        "family": "gpt-codex",
-        "type": "github-copilot",
-        "owned_by": "github-copilot",
-        "context_length": 200000,
-        "max_completion_tokens": 32768,
-        "thinking": {
-          "supported": true,
-          "levels": [
-            "none",
-            "low",
-            "medium",
-            "high"
-          ]
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": true
-        },
-        "cost": {
-          "input": 1.25,
-          "output": 10,
-          "cache_read": 0.125
-        }
-      },
-      {
-        "id": "gpt-5.1-codex-max",
-        "provider": "github-copilot",
-        "display_name": "GPT-5.1 Codex Max",
-        "description": "OpenAI GPT-5.1 Codex Max via GitHub Copilot",
-        "family": "gpt-codex",
-        "type": "github-copilot",
-        "owned_by": "github-copilot",
-        "context_length": 200000,
-        "max_completion_tokens": 32768,
-        "thinking": {
-          "supported": true,
-          "levels": [
-            "none",
-            "low",
-            "medium",
-            "high",
-            "xhigh"
-          ]
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": true
-        },
-        "cost": {
-          "input": 1.25,
-          "output": 10,
-          "cache_read": 0.125
-        }
-      },
-      {
-        "id": "gpt-5.1-codex-mini",
-        "provider": "github-copilot",
-        "display_name": "GPT-5.1 Codex Mini",
-        "description": "OpenAI GPT-5.1 Codex Mini via GitHub Copilot",
-        "family": "gpt-codex",
-        "type": "github-copilot",
-        "owned_by": "github-copilot",
-        "context_length": 128000,
-        "max_completion_tokens": 16384,
-        "thinking": {
-          "supported": true,
-          "levels": [
-            "none",
-            "low",
-            "medium",
-            "high"
-          ]
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": true
-        },
-        "cost": {
-          "input": 0.25,
-          "output": 2,
-          "cache_read": 0.025
-        }
-      },
-      {
-        "id": "gpt-5.2",
-        "provider": "github-copilot",
-        "display_name": "GPT-5.2",
-        "description": "OpenAI GPT-5.2 via GitHub Copilot",
-        "family": "gpt",
-        "type": "github-copilot",
-        "owned_by": "github-copilot",
-        "context_length": 200000,
-        "max_completion_tokens": 32768,
-        "thinking": {
-          "supported": true,
-          "levels": [
-            "none",
-            "low",
-            "medium",
-            "high",
-            "xhigh"
-          ]
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": true
-        },
-        "cost": {
-          "input": 1.75,
-          "output": 14,
-          "cache_read": 0.175
-        }
-      },
-      {
-        "id": "gpt-5.2-codex",
-        "provider": "github-copilot",
-        "display_name": "GPT-5.2 Codex",
-        "description": "OpenAI GPT-5.2 Codex via GitHub Copilot",
-        "family": "gpt-codex",
-        "type": "github-copilot",
-        "owned_by": "github-copilot",
-        "context_length": 200000,
-        "max_completion_tokens": 32768,
-        "thinking": {
-          "supported": true,
-          "levels": [
-            "none",
-            "low",
-            "medium",
-            "high",
-            "xhigh"
-          ]
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image",
-            "pdf"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": true
-        },
-        "cost": {
-          "input": 1.75,
-          "output": 14,
-          "cache_read": 0.175
-        }
-      },
-      {
-        "id": "gpt-5.3-codex",
-        "provider": "github-copilot",
-        "display_name": "GPT-5.3 Codex",
-        "description": "OpenAI GPT-5.3 Codex via GitHub Copilot",
-        "family": "gpt-codex",
-        "type": "github-copilot",
-        "owned_by": "github-copilot",
-        "context_length": 200000,
-        "max_completion_tokens": 32768,
-        "thinking": {
-          "supported": true,
-          "levels": [
-            "none",
-            "low",
-            "medium",
-            "high",
-            "xhigh"
-          ]
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image",
-            "pdf"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": true
-        },
-        "cost": {
-          "input": 1.75,
-          "output": 14,
-          "cache_read": 0.175
-        }
-      },
-      {
-        "id": "gpt-5.4",
-        "provider": "github-copilot",
-        "display_name": "GPT-5.4",
-        "description": "OpenAI GPT-5.4 via GitHub Copilot",
-        "family": "gpt",
-        "type": "github-copilot",
-        "owned_by": "github-copilot",
-        "context_length": 200000,
-        "max_completion_tokens": 32768,
-        "thinking": {
-          "supported": true,
-          "levels": [
-            "none",
-            "low",
-            "medium",
-            "high",
-            "xhigh"
-          ]
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image",
-            "pdf"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": true
-        },
-        "cost": {
-          "input": 2.5,
-          "output": 15,
-          "cache_read": 0.25
-        }
-      },
-      {
-        "id": "gpt-5.4-mini",
-        "provider": "github-copilot",
-        "display_name": "GPT-5.4 mini",
-        "description": "OpenAI GPT-5.4 mini via GitHub Copilot",
-        "family": "gpt-mini",
-        "type": "github-copilot",
-        "owned_by": "github-copilot",
-        "context_length": 200000,
-        "max_completion_tokens": 32768,
-        "thinking": {
-          "supported": true,
-          "levels": [
-            "none",
-            "low",
-            "medium",
-            "high",
-            "xhigh"
-          ]
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": true
-        },
-        "cost": {
-          "input": 0.75,
-          "output": 4.5,
-          "cache_read": 0.075
-        }
-      },
-      {
-        "id": "grok-code-fast-1",
-        "provider": "github-copilot",
-        "display_name": "Grok Code Fast 1",
-        "description": "xAI Grok Code Fast 1 via GitHub Copilot",
-        "family": "grok",
-        "type": "github-copilot",
-        "owned_by": "github-copilot",
-        "context_length": 128000,
-        "max_completion_tokens": 16384,
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "temperature": true
-        },
-        "cost": {}
-      },
-      {
-        "id": "oswe-vscode-prime",
-        "provider": "github-copilot",
-        "display_name": "Raptor mini (Preview)",
-        "description": "Raptor mini via GitHub Copilot",
-        "type": "github-copilot",
-        "owned_by": "github-copilot",
-        "context_length": 128000,
-        "max_completion_tokens": 16384,
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "temperature": true
-        }
-      }
-    ],
     "kimi": [
       {
         "id": "kimi-k2",
@@ -3463,46 +2323,17 @@
           "input": 0.574,
           "output": 2.411
         }
-      }
-    ],
-    "kiro": [
-      {
-        "id": "kiro-auto",
-        "provider": "kiro",
-        "display_name": "Kiro Auto",
-        "description": "Automatic model selection by Kiro",
-        "type": "kiro",
-        "owned_by": "aws",
-        "context_length": 200000,
-        "max_completion_tokens": 64000,
-        "thinking": {
-          "supported": true,
-          "min": 1024,
-          "max": 32000,
-          "zero_allowed": true
-        },
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "temperature": true
-        }
       },
       {
-        "id": "kiro-claude-haiku-4-5",
-        "provider": "kiro",
-        "display_name": "Kiro Claude Haiku 4.5",
-        "description": "Claude Haiku 4.5 via Kiro (0.4x credit)",
-        "type": "kiro",
-        "owned_by": "aws",
-        "context_length": 200000,
-        "max_completion_tokens": 64000,
+        "id": "kimi-k2.6",
+        "provider": "kimi",
+        "display_name": "Kimi K2.6",
+        "description": "Kimi K2.6 - Latest Moonshot AI coding model with improved capabilities",
+        "family": "kimi",
+        "type": "kimi",
+        "owned_by": "moonshot",
+        "context_length": 262144,
+        "max_completion_tokens": 65536,
         "thinking": {
           "supported": true,
           "min": 1024,
@@ -3512,593 +2343,22 @@
         "modalities": {
           "input": [
             "text",
-            "image"
+            "image",
+            "video"
           ],
           "output": [
             "text"
           ]
         },
         "capabilities": {
+          "reasoning": true,
           "tool_call": true,
+          "attachment": true,
           "temperature": true
-        }
-      },
-      {
-        "id": "kiro-claude-haiku-4-5-agentic",
-        "provider": "kiro",
-        "display_name": "Kiro Claude Haiku 4.5 (Agentic)",
-        "description": "Claude Haiku 4.5 optimized for coding agents (chunked writes)",
-        "type": "kiro",
-        "owned_by": "aws",
-        "context_length": 200000,
-        "max_completion_tokens": 64000,
-        "thinking": {
-          "supported": true,
-          "min": 1024,
-          "max": 32000,
-          "zero_allowed": true
         },
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "temperature": true
-        }
-      },
-      {
-        "id": "kiro-claude-opus-4-5",
-        "provider": "kiro",
-        "display_name": "Kiro Claude Opus 4.5",
-        "description": "Claude Opus 4.5 via Kiro (2.2x credit)",
-        "type": "kiro",
-        "owned_by": "aws",
-        "context_length": 200000,
-        "max_completion_tokens": 64000,
-        "thinking": {
-          "supported": true,
-          "min": 1024,
-          "max": 32000,
-          "zero_allowed": true
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "temperature": true
-        }
-      },
-      {
-        "id": "kiro-claude-opus-4-5-agentic",
-        "provider": "kiro",
-        "display_name": "Kiro Claude Opus 4.5 (Agentic)",
-        "description": "Claude Opus 4.5 optimized for coding agents (chunked writes)",
-        "type": "kiro",
-        "owned_by": "aws",
-        "context_length": 200000,
-        "max_completion_tokens": 64000,
-        "thinking": {
-          "supported": true,
-          "min": 1024,
-          "max": 32000,
-          "zero_allowed": true
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "temperature": true
-        }
-      },
-      {
-        "id": "kiro-claude-opus-4-6",
-        "provider": "kiro",
-        "display_name": "Kiro Claude Opus 4.6",
-        "description": "Claude Opus 4.6 via Kiro (2.2x credit)",
-        "type": "kiro",
-        "owned_by": "aws",
-        "context_length": 200000,
-        "max_completion_tokens": 64000,
-        "thinking": {
-          "supported": true,
-          "min": 1024,
-          "max": 32000,
-          "zero_allowed": true
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "temperature": true
-        }
-      },
-      {
-        "id": "kiro-claude-opus-4-6-agentic",
-        "provider": "kiro",
-        "display_name": "Kiro Claude Opus 4.6 (Agentic)",
-        "description": "Claude Opus 4.6 optimized for coding agents (chunked writes)",
-        "type": "kiro",
-        "owned_by": "aws",
-        "context_length": 200000,
-        "max_completion_tokens": 64000,
-        "thinking": {
-          "supported": true,
-          "min": 1024,
-          "max": 32000,
-          "zero_allowed": true
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "temperature": true
-        }
-      },
-      {
-        "id": "kiro-claude-sonnet-4",
-        "provider": "kiro",
-        "display_name": "Kiro Claude Sonnet 4",
-        "description": "Claude Sonnet 4 via Kiro (1.3x credit)",
-        "type": "kiro",
-        "owned_by": "aws",
-        "context_length": 200000,
-        "max_completion_tokens": 64000,
-        "thinking": {
-          "supported": true,
-          "min": 1024,
-          "max": 32000,
-          "zero_allowed": true
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "temperature": true
-        }
-      },
-      {
-        "id": "kiro-claude-sonnet-4-5",
-        "provider": "kiro",
-        "display_name": "Kiro Claude Sonnet 4.5",
-        "description": "Claude Sonnet 4.5 via Kiro (1.3x credit)",
-        "type": "kiro",
-        "owned_by": "aws",
-        "context_length": 200000,
-        "max_completion_tokens": 64000,
-        "thinking": {
-          "supported": true,
-          "min": 1024,
-          "max": 32000,
-          "zero_allowed": true
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "temperature": true
-        }
-      },
-      {
-        "id": "kiro-claude-sonnet-4-5-agentic",
-        "provider": "kiro",
-        "display_name": "Kiro Claude Sonnet 4.5 (Agentic)",
-        "description": "Claude Sonnet 4.5 optimized for coding agents (chunked writes)",
-        "type": "kiro",
-        "owned_by": "aws",
-        "context_length": 200000,
-        "max_completion_tokens": 64000,
-        "thinking": {
-          "supported": true,
-          "min": 1024,
-          "max": 32000,
-          "zero_allowed": true
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "temperature": true
-        }
-      },
-      {
-        "id": "kiro-claude-sonnet-4-6",
-        "provider": "kiro",
-        "display_name": "Kiro Claude Sonnet 4.6",
-        "description": "Claude Sonnet 4.6 via Kiro (1.3x credit)",
-        "type": "kiro",
-        "owned_by": "aws",
-        "context_length": 200000,
-        "max_completion_tokens": 64000,
-        "thinking": {
-          "supported": true,
-          "min": 1024,
-          "max": 32000,
-          "zero_allowed": true
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "temperature": true
-        }
-      },
-      {
-        "id": "kiro-claude-sonnet-4-6-agentic",
-        "provider": "kiro",
-        "display_name": "Kiro Claude Sonnet 4.6 (Agentic)",
-        "description": "Claude Sonnet 4.6 optimized for coding agents (chunked writes)",
-        "type": "kiro",
-        "owned_by": "aws",
-        "context_length": 200000,
-        "max_completion_tokens": 64000,
-        "thinking": {
-          "supported": true,
-          "min": 1024,
-          "max": 32000,
-          "zero_allowed": true
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "temperature": true
-        }
-      },
-      {
-        "id": "kiro-claude-sonnet-4-agentic",
-        "provider": "kiro",
-        "display_name": "Kiro Claude Sonnet 4 (Agentic)",
-        "description": "Claude Sonnet 4 optimized for coding agents (chunked writes)",
-        "type": "kiro",
-        "owned_by": "aws",
-        "context_length": 200000,
-        "max_completion_tokens": 64000,
-        "thinking": {
-          "supported": true,
-          "min": 1024,
-          "max": 32000,
-          "zero_allowed": true
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "temperature": true
-        }
-      },
-      {
-        "id": "kiro-deepseek-3-2",
-        "provider": "kiro",
-        "display_name": "Kiro DeepSeek 3.2",
-        "description": "DeepSeek 3.2 via Kiro",
-        "type": "kiro",
-        "owned_by": "aws",
-        "context_length": 128000,
-        "max_completion_tokens": 32768,
-        "thinking": {
-          "supported": true,
-          "min": 1024,
-          "max": 32000,
-          "zero_allowed": true
-        },
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "temperature": true
-        }
-      },
-      {
-        "id": "kiro-deepseek-3-2-agentic",
-        "provider": "kiro",
-        "display_name": "Kiro DeepSeek 3.2 (Agentic)",
-        "description": "DeepSeek 3.2 optimized for coding agents (chunked writes)",
-        "type": "kiro",
-        "owned_by": "aws",
-        "context_length": 128000,
-        "max_completion_tokens": 32768,
-        "thinking": {
-          "supported": true,
-          "min": 1024,
-          "max": 32000,
-          "zero_allowed": true
-        },
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "temperature": true
-        }
-      },
-      {
-        "id": "kiro-gpt-3-5-turbo",
-        "provider": "kiro",
-        "display_name": "Kiro GPT-3.5 Turbo",
-        "description": "OpenAI GPT-3.5 Turbo via Kiro",
-        "type": "kiro",
-        "owned_by": "aws",
-        "context_length": 16384,
-        "max_completion_tokens": 4096,
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "temperature": true
-        }
-      },
-      {
-        "id": "kiro-gpt-4",
-        "provider": "kiro",
-        "display_name": "Kiro GPT-4",
-        "description": "OpenAI GPT-4 via Kiro",
-        "type": "kiro",
-        "owned_by": "aws",
-        "context_length": 128000,
-        "max_completion_tokens": 8192,
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "temperature": true
-        }
-      },
-      {
-        "id": "kiro-gpt-4-turbo",
-        "provider": "kiro",
-        "display_name": "Kiro GPT-4 Turbo",
-        "description": "OpenAI GPT-4 Turbo via Kiro",
-        "type": "kiro",
-        "owned_by": "aws",
-        "context_length": 128000,
-        "max_completion_tokens": 16384,
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "temperature": true
-        }
-      },
-      {
-        "id": "kiro-gpt-4o",
-        "provider": "kiro",
-        "display_name": "Kiro GPT-4o",
-        "description": "OpenAI GPT-4o via Kiro",
-        "type": "kiro",
-        "owned_by": "aws",
-        "context_length": 128000,
-        "max_completion_tokens": 16384,
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "temperature": true
-        }
-      },
-      {
-        "id": "kiro-minimax-m2-1",
-        "provider": "kiro",
-        "display_name": "Kiro MiniMax M2.1",
-        "description": "MiniMax M2.1 via Kiro",
-        "type": "kiro",
-        "owned_by": "aws",
-        "context_length": 200000,
-        "max_completion_tokens": 64000,
-        "thinking": {
-          "supported": true,
-          "min": 1024,
-          "max": 32000,
-          "zero_allowed": true
-        },
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "temperature": true
-        }
-      },
-      {
-        "id": "kiro-minimax-m2-1-agentic",
-        "provider": "kiro",
-        "display_name": "Kiro MiniMax M2.1 (Agentic)",
-        "description": "MiniMax M2.1 optimized for coding agents (chunked writes)",
-        "type": "kiro",
-        "owned_by": "aws",
-        "context_length": 200000,
-        "max_completion_tokens": 64000,
-        "thinking": {
-          "supported": true,
-          "min": 1024,
-          "max": 32000,
-          "zero_allowed": true
-        },
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "temperature": true
-        }
-      },
-      {
-        "id": "kiro-qwen3-coder-next",
-        "provider": "kiro",
-        "display_name": "Kiro Qwen3 Coder Next",
-        "description": "Qwen3 Coder Next via Kiro",
-        "type": "kiro",
-        "owned_by": "aws",
-        "context_length": 128000,
-        "max_completion_tokens": 32768,
-        "thinking": {
-          "supported": true,
-          "min": 1024,
-          "max": 32000,
-          "zero_allowed": true
-        },
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "temperature": true
-        }
-      },
-      {
-        "id": "kiro-qwen3-coder-next-agentic",
-        "provider": "kiro",
-        "display_name": "Kiro Qwen3 Coder Next (Agentic)",
-        "description": "Qwen3 Coder Next optimized for coding agents (chunked writes)",
-        "type": "kiro",
-        "owned_by": "aws",
-        "context_length": 128000,
-        "max_completion_tokens": 32768,
-        "thinking": {
-          "supported": true,
-          "min": 1024,
-          "max": 32000,
-          "zero_allowed": true
-        },
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "tool_call": true,
-          "temperature": true
+        "cost": {
+          "input": 0.929,
+          "output": 3.858
         }
       }
     ],
@@ -4140,7 +2400,7 @@
         "cost": {
           "input": 0.3,
           "output": 2.5,
-          "cache_read": 0.075
+          "cache_read": 0.03
         }
       },
       {
@@ -4220,7 +2480,7 @@
         "cost": {
           "input": 1.25,
           "output": 10,
-          "cache_read": 0.31
+          "cache_read": 0.125
         }
       },
       {
@@ -4274,11 +2534,10 @@
         "provider": "vertex",
         "display_name": "Gemini 3 Pro Image Preview",
         "description": "Gemini 3 Pro Image Preview",
-        "family": "gemini",
         "type": "gemini",
         "owned_by": "google",
-        "context_length": 65536,
-        "max_completion_tokens": 32768,
+        "context_length": 32768,
+        "max_completion_tokens": 64000,
         "thinking": {
           "supported": true,
           "min": 128,
@@ -4294,19 +2553,16 @@
             "image"
           ],
           "output": [
-            "text",
-            "image"
+            "text"
           ]
         },
         "capabilities": {
-          "structured_output": true,
           "attachment": true,
           "temperature": true
         },
         "cost": {
           "input": 2,
-          "output": 12,
-          "cache_read": 0.2
+          "output": 120
         }
       },
       {

@@ -13,8 +13,8 @@ import (
 )
 
 const (
-	modelDefsURL      = "https://raw.githubusercontent.com/router-for-me/CLIProxyAPIPlus/main/internal/registry/model_definitions.go"
-	registryModelsURL = "https://raw.githubusercontent.com/router-for-me/CLIProxyAPIPlus/main/internal/registry/models/models.json"
+	modelDefsURL      = "https://raw.githubusercontent.com/router-for-me/CLIProxyAPI/main/internal/registry/model_definitions.go"
+	registryModelsURL = "https://raw.githubusercontent.com/router-for-me/models/refs/heads/main/models.json"
 	modelsDevURL      = "https://models.dev/api.json"
 )
 
@@ -137,11 +137,11 @@ func main() {
 	factoryFile := flag.String("factory", "", "Generate Factory CLI config file")
 	opencodeFile := flag.String("opencode", "", "Generate OpenCode CLI config file")
 	localModelDefs := flag.String("local-modeldefs", "", "Use local model_definitions.go")
-	localRegistryModels := flag.String("local-registry-models", "", "Use local CLIProxyAPIPlus registry models.json")
+	localRegistryModels := flag.String("local-registry-models", "", "Use local model catalog models.json")
 	localModelsDev := flag.String("local-modelsdev", "", "Use local models.dev api.json")
 	flag.Parse()
 
-	// Download/load CLIProxyAPIPlus model definitions
+	// Download/load CLIProxyAPI model definitions
 	var modelDefsSource string
 	if *localModelDefs != "" {
 		data, err := os.ReadFile(*localModelDefs)
@@ -152,7 +152,7 @@ func main() {
 		modelDefsSource = string(data)
 		fmt.Printf("Using local model_definitions.go: %s\n", *localModelDefs)
 	} else {
-		fmt.Printf("Downloading CLIProxyAPIPlus model definitions...\n")
+		fmt.Printf("Downloading CLIProxyAPI model definitions...\n")
 
 		resp, err := http.Get(modelDefsURL)
 		if err != nil {
@@ -172,12 +172,12 @@ func main() {
 			os.Exit(1)
 		}
 		registryModelsSource = string(data)
-		fmt.Printf("Using local registry models.json: %s\n", *localRegistryModels)
+		fmt.Printf("Using local model catalog models.json: %s\n", *localRegistryModels)
 	} else {
-		fmt.Printf("Downloading CLIProxyAPIPlus registry models...\n")
+		fmt.Printf("Downloading shared model catalog...\n")
 		resp, err := http.Get(registryModelsURL)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "Error downloading registry models.json: %v\n", err)
+			fmt.Fprintf(os.Stderr, "Error downloading model catalog models.json: %v\n", err)
 			os.Exit(1)
 		}
 		data, _ := io.ReadAll(resp.Body)
@@ -211,7 +211,7 @@ func main() {
 	modelsDevIndex := buildModelsDevIndex(modelsDevData)
 	fmt.Printf("Indexed %d models from models.dev\n", len(modelsDevIndex))
 
-	// Parse CLIProxyAPIPlus models and enrich with models.dev
+	// Parse CLIProxyAPI models and enrich with models.dev
 	models := parseAndEnrichModels(modelDefsSource, registryModelsSource, modelsDevIndex)
 
 	config := CanonicalConfig{
@@ -660,7 +660,7 @@ func parseFunctionModels(source, funcName, provider string, modelsDevIndex map[s
 			model.MaxCompletionTokens = extractIntField(block, "OutputTokenLimit")
 		}
 
-		// Parse thinking support from CLIProxyAPIPlus
+		// Parse thinking support from CLIProxyAPI
 		if strings.Contains(block, "Thinking:") && !strings.Contains(block, "// Thinking: not supported") {
 			model.Thinking = &Thinking{Supported: true}
 			if min := extractIntField(block, "Min"); min > 0 {

@@ -593,282 +593,6 @@
       "supportsImages": true
     },
     {
-      "model": "claude-haiku-4.5",
-      "displayName": "[Copilot] Claude Haiku 4.5",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 64000,
-      "supportsImages": true
-    },
-    {
-      "model": "claude-opus-4.1",
-      "displayName": "[Copilot] Claude Opus 4.1",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 32000,
-      "supportsImages": true
-    },
-    {
-      "model": "claude-opus-4.5",
-      "displayName": "[Copilot] Claude Opus 4.5",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 64000,
-      "supportsImages": true
-    },
-    {
-      "model": "claude-opus-4.6",
-      "displayName": "[Copilot] Claude Opus 4.6",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 64000,
-      "supportsImages": true
-    },
-    {
-      "model": "claude-sonnet-4",
-      "displayName": "[Copilot] Claude Sonnet 4",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 64000,
-      "supportsImages": true
-    },
-    {
-      "model": "claude-sonnet-4.5",
-      "displayName": "[Copilot] Claude Sonnet 4.5",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 64000,
-      "supportsImages": true
-    },
-    {
-      "model": "claude-sonnet-4.6",
-      "displayName": "[Copilot] Claude Sonnet 4.6",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 64000,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-4-o-preview",
-      "displayName": "[Copilot] GPT-4-o Preview",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 8192
-    },
-    {
-      "model": "gpt-4.1",
-      "displayName": "[Copilot] GPT-4.1",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 16384,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-4o",
-      "displayName": "[Copilot] GPT-4o",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 16384,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-4o-2024-05-13",
-      "displayName": "[Copilot] GPT-4o (2024-05-13)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 4096,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-4o-2024-08-06",
-      "displayName": "[Copilot] GPT-4o (2024-08-06)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 16384,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-4o-2024-11-20",
-      "displayName": "[Copilot] GPT-4o (2024-11-20)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 16384,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5",
-      "displayName": "[Copilot] GPT-5",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 32768,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5-codex",
-      "displayName": "[Copilot] GPT-5 Codex",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 32768,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5-mini",
-      "displayName": "[Copilot] GPT-5 Mini",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 16384,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5.1",
-      "displayName": "[Copilot] GPT-5.1",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 32768,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5.1-codex",
-      "displayName": "[Copilot] GPT-5.1 Codex",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 32768,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5.1-codex-max",
-      "displayName": "[Copilot] GPT-5.1 Codex Max",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 32768,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5.1-codex-mini",
-      "displayName": "[Copilot] GPT-5.1 Codex Mini",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 16384,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5.2",
-      "displayName": "[Copilot] GPT-5.2",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 32768,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5.2-codex",
-      "displayName": "[Copilot] GPT-5.2 Codex",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 32768,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5.3-codex",
-      "displayName": "[Copilot] GPT-5.3 Codex",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 32768,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5.4",
-      "displayName": "[Copilot] GPT-5.4",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 32768,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5.4-mini",
-      "displayName": "[Copilot] GPT-5.4 mini",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 32768,
-      "supportsImages": true
-    },
-    {
-      "model": "gemini-2.5-pro",
-      "displayName": "[Copilot] Gemini 2.5 Pro",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 65536,
-      "supportsImages": true
-    },
-    {
-      "model": "gemini-3-flash-preview",
-      "displayName": "[Copilot] Gemini 3 Flash (Preview)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 65536,
-      "supportsImages": true
-    },
-    {
-      "model": "gemini-3-pro-preview",
-      "displayName": "[Copilot] Gemini 3 Pro (Preview)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 65536,
-      "supportsImages": true
-    },
-    {
-      "model": "gemini-3.1-pro-preview",
-      "displayName": "[Copilot] Gemini 3.1 Pro (Preview)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 65536,
-      "supportsImages": true
-    },
-    {
-      "model": "grok-code-fast-1",
-      "displayName": "[Copilot] Grok Code Fast 1",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 16384
-    },
-    {
-      "model": "oswe-vscode-prime",
-      "displayName": "[Copilot] Raptor mini (Preview)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 16384
-    },
-    {
       "model": "gemini-2.5-flash",
       "displayName": "[Gemini] Gemini 2.5 Flash",
       "baseUrl": "http://localhost:8317/v1",
@@ -910,7 +634,7 @@
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
       "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 32768,
+      "maxOutputTokens": 64000,
       "supportsImages": true
     },
     {
@@ -950,203 +674,44 @@
       "supportsImages": true
     },
     {
-      "model": "kiro-auto",
-      "displayName": "[Kiro] Kiro Auto",
+      "model": "codex-auto-review",
+      "displayName": "[OpenAI] Codex Auto Review",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 64000
+      "provider": "openai",
+      "maxOutputTokens": 128000
     },
     {
-      "model": "kiro-claude-haiku-4-5",
-      "displayName": "[Kiro] Kiro Claude Haiku 4.5",
+      "model": "codex-auto-review(high)",
+      "displayName": "[OpenAI] Codex Auto Review (High)",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 64000,
-      "supportsImages": true
+      "provider": "openai",
+      "maxOutputTokens": 128000
     },
     {
-      "model": "kiro-claude-haiku-4-5-agentic",
-      "displayName": "[Kiro] Kiro Claude Haiku 4.5 (Agentic)",
+      "model": "codex-auto-review(low)",
+      "displayName": "[OpenAI] Codex Auto Review (Low)",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 64000,
-      "supportsImages": true
+      "provider": "openai",
+      "maxOutputTokens": 128000
     },
     {
-      "model": "kiro-claude-opus-4-5",
-      "displayName": "[Kiro] Kiro Claude Opus 4.5",
+      "model": "codex-auto-review(medium)",
+      "displayName": "[OpenAI] Codex Auto Review (Medium)",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 64000,
-      "supportsImages": true
+      "provider": "openai",
+      "maxOutputTokens": 128000
     },
     {
-      "model": "kiro-claude-opus-4-5-agentic",
-      "displayName": "[Kiro] Kiro Claude Opus 4.5 (Agentic)",
+      "model": "codex-auto-review(xhigh)",
+      "displayName": "[OpenAI] Codex Auto Review (Xhigh)",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 64000,
-      "supportsImages": true
-    },
-    {
-      "model": "kiro-claude-opus-4-6",
-      "displayName": "[Kiro] Kiro Claude Opus 4.6",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 64000,
-      "supportsImages": true
-    },
-    {
-      "model": "kiro-claude-opus-4-6-agentic",
-      "displayName": "[Kiro] Kiro Claude Opus 4.6 (Agentic)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 64000,
-      "supportsImages": true
-    },
-    {
-      "model": "kiro-claude-sonnet-4",
-      "displayName": "[Kiro] Kiro Claude Sonnet 4",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 64000,
-      "supportsImages": true
-    },
-    {
-      "model": "kiro-claude-sonnet-4-agentic",
-      "displayName": "[Kiro] Kiro Claude Sonnet 4 (Agentic)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 64000,
-      "supportsImages": true
-    },
-    {
-      "model": "kiro-claude-sonnet-4-5",
-      "displayName": "[Kiro] Kiro Claude Sonnet 4.5",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 64000,
-      "supportsImages": true
-    },
-    {
-      "model": "kiro-claude-sonnet-4-5-agentic",
-      "displayName": "[Kiro] Kiro Claude Sonnet 4.5 (Agentic)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 64000,
-      "supportsImages": true
-    },
-    {
-      "model": "kiro-claude-sonnet-4-6",
-      "displayName": "[Kiro] Kiro Claude Sonnet 4.6",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 64000,
-      "supportsImages": true
-    },
-    {
-      "model": "kiro-claude-sonnet-4-6-agentic",
-      "displayName": "[Kiro] Kiro Claude Sonnet 4.6 (Agentic)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 64000,
-      "supportsImages": true
-    },
-    {
-      "model": "kiro-deepseek-3-2",
-      "displayName": "[Kiro] Kiro DeepSeek 3.2",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 32768
-    },
-    {
-      "model": "kiro-deepseek-3-2-agentic",
-      "displayName": "[Kiro] Kiro DeepSeek 3.2 (Agentic)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 32768
-    },
-    {
-      "model": "kiro-gpt-3-5-turbo",
-      "displayName": "[Kiro] Kiro GPT-3.5 Turbo",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 4096
-    },
-    {
-      "model": "kiro-gpt-4",
-      "displayName": "[Kiro] Kiro GPT-4",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 8192,
-      "supportsImages": true
-    },
-    {
-      "model": "kiro-gpt-4-turbo",
-      "displayName": "[Kiro] Kiro GPT-4 Turbo",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 16384,
-      "supportsImages": true
-    },
-    {
-      "model": "kiro-gpt-4o",
-      "displayName": "[Kiro] Kiro GPT-4o",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 16384,
-      "supportsImages": true
-    },
-    {
-      "model": "kiro-minimax-m2-1",
-      "displayName": "[Kiro] Kiro MiniMax M2.1",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 64000
-    },
-    {
-      "model": "kiro-minimax-m2-1-agentic",
-      "displayName": "[Kiro] Kiro MiniMax M2.1 (Agentic)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 64000
-    },
-    {
-      "model": "kiro-qwen3-coder-next",
-      "displayName": "[Kiro] Kiro Qwen3 Coder Next",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 32768
-    },
-    {
-      "model": "kiro-qwen3-coder-next-agentic",
-      "displayName": "[Kiro] Kiro Qwen3 Coder Next (Agentic)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 32768
+      "provider": "openai",
+      "maxOutputTokens": 128000
     },
     {
       "model": "gpt-5.2",
@@ -1367,6 +932,51 @@
     {
       "model": "gpt-5.4-mini(xhigh)",
       "displayName": "[OpenAI] GPT 5.4 Mini (Xhigh)",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "openai",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
+      "model": "gpt-5.5",
+      "displayName": "[OpenAI] GPT 5.5",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "openai",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
+      "model": "gpt-5.5(high)",
+      "displayName": "[OpenAI] GPT 5.5 (High)",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "openai",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
+      "model": "gpt-5.5(low)",
+      "displayName": "[OpenAI] GPT 5.5 (Low)",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "openai",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
+      "model": "gpt-5.5(medium)",
+      "displayName": "[OpenAI] GPT 5.5 (Medium)",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "openai",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
+      "model": "gpt-5.5(xhigh)",
+      "displayName": "[OpenAI] GPT 5.5 (Xhigh)",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
       "provider": "openai",

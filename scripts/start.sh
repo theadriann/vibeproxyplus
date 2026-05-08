@@ -12,16 +12,16 @@ if [ ! -f bin/thinking-proxy ]; then
     go build -o bin/thinking-proxy ./cmd/thinking-proxy
 fi
 
-# Check for CLIProxyAPIPlus
-if [ ! -f bin/cli-proxy-api-plus ]; then
-    echo "Error: bin/cli-proxy-api-plus not found"
+# Check for CLIProxyAPI
+if [ ! -f bin/cli-proxy-api ]; then
+    echo "Error: bin/cli-proxy-api not found"
     echo "Run 'make download-cliproxy' first"
     exit 1
 fi
 
-# Start CLIProxyAPIPlus in background
-echo "Starting CLIProxyAPIPlus on :8318..."
-./bin/cli-proxy-api-plus -config config/cliproxy.yaml &
+# Start CLIProxyAPI in background
+echo "Starting CLIProxyAPI on :8318..."
+./bin/cli-proxy-api -config config/cliproxy.yaml &
 CLIPROXY_PID=$!
 
 # Give it a moment

@@ -9,14 +9,14 @@ if not exist bin\thinking-proxy.exe (
     go build -o bin\thinking-proxy.exe .\cmd\thinking-proxy
 )
 
-if not exist bin\cli-proxy-api-plus.exe (
-    echo Error: bin\cli-proxy-api-plus.exe not found
-    echo Download from https://github.com/router-for-me/CLIProxyAPIPlus/releases
+if not exist bin\cli-proxy-api.exe (
+    echo Error: bin\cli-proxy-api.exe not found
+    echo Download from https://github.com/router-for-me/CLIProxyAPI/releases
     exit /b 1
 )
 
-echo Starting CLIProxyAPIPlus on :8318...
-start /b bin\cli-proxy-api-plus.exe -config config\cliproxy.yaml
+echo Starting CLIProxyAPI on :8318...
+start /b bin\cli-proxy-api.exe -config config\cliproxy.yaml
 
 timeout /t 1 /nobreak >nul
 

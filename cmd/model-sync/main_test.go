@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"strings"
 	"testing"
 )
@@ -40,6 +41,63 @@ func TestBuildModelsDevIndex_PrefersAuthoritativeProvider(t *testing.T) {
 	}
 	if got.Name != "OpenAI GPT-5.2 Codex" {
 		t.Fatalf("got model name %q, want %q", got.Name, "OpenAI GPT-5.2 Codex")
+	}
+}
+
+func TestRepositoryTargetsCLIProxyAPIInsteadOfPlus(t *testing.T) {
+	tests := []struct {
+		name     string
+		path     string
+		want     []string
+		unwanted []string
+	}{
+		{
+			name: "model sync sources",
+			path: "main.go",
+			want: []string{
+				"raw.githubusercontent.com/router-for-me/CLIProxyAPI/",
+				"raw.githubusercontent.com/router-for-me/models/refs/heads/main/models.json",
+			},
+			unwanted: []string{"CLIProxyAPIPlus", "internal/registry/models/models.json"},
+		},
+		{
+			name:     "makefile download/update",
+			path:     "../../Makefile",
+			want:     []string{"router-for-me/CLIProxyAPI", "cli-proxy-api"},
+			unwanted: []string{"CLIProxyAPIPlus", "cli-proxy-api-plus"},
+		},
+		{
+			name:     "unix start script",
+			path:     "../../scripts/start.sh",
+			want:     []string{"bin/cli-proxy-api", "Starting CLIProxyAPI"},
+			unwanted: []string{"CLIProxyAPIPlus", "cli-proxy-api-plus"},
+		},
+		{
+			name:     "windows start script",
+			path:     "../../scripts/start.bat",
+			want:     []string{"bin\\cli-proxy-api.exe", "Starting CLIProxyAPI"},
+			unwanted: []string{"CLIProxyAPIPlus", "cli-proxy-api-plus"},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			data, err := os.ReadFile(tt.path)
+			if err != nil {
+				t.Fatalf("read %s: %v", tt.path, err)
+			}
+			content := string(data)
+			for _, want := range tt.want {
+				if !strings.Contains(content, want) {
+					t.Fatalf("expected %s to contain %q", tt.path, want)
+				}
+			}
+			for _, unwanted := range tt.unwanted {
+				if strings.Contains(content, unwanted) {
+					t.Fatalf("expected %s not to contain %q", tt.path, unwanted)
+				}
+			}
+		})
 	}
 }
 

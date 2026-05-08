@@ -1,4 +1,4 @@
-# CLIProxyAPIPlus configuration
+# CLIProxyAPI configuration
 # ThinkingProxy forwards to this on port 8318
 
 host: 127.0.0.1

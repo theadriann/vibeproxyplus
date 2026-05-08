@@ -16,7 +16,7 @@ import (
 
 func main() {
 	listenPort := flag.Int("port", 8317, "Port to listen on")
-	targetPort := flag.Int("target", 8318, "CLIProxyAPIPlus port to forward to")
+	targetPort := flag.Int("target", 8318, "CLIProxyAPI port to forward to")
 	flag.Parse()
 
 	handler := proxy.NewThinkingProxy(*targetPort)
