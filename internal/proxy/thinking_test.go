@@ -229,6 +229,55 @@ func TestTransformRequestBody_CodexNormalizationOnlyOnResponsesPath(t *testing.T
 	}
 }
 
+func TestTransformRequestBody_CodexFastAliasAddsPriorityServiceTier(t *testing.T) {
+	input := `{"model":"gpt-5.5(fast)","input":"hello"}`
+
+	output, betas, err := TransformRequestBody("/v1/responses", []byte(input))
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if len(betas) != 0 {
+		t.Fatalf("expected no betas for codex fast alias, got %v", betas)
+	}
+
+	var body map[string]interface{}
+	if err := json.Unmarshal(output, &body); err != nil {
+		t.Fatalf("invalid output json: %v", err)
+	}
+	if got := body["model"]; got != "gpt-5.5" {
+		t.Fatalf("model = %v, want %q", got, "gpt-5.5")
+	}
+	if got := body["service_tier"]; got != "priority" {
+		t.Fatalf("service_tier = %v, want %q", got, "priority")
+	}
+	if _, ok := body["input"].([]interface{}); !ok {
+		t.Fatalf("expected codex string input to be normalized, got %T", body["input"])
+	}
+}
+
+func TestTransformRequestBody_CodexFastReasoningAliasKeepsReasoningSuffix(t *testing.T) {
+	input := `{"model":"gpt-5.5(high-fast)","messages":[{"role":"user","content":"hi"}]}`
+
+	output, betas, err := TransformRequestBody("/v1/responses", []byte(input))
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if len(betas) != 0 {
+		t.Fatalf("expected no betas for codex fast reasoning alias, got %v", betas)
+	}
+
+	var body map[string]interface{}
+	if err := json.Unmarshal(output, &body); err != nil {
+		t.Fatalf("invalid output json: %v", err)
+	}
+	if got := body["model"]; got != "gpt-5.5(high)" {
+		t.Fatalf("model = %v, want %q", got, "gpt-5.5(high)")
+	}
+	if got := body["service_tier"]; got != "priority" {
+		t.Fatalf("service_tier = %v, want %q", got, "priority")
+	}
+}
+
 func TestTransformRequestBody_ClaudeOpus47AdaptiveSuffix(t *testing.T) {
 	input := `{"model":"claude-opus-4-7(xhigh)","messages":[{"role":"user","content":"hi"}]}`
 

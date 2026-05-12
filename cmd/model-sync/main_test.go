@@ -352,6 +352,43 @@ func TestGenerateFactoryConfig_ClaudeAdaptiveAndManualVariants(t *testing.T) {
 	}
 }
 
+func TestGenerateFactoryConfig_CodexFastVariants(t *testing.T) {
+	models := map[string][]Model{
+		"codex": {
+			{
+				ID:                  "gpt-5.5",
+				Provider:            "codex",
+				DisplayName:         "GPT 5.5",
+				MaxCompletionTokens: 128000,
+				Thinking: &Thinking{
+					Supported: true,
+					Levels:    []string{"low", "medium", "high", "xhigh"},
+				},
+			},
+		},
+	}
+
+	config := generateFactoryConfig(models)
+
+	wantModels := map[string]bool{
+		"gpt-5.5(fast)":        false,
+		"gpt-5.5(low-fast)":    false,
+		"gpt-5.5(medium-fast)": false,
+		"gpt-5.5(high-fast)":   false,
+		"gpt-5.5(xhigh-fast)":  false,
+	}
+	for _, model := range config.CustomModels {
+		if _, ok := wantModels[model.Model]; ok {
+			wantModels[model.Model] = true
+		}
+	}
+	for model, found := range wantModels {
+		if !found {
+			t.Fatalf("expected Factory config to include %q", model)
+		}
+	}
+}
+
 func TestGenerateOpenCodeConfig_ClaudeVariantsMatchThinkingMode(t *testing.T) {
 	models := map[string][]Model{
 		"claude": {
@@ -412,5 +449,39 @@ func TestGenerateOpenCodeConfig_ClaudeVariantsMatchThinkingMode(t *testing.T) {
 	}
 	if got := opus45.Variants["high"].ReasoningEffort; got != "high" {
 		t.Fatalf("expected Claude Opus 4.5 high variant to keep high effort, got %q", got)
+	}
+}
+
+func TestGenerateOpenCodeConfig_CodexFastAliasModel(t *testing.T) {
+	models := map[string][]Model{
+		"codex": {
+			{
+				ID:                  "gpt-5.5",
+				Provider:            "codex",
+				DisplayName:         "GPT 5.5",
+				MaxCompletionTokens: 128000,
+				Thinking: &Thinking{
+					Supported: true,
+					Levels:    []string{"low", "medium", "high", "xhigh"},
+				},
+			},
+		},
+	}
+
+	config := generateOpenCodeConfig(models)
+	openaiProvider := config.Provider["ai-proxy-openai"]
+	if openaiProvider == nil {
+		t.Fatal("expected OpenAI provider in OpenCode config")
+	}
+
+	fastModel := openaiProvider.Models["gpt-5.5(fast)"]
+	if fastModel == nil {
+		t.Fatal("expected OpenCode config to include gpt-5.5(fast)")
+	}
+	if fastModel.Name != "GPT 5.5 (Fast)" {
+		t.Fatalf("fast model name = %q, want %q", fastModel.Name, "GPT 5.5 (Fast)")
+	}
+	if fastModel.Variants["high"] == nil || fastModel.Variants["high"].ReasoningEffort != "high" {
+		t.Fatalf("expected fast OpenCode model to keep high reasoning variant, got %#v", fastModel.Variants["high"])
 	}
 }

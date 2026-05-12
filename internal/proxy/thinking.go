@@ -88,7 +88,11 @@ func isCodexResponsesPath(path string) bool {
 }
 
 func isCodexModel(model string) bool {
-	return strings.HasPrefix(model, "gpt-") && strings.Contains(model, "codex")
+	baseModel := model
+	if cleanModel, _, ok := splitParentheticalSuffix(model); ok {
+		baseModel = cleanModel
+	}
+	return strings.HasPrefix(baseModel, "gpt-")
 }
 
 func normalizeCodexResponsesInput(data map[string]interface{}, path string) bool {
@@ -121,15 +125,23 @@ func normalizeCodexResponsesInput(data map[string]interface{}, path string) bool
 	return true
 }
 
-func parseParentheticalThinkingSuffix(model string) (string, claudeThinkingConfig, bool) {
+func splitParentheticalSuffix(model string) (string, string, bool) {
 	lastOpen := strings.LastIndex(model, "(")
 	if lastOpen == -1 || !strings.HasSuffix(model, ")") {
-		return model, claudeThinkingConfig{}, false
+		return model, "", false
 	}
 
 	cleanModel := model[:lastOpen]
 	rawSuffix := strings.ToLower(strings.TrimSpace(model[lastOpen+1 : len(model)-1]))
-	if rawSuffix == "" {
+	if cleanModel == "" || rawSuffix == "" {
+		return model, "", false
+	}
+	return cleanModel, rawSuffix, true
+}
+
+func parseParentheticalThinkingSuffix(model string) (string, claudeThinkingConfig, bool) {
+	cleanModel, rawSuffix, ok := splitParentheticalSuffix(model)
+	if !ok {
 		return model, claudeThinkingConfig{}, false
 	}
 
@@ -157,6 +169,47 @@ func parseParentheticalThinkingSuffix(model string) (string, claudeThinkingConfi
 	}
 
 	return model, claudeThinkingConfig{}, false
+}
+
+func isCodexFastReasoningLevel(level string) bool {
+	switch level {
+	case "minimal", "none", "auto", "low", "medium", "high", "xhigh", "max":
+		return true
+	default:
+		return false
+	}
+}
+
+func parseCodexFastAlias(model string) (string, string, bool) {
+	cleanModel, rawSuffix, ok := splitParentheticalSuffix(model)
+	if !ok || !isCodexModel(cleanModel) {
+		return model, "", false
+	}
+
+	switch rawSuffix {
+	case "fast", "priority":
+		return cleanModel, "priority", true
+	}
+
+	for _, tierSuffix := range []string{"-fast", "-priority"} {
+		if strings.HasSuffix(rawSuffix, tierSuffix) {
+			level := strings.TrimSuffix(rawSuffix, tierSuffix)
+			if isCodexFastReasoningLevel(level) {
+				return cleanModel + "(" + level + ")", "priority", true
+			}
+		}
+	}
+
+	for _, tierPrefix := range []string{"fast-", "priority-"} {
+		if strings.HasPrefix(rawSuffix, tierPrefix) {
+			level := strings.TrimPrefix(rawSuffix, tierPrefix)
+			if isCodexFastReasoningLevel(level) {
+				return cleanModel + "(" + level + ")", "priority", true
+			}
+		}
+	}
+
+	return model, "", false
 }
 
 func containsString(values []string, target string) bool {
@@ -469,6 +522,13 @@ func TransformRequestBody(path string, body []byte) ([]byte, []string, error) {
 		}
 		output, err := json.Marshal(data)
 		return output, nil, err
+	}
+
+	if cleanModel, serviceTier, hasFastAlias := parseCodexFastAlias(model); hasFastAlias {
+		data["model"] = cleanModel
+		data["service_tier"] = serviceTier
+		model = cleanModel
+		modified = true
 	}
 
 	// Only process Claude models (including gemini-claude variants)

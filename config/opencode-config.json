@@ -941,41 +941,6 @@
             ]
           }
         },
-        "gemini-3.1-pro-high": {
-          "name": "Gemini 3.1 Pro (High)",
-          "variants": {
-            "high": {
-              "thinking": {
-                "type": "enabled",
-                "budgetTokens": 32000
-              }
-            },
-            "low": {
-              "thinking": {
-                "type": "enabled",
-                "budgetTokens": 4000
-              }
-            },
-            "medium": {
-              "thinking": {
-                "type": "enabled",
-                "budgetTokens": 10000
-              }
-            }
-          },
-          "modalities": {
-            "input": [
-              "text",
-              "image",
-              "video",
-              "audio",
-              "pdf"
-            ],
-            "output": [
-              "text"
-            ]
-          }
-        },
         "gemini-3.1-pro-low": {
           "name": "Gemini 3.1 Pro (Low)",
           "variants": {
@@ -1046,8 +1011,79 @@
             ]
           }
         },
+        "gemini-pro-agent": {
+          "name": "Gemini 3.1 Pro (High)",
+          "variants": {
+            "high": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 32000
+              }
+            },
+            "low": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 4000
+              }
+            },
+            "medium": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 10000
+              }
+            }
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
         "gpt-5.2": {
           "name": "GPT 5.2",
+          "variants": {
+            "high": {
+              "reasoningEffort": "high",
+              "textVerbosity": "low",
+              "reasoningSummary": "auto"
+            },
+            "low": {
+              "reasoningEffort": "low",
+              "textVerbosity": "low",
+              "reasoningSummary": "auto"
+            },
+            "medium": {
+              "reasoningEffort": "medium",
+              "textVerbosity": "low",
+              "reasoningSummary": "auto"
+            },
+            "none": {
+              "reasoningEffort": "none",
+              "textVerbosity": "low",
+              "reasoningSummary": "auto"
+            },
+            "xhigh": {
+              "reasoningEffort": "xhigh",
+              "textVerbosity": "low",
+              "reasoningSummary": "auto"
+            }
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "gpt-5.2(fast)": {
+          "name": "GPT 5.2 (Fast)",
           "variants": {
             "high": {
               "reasoningEffort": "high",
@@ -1120,8 +1156,78 @@
             ]
           }
         },
+        "gpt-5.3-codex(fast)": {
+          "name": "GPT 5.3 Codex (Fast)",
+          "variants": {
+            "high": {
+              "reasoningEffort": "high",
+              "textVerbosity": "low",
+              "reasoningSummary": "auto"
+            },
+            "low": {
+              "reasoningEffort": "low",
+              "textVerbosity": "low",
+              "reasoningSummary": "auto"
+            },
+            "medium": {
+              "reasoningEffort": "medium",
+              "textVerbosity": "low",
+              "reasoningSummary": "auto"
+            },
+            "xhigh": {
+              "reasoningEffort": "xhigh",
+              "textVerbosity": "low",
+              "reasoningSummary": "auto"
+            }
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
         "gpt-5.3-codex-spark": {
           "name": "GPT 5.3 Codex Spark",
+          "variants": {
+            "high": {
+              "reasoningEffort": "high",
+              "textVerbosity": "low",
+              "reasoningSummary": "auto"
+            },
+            "low": {
+              "reasoningEffort": "low",
+              "textVerbosity": "low",
+              "reasoningSummary": "auto"
+            },
+            "medium": {
+              "reasoningEffort": "medium",
+              "textVerbosity": "low",
+              "reasoningSummary": "auto"
+            },
+            "xhigh": {
+              "reasoningEffort": "xhigh",
+              "textVerbosity": "low",
+              "reasoningSummary": "auto"
+            }
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "gpt-5.3-codex-spark(fast)": {
+          "name": "GPT 5.3 Codex Spark (Fast)",
           "variants": {
             "high": {
               "reasoningEffort": "high",
@@ -1190,6 +1296,41 @@
             ]
           }
         },
+        "gpt-5.4(fast)": {
+          "name": "GPT 5.4 (Fast)",
+          "variants": {
+            "high": {
+              "reasoningEffort": "high",
+              "textVerbosity": "low",
+              "reasoningSummary": "auto"
+            },
+            "low": {
+              "reasoningEffort": "low",
+              "textVerbosity": "low",
+              "reasoningSummary": "auto"
+            },
+            "medium": {
+              "reasoningEffort": "medium",
+              "textVerbosity": "low",
+              "reasoningSummary": "auto"
+            },
+            "xhigh": {
+              "reasoningEffort": "xhigh",
+              "textVerbosity": "low",
+              "reasoningSummary": "auto"
+            }
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
         "gpt-5.4-mini": {
           "name": "GPT 5.4 Mini",
           "variants": {
@@ -1224,8 +1365,77 @@
             ]
           }
         },
+        "gpt-5.4-mini(fast)": {
+          "name": "GPT 5.4 Mini (Fast)",
+          "variants": {
+            "high": {
+              "reasoningEffort": "high",
+              "textVerbosity": "low",
+              "reasoningSummary": "auto"
+            },
+            "low": {
+              "reasoningEffort": "low",
+              "textVerbosity": "low",
+              "reasoningSummary": "auto"
+            },
+            "medium": {
+              "reasoningEffort": "medium",
+              "textVerbosity": "low",
+              "reasoningSummary": "auto"
+            },
+            "xhigh": {
+              "reasoningEffort": "xhigh",
+              "textVerbosity": "low",
+              "reasoningSummary": "auto"
+            }
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
         "gpt-5.5": {
           "name": "GPT 5.5",
+          "variants": {
+            "high": {
+              "reasoningEffort": "high",
+              "textVerbosity": "low",
+              "reasoningSummary": "auto"
+            },
+            "low": {
+              "reasoningEffort": "low",
+              "textVerbosity": "low",
+              "reasoningSummary": "auto"
+            },
+            "medium": {
+              "reasoningEffort": "medium",
+              "textVerbosity": "low",
+              "reasoningSummary": "auto"
+            },
+            "xhigh": {
+              "reasoningEffort": "xhigh",
+              "textVerbosity": "low",
+              "reasoningSummary": "auto"
+            }
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "gpt-5.5(fast)": {
+          "name": "GPT 5.5 (Fast)",
           "variants": {
             "high": {
               "reasoningEffort": "high",

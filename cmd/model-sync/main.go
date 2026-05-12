@@ -985,6 +985,30 @@ func generateFactoryConfig(models map[string][]Model) FactoryConfig {
 					factoryModels = append(factoryModels, fm)
 				}
 			}
+
+			if isCodexFastTierModel(m) {
+				factoryModels = append(factoryModels, FactoryModel{
+					Model:           fmt.Sprintf("%s(fast)", m.ID),
+					DisplayName:     fmt.Sprintf("[%s] %s (Fast)", prefix, m.DisplayName),
+					BaseURL:         cfg.baseURL,
+					APIKey:          "dummy",
+					Provider:        cfg.provider,
+					MaxOutputTokens: m.MaxCompletionTokens,
+					SupportsImages:  supportsImages,
+				})
+
+				for _, level := range codexFastReasoningLevels(m) {
+					factoryModels = append(factoryModels, FactoryModel{
+						Model:           fmt.Sprintf("%s(%s-fast)", m.ID, level),
+						DisplayName:     fmt.Sprintf("[%s] %s (%s Fast)", prefix, m.DisplayName, strings.Title(level)),
+						BaseURL:         cfg.baseURL,
+						APIKey:          "dummy",
+						Provider:        cfg.provider,
+						MaxOutputTokens: m.MaxCompletionTokens,
+						SupportsImages:  supportsImages,
+					})
+				}
+			}
 		}
 	}
 
@@ -1040,6 +1064,26 @@ func claudeManualBudgetForLevel(level string) int {
 	default:
 		return 0
 	}
+}
+
+func isCodexFastTierModel(model Model) bool {
+	return model.Provider == "codex" && strings.HasPrefix(model.ID, "gpt-")
+}
+
+func codexFastReasoningLevels(model Model) []string {
+	if !isCodexFastTierModel(model) || model.Thinking == nil {
+		return nil
+	}
+
+	levels := make([]string, 0, len(model.Thinking.Levels))
+	for _, level := range model.Thinking.Levels {
+		level = strings.TrimSpace(strings.ToLower(level))
+		if level == "" || level == "none" {
+			continue
+		}
+		levels = append(levels, level)
+	}
+	return levels
 }
 
 func marshalFactoryConfig(config FactoryConfig) ([]byte, error) {
@@ -1253,18 +1297,17 @@ func generateOpenCodeConfig(models map[string][]Model) OpenCodeConfig {
 				Modalities: m.Modalities,
 			}
 
-			if m.Thinking != nil && len(m.Thinking.Levels) > 0 {
-				ocModel.Variants = make(map[string]*OpenCodeVariant)
-				for _, level := range m.Thinking.Levels {
-					ocModel.Variants[level] = &OpenCodeVariant{
-						ReasoningEffort:  level,
-						TextVerbosity:    "low",
-						ReasoningSummary: "auto",
-					}
-				}
-			}
+			ocModel.Variants = codexOpenCodeVariants(m)
 
 			openaiProvider.Models[m.ID] = ocModel
+
+			if isCodexFastTierModel(m) {
+				openaiProvider.Models[fmt.Sprintf("%s(fast)", m.ID)] = &OpenCodeModel{
+					Name:       fmt.Sprintf("%s (Fast)", m.DisplayName),
+					Variants:   codexOpenCodeVariants(m),
+					Modalities: m.Modalities,
+				}
+			}
 		}
 	}
 
@@ -1298,4 +1341,20 @@ func generateOpenCodeConfig(models map[string][]Model) OpenCodeConfig {
 	}
 
 	return config
+}
+
+func codexOpenCodeVariants(model Model) map[string]*OpenCodeVariant {
+	if model.Thinking == nil || len(model.Thinking.Levels) == 0 {
+		return nil
+	}
+
+	variants := make(map[string]*OpenCodeVariant)
+	for _, level := range model.Thinking.Levels {
+		variants[level] = &OpenCodeVariant{
+			ReasoningEffort:  level,
+			TextVerbosity:    "low",
+			ReasoningSummary: "auto",
+		}
+	}
+	return variants
 }

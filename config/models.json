@@ -733,51 +733,6 @@
         }
       },
       {
-        "id": "gemini-3.1-pro-high",
-        "provider": "antigravity",
-        "display_name": "Gemini 3.1 Pro (High)",
-        "description": "Gemini 3.1 Pro (High)",
-        "family": "gemini-pro",
-        "type": "antigravity",
-        "owned_by": "antigravity",
-        "context_length": 1048576,
-        "max_completion_tokens": 65535,
-        "thinking": {
-          "supported": true,
-          "min": 1,
-          "max": 65535,
-          "levels": [
-            "low",
-            "medium",
-            "high"
-          ]
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image",
-            "video",
-            "audio",
-            "pdf"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": true,
-          "temperature": true
-        },
-        "cost": {
-          "input": 2,
-          "output": 12,
-          "cache_read": 0.2
-        }
-      },
-      {
         "id": "gemini-3.1-pro-low",
         "provider": "antigravity",
         "display_name": "Gemini 3.1 Pro (Low)",
@@ -820,6 +775,39 @@
           "input": 2,
           "output": 12,
           "cache_read": 0.2
+        }
+      },
+      {
+        "id": "gemini-pro-agent",
+        "provider": "antigravity",
+        "display_name": "Gemini 3.1 Pro (High)",
+        "description": "Gemini 3.1 Pro (High)",
+        "type": "antigravity",
+        "owned_by": "antigravity",
+        "context_length": 1048576,
+        "max_completion_tokens": 65535,
+        "thinking": {
+          "supported": true,
+          "min": 1,
+          "max": 65535,
+          "levels": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "image"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "capabilities": {
+          "tool_call": true,
+          "temperature": true
         }
       },
       {
