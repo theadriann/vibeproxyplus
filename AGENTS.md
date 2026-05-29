@@ -5,11 +5,11 @@ VibeProxyPlus is a cross-platform local proxy stack for AI coding tools.
 
 It runs:
 1. `ThinkingProxy` (this repo, Go) on `127.0.0.1:8317`
-2. `CLIProxyAPIPlus` (external binary) on `127.0.0.1:8318`
+2. `CLIProxyAPI` (external binary) on `127.0.0.1:8318`
 3. `VibeProxyPlus Desktop` (Tauri v2 + React) in `desktop/` for tray/app UX
 
 Traffic flow:
-`Client -> ThinkingProxy (:8317) -> CLIProxyAPIPlus (:8318) -> provider backends`
+`Client -> ThinkingProxy (:8317) -> CLIProxyAPI (:8318) -> provider backends`
 
 Primary goals:
 - Local unified endpoint for multiple providers/accounts
@@ -22,11 +22,11 @@ Primary goals:
 - `/Users/brojbean/code/ai-tools/oss/vibeproxyplus/internal/proxy/handler.go`
   - Reverse proxy logic and request transformation hook.
 - `/Users/brojbean/code/ai-tools/oss/vibeproxyplus/internal/proxy/thinking.go`
-  - Model/body transforms (Claude thinking + Codex responses input normalization).
+  - Model/body transforms (Claude thinking, Codex responses input normalization, Codex fast/priority aliases).
 - `/Users/brojbean/code/ai-tools/oss/vibeproxyplus/cmd/model-sync/main.go`
   - Pulls upstream model metadata and generates local config artifacts.
 - `/Users/brojbean/code/ai-tools/oss/vibeproxyplus/config/cliproxy.yaml`
-  - Runtime config consumed by CLIProxyAPIPlus.
+  - Runtime config consumed by CLIProxyAPI.
 - `/Users/brojbean/code/ai-tools/oss/vibeproxyplus/desktop/src-tauri/src/main.rs`
   - Desktop backend invoke commands, tray actions, process supervisor, deep-link callback listener (`vibeproxyplus://`), auth polling/fallback, auth account actions (remove/disable/enable), callback-url handling, metrics, safe config controls, model-sync preview/apply, persistent runtime/app logging, management-key bootstrap (`MANAGEMENT_PASSWORD` env for sidecar), and local auth-file discovery from `~/.cli-proxy-api` (fallback when management auth-files is unavailable or empty, with provider normalization from either `provider` or `type` fields).
 - `/Users/brojbean/code/ai-tools/oss/vibeproxyplus/desktop/src/App.tsx`
@@ -36,23 +36,24 @@ Primary goals:
 
 ## External Dependencies
 - Go toolchain (build + tests).
-- `CLIProxyAPIPlus` binary in `/Users/brojbean/code/ai-tools/oss/vibeproxyplus/bin/cli-proxy-api-plus`.
+- `CLIProxyAPI` binary in `/Users/brojbean/code/ai-tools/oss/vibeproxyplus/bin/cli-proxy-api`.
 - Network access for model sync sources:
-  - `https://raw.githubusercontent.com/router-for-me/CLIProxyAPIPlus/main/internal/registry/model_definitions.go`
-  - `https://raw.githubusercontent.com/router-for-me/CLIProxyAPIPlus/main/internal/registry/model_definitions_static_data.go`
+  - `https://raw.githubusercontent.com/router-for-me/CLIProxyAPI/main/internal/registry/model_definitions.go`
+  - `https://raw.githubusercontent.com/router-for-me/models/refs/heads/main/models.json`
+  - `https://raw.githubusercontent.com/router-for-me/CLIProxyAPI/main/internal/registry/models/codex_client_models.json`
   - `https://models.dev/api.json`
 
 ## Build, Run, and Auth Commands
 Run from repo root: `/Users/brojbean/code/ai-tools/oss/vibeproxyplus`
 
 - `make download-cliproxy`:
-  Download the latest CLIProxyAPIPlus binary into `bin/`.
+  Download the latest CLIProxyAPI binary into `bin/`.
 - `make build`:
   Build ThinkingProxy.
 - `make run`:
-  Start CLIProxyAPIPlus (`:8318`) and ThinkingProxy (`:8317`).
+  Start CLIProxyAPI (`:8318`) and ThinkingProxy (`:8317`).
 - `make update-cliproxy`:
-  Update CLIProxyAPIPlus binary if newer release exists.
+  Update CLIProxyAPI binary if newer release exists.
 - `make update-and-run`:
   Update and start both proxies.
 - `make test`:
@@ -66,7 +67,7 @@ Run from repo root: `/Users/brojbean/code/ai-tools/oss/vibeproxyplus`
 - `make desktop-test`:
   Run desktop frontend/backend tests.
 
-Auth helper commands (pass through to CLIProxyAPIPlus):
+Auth helper commands (pass through to CLIProxyAPI):
 - `make auth-claude`
 - `make auth-codex`
 - `make auth-gemini`
@@ -83,6 +84,7 @@ Auth helper commands (pass through to CLIProxyAPIPlus):
 
 Current behavior:
 - Model sync is deterministic run-to-run against the same upstream payloads.
+- Codex/OpenAI fast, verbosity, and reasoning-summary config variants are derived from CLIProxyAPI's Codex client model catalog.
 - Output can still change over time when upstream model metadata changes.
 
 ## Validation Checklist for Changes
@@ -137,6 +139,7 @@ Rules:
 
 ## Current Known Invariants
 - ThinkingProxy listens on `127.0.0.1:8317` and forwards to `127.0.0.1:8318`.
-- Claude thinking transforms are done in proxy-layer request rewrite.
+- Claude thinking transforms are done in proxy-layer request rewrite; Claude Opus 4.7 and 4.8 use adaptive level-based thinking aliases.
 - Codex responses input normalization (string -> list payload form) is handled in proxy-layer request rewrite for `/v1/responses` paths.
+- Codex aliases such as `gpt-5.5(fast)`, `gpt-5.5(high-fast)`, and `gpt-5.5(high-fast-verbose-summary)` are translated into OpenAI request fields in proxy-layer request rewrite.
 - Desktop auth account lists derive providers from management auth-files `provider` or `type`; if the management list is empty/unavailable, local `~/.cli-proxy-api` files are used.

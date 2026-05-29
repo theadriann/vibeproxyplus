@@ -282,6 +282,56 @@
             ]
           }
         },
+        "claude-opus-4-8": {
+          "name": "Claude Opus 4.8",
+          "variants": {
+            "auto": {
+              "thinking": {
+                "type": "adaptive"
+              }
+            },
+            "high": {
+              "reasoningEffort": "high",
+              "thinking": {
+                "type": "adaptive"
+              }
+            },
+            "low": {
+              "reasoningEffort": "low",
+              "thinking": {
+                "type": "adaptive"
+              }
+            },
+            "max": {
+              "reasoningEffort": "max",
+              "thinking": {
+                "type": "adaptive"
+              }
+            },
+            "medium": {
+              "reasoningEffort": "medium",
+              "thinking": {
+                "type": "adaptive"
+              }
+            },
+            "xhigh": {
+              "reasoningEffort": "xhigh",
+              "thinking": {
+                "type": "adaptive"
+              }
+            }
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
         "claude-sonnet-4-20250514": {
           "name": "Claude 4 Sonnet",
           "variants": {
@@ -466,22 +516,46 @@
             "high": {
               "reasoningEffort": "high",
               "textVerbosity": "low",
-              "reasoningSummary": "auto"
+              "reasoningSummary": "none"
+            },
+            "high-verbose": {
+              "reasoningEffort": "high",
+              "textVerbosity": "high",
+              "reasoningSummary": "none"
             },
             "low": {
               "reasoningEffort": "low",
               "textVerbosity": "low",
-              "reasoningSummary": "auto"
+              "reasoningSummary": "none"
+            },
+            "low-verbose": {
+              "reasoningEffort": "low",
+              "textVerbosity": "high",
+              "reasoningSummary": "none"
             },
             "medium": {
               "reasoningEffort": "medium",
               "textVerbosity": "low",
-              "reasoningSummary": "auto"
+              "reasoningSummary": "none"
+            },
+            "medium-verbose": {
+              "reasoningEffort": "medium",
+              "textVerbosity": "high",
+              "reasoningSummary": "none"
+            },
+            "verbose": {
+              "textVerbosity": "high",
+              "reasoningSummary": "none"
             },
             "xhigh": {
               "reasoningEffort": "xhigh",
               "textVerbosity": "low",
-              "reasoningSummary": "auto"
+              "reasoningSummary": "none"
+            },
+            "xhigh-verbose": {
+              "reasoningEffort": "xhigh",
+              "textVerbosity": "high",
+              "reasoningSummary": "none"
             }
           },
           "modalities": {
@@ -600,6 +674,41 @@
         },
         "gemini-3-flash": {
           "name": "Gemini 3 Flash",
+          "variants": {
+            "high": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 32000
+              }
+            },
+            "low": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 4000
+              }
+            },
+            "medium": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 10000
+              }
+            }
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image",
+              "video",
+              "audio",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "gemini-3-flash-agent": {
+          "name": "Gemini 3.5 Flash",
           "variants": {
             "high": {
               "thinking": {
@@ -1011,6 +1120,76 @@
             ]
           }
         },
+        "gemini-3.5-flash": {
+          "name": "Gemini 3.5 Flash",
+          "variants": {
+            "high": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 32000
+              }
+            },
+            "low": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 4000
+              }
+            },
+            "medium": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 10000
+              }
+            }
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image",
+              "video",
+              "audio",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "gemini-3.5-flash-low": {
+          "name": "Gemini 3.5 Flash (Low)",
+          "variants": {
+            "high": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 32000
+              }
+            },
+            "low": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 4000
+              }
+            },
+            "medium": {
+              "thinking": {
+                "type": "enabled",
+                "budgetTokens": 10000
+              }
+            }
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image",
+              "video",
+              "audio",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
         "gemini-pro-agent": {
           "name": "Gemini 3.1 Pro (High)",
           "variants": {
@@ -1051,43 +1230,9 @@
               "textVerbosity": "low",
               "reasoningSummary": "auto"
             },
-            "low": {
-              "reasoningEffort": "low",
-              "textVerbosity": "low",
-              "reasoningSummary": "auto"
-            },
-            "medium": {
-              "reasoningEffort": "medium",
-              "textVerbosity": "low",
-              "reasoningSummary": "auto"
-            },
-            "none": {
-              "reasoningEffort": "none",
-              "textVerbosity": "low",
-              "reasoningSummary": "auto"
-            },
-            "xhigh": {
-              "reasoningEffort": "xhigh",
-              "textVerbosity": "low",
-              "reasoningSummary": "auto"
-            }
-          },
-          "modalities": {
-            "input": [
-              "text",
-              "image"
-            ],
-            "output": [
-              "text"
-            ]
-          }
-        },
-        "gpt-5.2(fast)": {
-          "name": "GPT 5.2 (Fast)",
-          "variants": {
-            "high": {
+            "high-verbose": {
               "reasoningEffort": "high",
-              "textVerbosity": "low",
+              "textVerbosity": "high",
               "reasoningSummary": "auto"
             },
             "low": {
@@ -1095,19 +1240,33 @@
               "textVerbosity": "low",
               "reasoningSummary": "auto"
             },
+            "low-verbose": {
+              "reasoningEffort": "low",
+              "textVerbosity": "high",
+              "reasoningSummary": "auto"
+            },
             "medium": {
               "reasoningEffort": "medium",
               "textVerbosity": "low",
               "reasoningSummary": "auto"
             },
-            "none": {
-              "reasoningEffort": "none",
-              "textVerbosity": "low",
+            "medium-verbose": {
+              "reasoningEffort": "medium",
+              "textVerbosity": "high",
+              "reasoningSummary": "auto"
+            },
+            "verbose": {
+              "textVerbosity": "high",
               "reasoningSummary": "auto"
             },
             "xhigh": {
               "reasoningEffort": "xhigh",
               "textVerbosity": "low",
+              "reasoningSummary": "auto"
+            },
+            "xhigh-verbose": {
+              "reasoningEffort": "xhigh",
+              "textVerbosity": "high",
               "reasoningSummary": "auto"
             }
           },
@@ -1127,57 +1286,46 @@
             "high": {
               "reasoningEffort": "high",
               "textVerbosity": "low",
-              "reasoningSummary": "auto"
+              "reasoningSummary": "none"
             },
-            "low": {
-              "reasoningEffort": "low",
-              "textVerbosity": "low",
-              "reasoningSummary": "auto"
-            },
-            "medium": {
-              "reasoningEffort": "medium",
-              "textVerbosity": "low",
-              "reasoningSummary": "auto"
-            },
-            "xhigh": {
-              "reasoningEffort": "xhigh",
-              "textVerbosity": "low",
-              "reasoningSummary": "auto"
-            }
-          },
-          "modalities": {
-            "input": [
-              "text",
-              "image",
-              "pdf"
-            ],
-            "output": [
-              "text"
-            ]
-          }
-        },
-        "gpt-5.3-codex(fast)": {
-          "name": "GPT 5.3 Codex (Fast)",
-          "variants": {
-            "high": {
+            "high-verbose": {
               "reasoningEffort": "high",
-              "textVerbosity": "low",
-              "reasoningSummary": "auto"
+              "textVerbosity": "high",
+              "reasoningSummary": "none"
             },
             "low": {
               "reasoningEffort": "low",
               "textVerbosity": "low",
-              "reasoningSummary": "auto"
+              "reasoningSummary": "none"
+            },
+            "low-verbose": {
+              "reasoningEffort": "low",
+              "textVerbosity": "high",
+              "reasoningSummary": "none"
             },
             "medium": {
               "reasoningEffort": "medium",
               "textVerbosity": "low",
-              "reasoningSummary": "auto"
+              "reasoningSummary": "none"
+            },
+            "medium-verbose": {
+              "reasoningEffort": "medium",
+              "textVerbosity": "high",
+              "reasoningSummary": "none"
+            },
+            "verbose": {
+              "textVerbosity": "high",
+              "reasoningSummary": "none"
             },
             "xhigh": {
               "reasoningEffort": "xhigh",
               "textVerbosity": "low",
-              "reasoningSummary": "auto"
+              "reasoningSummary": "none"
+            },
+            "xhigh-verbose": {
+              "reasoningEffort": "xhigh",
+              "textVerbosity": "high",
+              "reasoningSummary": "none"
             }
           },
           "modalities": {
@@ -1226,63 +1374,52 @@
             ]
           }
         },
-        "gpt-5.3-codex-spark(fast)": {
-          "name": "GPT 5.3 Codex Spark (Fast)",
-          "variants": {
-            "high": {
-              "reasoningEffort": "high",
-              "textVerbosity": "low",
-              "reasoningSummary": "auto"
-            },
-            "low": {
-              "reasoningEffort": "low",
-              "textVerbosity": "low",
-              "reasoningSummary": "auto"
-            },
-            "medium": {
-              "reasoningEffort": "medium",
-              "textVerbosity": "low",
-              "reasoningSummary": "auto"
-            },
-            "xhigh": {
-              "reasoningEffort": "xhigh",
-              "textVerbosity": "low",
-              "reasoningSummary": "auto"
-            }
-          },
-          "modalities": {
-            "input": [
-              "text",
-              "image",
-              "pdf"
-            ],
-            "output": [
-              "text"
-            ]
-          }
-        },
         "gpt-5.4": {
           "name": "GPT 5.4",
           "variants": {
             "high": {
               "reasoningEffort": "high",
               "textVerbosity": "low",
-              "reasoningSummary": "auto"
+              "reasoningSummary": "none"
+            },
+            "high-verbose": {
+              "reasoningEffort": "high",
+              "textVerbosity": "high",
+              "reasoningSummary": "none"
             },
             "low": {
               "reasoningEffort": "low",
               "textVerbosity": "low",
-              "reasoningSummary": "auto"
+              "reasoningSummary": "none"
+            },
+            "low-verbose": {
+              "reasoningEffort": "low",
+              "textVerbosity": "high",
+              "reasoningSummary": "none"
             },
             "medium": {
               "reasoningEffort": "medium",
               "textVerbosity": "low",
-              "reasoningSummary": "auto"
+              "reasoningSummary": "none"
+            },
+            "medium-verbose": {
+              "reasoningEffort": "medium",
+              "textVerbosity": "high",
+              "reasoningSummary": "none"
+            },
+            "verbose": {
+              "textVerbosity": "high",
+              "reasoningSummary": "none"
             },
             "xhigh": {
               "reasoningEffort": "xhigh",
               "textVerbosity": "low",
-              "reasoningSummary": "auto"
+              "reasoningSummary": "none"
+            },
+            "xhigh-verbose": {
+              "reasoningEffort": "xhigh",
+              "textVerbosity": "high",
+              "reasoningSummary": "none"
             }
           },
           "modalities": {
@@ -1302,22 +1439,46 @@
             "high": {
               "reasoningEffort": "high",
               "textVerbosity": "low",
-              "reasoningSummary": "auto"
+              "reasoningSummary": "none"
+            },
+            "high-verbose": {
+              "reasoningEffort": "high",
+              "textVerbosity": "high",
+              "reasoningSummary": "none"
             },
             "low": {
               "reasoningEffort": "low",
               "textVerbosity": "low",
-              "reasoningSummary": "auto"
+              "reasoningSummary": "none"
+            },
+            "low-verbose": {
+              "reasoningEffort": "low",
+              "textVerbosity": "high",
+              "reasoningSummary": "none"
             },
             "medium": {
               "reasoningEffort": "medium",
               "textVerbosity": "low",
-              "reasoningSummary": "auto"
+              "reasoningSummary": "none"
+            },
+            "medium-verbose": {
+              "reasoningEffort": "medium",
+              "textVerbosity": "high",
+              "reasoningSummary": "none"
+            },
+            "verbose": {
+              "textVerbosity": "high",
+              "reasoningSummary": "none"
             },
             "xhigh": {
               "reasoningEffort": "xhigh",
               "textVerbosity": "low",
-              "reasoningSummary": "auto"
+              "reasoningSummary": "none"
+            },
+            "xhigh-verbose": {
+              "reasoningEffort": "xhigh",
+              "textVerbosity": "high",
+              "reasoningSummary": "none"
             }
           },
           "modalities": {
@@ -1336,57 +1497,47 @@
           "variants": {
             "high": {
               "reasoningEffort": "high",
-              "textVerbosity": "low",
-              "reasoningSummary": "auto"
+              "textVerbosity": "medium",
+              "reasoningSummary": "none"
             },
-            "low": {
-              "reasoningEffort": "low",
-              "textVerbosity": "low",
-              "reasoningSummary": "auto"
-            },
-            "medium": {
-              "reasoningEffort": "medium",
-              "textVerbosity": "low",
-              "reasoningSummary": "auto"
-            },
-            "xhigh": {
-              "reasoningEffort": "xhigh",
-              "textVerbosity": "low",
-              "reasoningSummary": "auto"
-            }
-          },
-          "modalities": {
-            "input": [
-              "text",
-              "image"
-            ],
-            "output": [
-              "text"
-            ]
-          }
-        },
-        "gpt-5.4-mini(fast)": {
-          "name": "GPT 5.4 Mini (Fast)",
-          "variants": {
-            "high": {
+            "high-verbose": {
               "reasoningEffort": "high",
-              "textVerbosity": "low",
-              "reasoningSummary": "auto"
+              "textVerbosity": "high",
+              "reasoningSummary": "none"
             },
             "low": {
               "reasoningEffort": "low",
-              "textVerbosity": "low",
-              "reasoningSummary": "auto"
+              "textVerbosity": "medium",
+              "reasoningSummary": "none"
+            },
+            "low-verbose": {
+              "reasoningEffort": "low",
+              "textVerbosity": "high",
+              "reasoningSummary": "none"
             },
             "medium": {
               "reasoningEffort": "medium",
-              "textVerbosity": "low",
-              "reasoningSummary": "auto"
+              "textVerbosity": "medium",
+              "reasoningSummary": "none"
+            },
+            "medium-verbose": {
+              "reasoningEffort": "medium",
+              "textVerbosity": "high",
+              "reasoningSummary": "none"
+            },
+            "verbose": {
+              "textVerbosity": "high",
+              "reasoningSummary": "none"
             },
             "xhigh": {
               "reasoningEffort": "xhigh",
-              "textVerbosity": "low",
-              "reasoningSummary": "auto"
+              "textVerbosity": "medium",
+              "reasoningSummary": "none"
+            },
+            "xhigh-verbose": {
+              "reasoningEffort": "xhigh",
+              "textVerbosity": "high",
+              "reasoningSummary": "none"
             }
           },
           "modalities": {
@@ -1405,22 +1556,46 @@
             "high": {
               "reasoningEffort": "high",
               "textVerbosity": "low",
-              "reasoningSummary": "auto"
+              "reasoningSummary": "none"
+            },
+            "high-verbose": {
+              "reasoningEffort": "high",
+              "textVerbosity": "high",
+              "reasoningSummary": "none"
             },
             "low": {
               "reasoningEffort": "low",
               "textVerbosity": "low",
-              "reasoningSummary": "auto"
+              "reasoningSummary": "none"
+            },
+            "low-verbose": {
+              "reasoningEffort": "low",
+              "textVerbosity": "high",
+              "reasoningSummary": "none"
             },
             "medium": {
               "reasoningEffort": "medium",
               "textVerbosity": "low",
-              "reasoningSummary": "auto"
+              "reasoningSummary": "none"
+            },
+            "medium-verbose": {
+              "reasoningEffort": "medium",
+              "textVerbosity": "high",
+              "reasoningSummary": "none"
+            },
+            "verbose": {
+              "textVerbosity": "high",
+              "reasoningSummary": "none"
             },
             "xhigh": {
               "reasoningEffort": "xhigh",
               "textVerbosity": "low",
-              "reasoningSummary": "auto"
+              "reasoningSummary": "none"
+            },
+            "xhigh-verbose": {
+              "reasoningEffort": "xhigh",
+              "textVerbosity": "high",
+              "reasoningSummary": "none"
             }
           },
           "modalities": {
@@ -1440,22 +1615,46 @@
             "high": {
               "reasoningEffort": "high",
               "textVerbosity": "low",
-              "reasoningSummary": "auto"
+              "reasoningSummary": "none"
+            },
+            "high-verbose": {
+              "reasoningEffort": "high",
+              "textVerbosity": "high",
+              "reasoningSummary": "none"
             },
             "low": {
               "reasoningEffort": "low",
               "textVerbosity": "low",
-              "reasoningSummary": "auto"
+              "reasoningSummary": "none"
+            },
+            "low-verbose": {
+              "reasoningEffort": "low",
+              "textVerbosity": "high",
+              "reasoningSummary": "none"
             },
             "medium": {
               "reasoningEffort": "medium",
               "textVerbosity": "low",
-              "reasoningSummary": "auto"
+              "reasoningSummary": "none"
+            },
+            "medium-verbose": {
+              "reasoningEffort": "medium",
+              "textVerbosity": "high",
+              "reasoningSummary": "none"
+            },
+            "verbose": {
+              "textVerbosity": "high",
+              "reasoningSummary": "none"
             },
             "xhigh": {
               "reasoningEffort": "xhigh",
               "textVerbosity": "low",
-              "reasoningSummary": "auto"
+              "reasoningSummary": "none"
+            },
+            "xhigh-verbose": {
+              "reasoningEffort": "xhigh",
+              "textVerbosity": "high",
+              "reasoningSummary": "none"
             }
           },
           "modalities": {

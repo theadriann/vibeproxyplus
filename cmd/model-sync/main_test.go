@@ -124,6 +124,72 @@ func TestBuildModelsDevIndex_PopulatesNormalizedID(t *testing.T) {
 	}
 }
 
+func TestBuildCodexClientMetadataIndex(t *testing.T) {
+	source := `{
+  "models": [
+    {
+      "slug": "gpt-5.5",
+      "support_verbosity": true,
+      "default_verbosity": "low",
+      "default_reasoning_summary": "none",
+      "supports_reasoning_summaries": true,
+      "service_tiers": [{"id": "priority", "name": "Fast"}],
+      "additional_speed_tiers": ["fast"],
+      "supported_reasoning_levels": [{"effort": "low"}, {"effort": "medium"}, {"effort": "high"}]
+    },
+    {
+      "slug": "gpt-5.3-codex",
+      "support_verbosity": false,
+      "service_tiers": [],
+      "supported_reasoning_levels": [{"effort": "low"}]
+    }
+  ]
+}`
+
+	index, err := buildCodexClientMetadataIndex(source)
+	if err != nil {
+		t.Fatalf("unexpected metadata parse error: %v", err)
+	}
+
+	gpt55 := index["gpt-5.5"]
+	if gpt55 == nil {
+		t.Fatal("missing gpt-5.5 metadata")
+	}
+	if !gpt55.SupportsPriorityServiceTier {
+		t.Fatal("expected gpt-5.5 to support priority service tier")
+	}
+	if !gpt55.SupportsVerbosity || gpt55.DefaultVerbosity != "low" {
+		t.Fatalf("unexpected verbosity metadata: %#v", gpt55)
+	}
+	if !gpt55.SupportsReasoningSummaries || gpt55.DefaultReasoningSummary != "none" {
+		t.Fatalf("unexpected reasoning summary metadata: %#v", gpt55)
+	}
+	if got := strings.Join(gpt55.ReasoningLevels, ","); got != "low,medium,high" {
+		t.Fatalf("reasoning levels = %q, want %q", got, "low,medium,high")
+	}
+
+	codex53 := index["gpt-5.3-codex"]
+	if codex53 == nil {
+		t.Fatal("missing gpt-5.3-codex metadata")
+	}
+	if codex53.SupportsPriorityServiceTier {
+		t.Fatal("did not expect gpt-5.3-codex to support priority service tier")
+	}
+	if codex53.SupportsVerbosity {
+		t.Fatal("did not expect gpt-5.3-codex to support verbosity")
+	}
+}
+
+func TestBuildCodexClientMetadataIndex_ReturnsErrorForInvalidJSON(t *testing.T) {
+	index, err := buildCodexClientMetadataIndex(`{"models":`)
+	if err == nil {
+		t.Fatal("expected invalid Codex client metadata JSON to return an error")
+	}
+	if index != nil {
+		t.Fatalf("expected nil index on invalid JSON, got %#v", index)
+	}
+}
+
 func TestValidateFactoryModelObject_RejectsCustomFields(t *testing.T) {
 	obj := map[string]interface{}{
 		"model":       "gpt-5-codex",
@@ -191,7 +257,7 @@ func TestGenerateFactoryConfig_SortsDeterministicallyWhenDisplayNamesMatch(t *te
 		},
 	}
 
-	config := generateFactoryConfig(models)
+	config := generateFactoryConfig(models, nil)
 	if len(config.CustomModels) != 2 {
 		t.Fatalf("expected 2 custom models, got %d", len(config.CustomModels))
 	}
@@ -274,7 +340,7 @@ func GetCodexProModels() []*ModelInfo {
 		t.Fatalf("expected 2 deduplicated codex models, got %d", got)
 	}
 
-	config := generateFactoryConfig(models)
+	config := generateFactoryConfig(models, nil)
 
 	var anthropicCount, openaiCount int
 	for _, model := range config.CustomModels {
@@ -308,6 +374,16 @@ func TestGenerateFactoryConfig_ClaudeAdaptiveAndManualVariants(t *testing.T) {
 				},
 			},
 			{
+				ID:                  "claude-opus-4-8",
+				Provider:            "claude",
+				DisplayName:         "Claude Opus 4.8",
+				MaxCompletionTokens: 128000,
+				Thinking: &Thinking{
+					Supported: true,
+					Levels:    []string{"low", "medium", "high", "xhigh", "max"},
+				},
+			},
+			{
 				ID:                  "claude-opus-4-5-20251101",
 				Provider:            "claude",
 				DisplayName:         "Claude 4.5 Opus",
@@ -322,15 +398,19 @@ func TestGenerateFactoryConfig_ClaudeAdaptiveAndManualVariants(t *testing.T) {
 		},
 	}
 
-	config := generateFactoryConfig(models)
+	config := generateFactoryConfig(models, nil)
 
-	var foundAdaptiveAuto, foundAdaptiveXHigh, foundManualHigh, foundLegacyBudget bool
+	var foundAdaptiveAuto, foundAdaptiveXHigh, foundOpus48Auto, foundOpus48LegacyBudget, foundManualHigh, foundLegacyBudget bool
 	for _, model := range config.CustomModels {
 		switch model.Model {
 		case "claude-opus-4-7(auto)":
 			foundAdaptiveAuto = true
 		case "claude-opus-4-7(xhigh)":
 			foundAdaptiveXHigh = true
+		case "claude-opus-4-8(auto)":
+			foundOpus48Auto = true
+		case "claude-opus-4-8-thinking-10000":
+			foundOpus48LegacyBudget = true
 		case "claude-opus-4-5-20251101(high)":
 			foundManualHigh = true
 		case "claude-opus-4-5-20251101-thinking-10000":
@@ -343,6 +423,12 @@ func TestGenerateFactoryConfig_ClaudeAdaptiveAndManualVariants(t *testing.T) {
 	}
 	if !foundAdaptiveXHigh {
 		t.Fatal("expected Claude Opus 4.7 xhigh adaptive Factory variant")
+	}
+	if !foundOpus48Auto {
+		t.Fatal("expected Claude Opus 4.8 auto adaptive Factory variant")
+	}
+	if foundOpus48LegacyBudget {
+		t.Fatal("did not expect Claude Opus 4.8 legacy budget Factory variant")
 	}
 	if !foundManualHigh {
 		t.Fatal("expected Claude Opus 4.5 high Factory variant")
@@ -365,21 +451,52 @@ func TestGenerateFactoryConfig_CodexFastVariants(t *testing.T) {
 					Levels:    []string{"low", "medium", "high", "xhigh"},
 				},
 			},
+			{
+				ID:                  "gpt-5.3-codex",
+				Provider:            "codex",
+				DisplayName:         "GPT 5.3 Codex",
+				MaxCompletionTokens: 128000,
+				Thinking: &Thinking{
+					Supported: true,
+					Levels:    []string{"low", "medium", "high", "xhigh"},
+				},
+			},
 		},
 	}
 
-	config := generateFactoryConfig(models)
+	metadata := CodexClientMetadataIndex{
+		"gpt-5.5": {
+			SupportsPriorityServiceTier: true,
+			SupportsVerbosity:           true,
+			DefaultVerbosity:            "low",
+		},
+		"gpt-5.3-codex": {
+			SupportsPriorityServiceTier: false,
+			SupportsVerbosity:           false,
+		},
+	}
+
+	config := generateFactoryConfig(models, metadata)
 
 	wantModels := map[string]bool{
-		"gpt-5.5(fast)":        false,
-		"gpt-5.5(low-fast)":    false,
-		"gpt-5.5(medium-fast)": false,
-		"gpt-5.5(high-fast)":   false,
-		"gpt-5.5(xhigh-fast)":  false,
+		"gpt-5.5(fast)":         false,
+		"gpt-5.5(low-fast)":     false,
+		"gpt-5.5(medium-fast)":  false,
+		"gpt-5.5(high-fast)":    false,
+		"gpt-5.5(xhigh-fast)":   false,
+		"gpt-5.5(verbose)":      false,
+		"gpt-5.5(high-verbose)": false,
+	}
+	unwantedModels := map[string]bool{
+		"gpt-5.3-codex(fast)":    true,
+		"gpt-5.3-codex(verbose)": true,
 	}
 	for _, model := range config.CustomModels {
 		if _, ok := wantModels[model.Model]; ok {
 			wantModels[model.Model] = true
+		}
+		if _, ok := unwantedModels[model.Model]; ok {
+			t.Fatalf("did not expect Factory config to include %q", model.Model)
 		}
 	}
 	for model, found := range wantModels {
@@ -417,7 +534,7 @@ func TestGenerateOpenCodeConfig_ClaudeVariantsMatchThinkingMode(t *testing.T) {
 		},
 	}
 
-	config := generateOpenCodeConfig(models)
+	config := generateOpenCodeConfig(models, nil)
 	claudeProvider := config.Provider["ai-proxy-claude"]
 	if claudeProvider == nil {
 		t.Fatal("expected anthropic provider in OpenCode config")
@@ -465,10 +582,36 @@ func TestGenerateOpenCodeConfig_CodexFastAliasModel(t *testing.T) {
 					Levels:    []string{"low", "medium", "high", "xhigh"},
 				},
 			},
+			{
+				ID:                  "gpt-5.3-codex",
+				Provider:            "codex",
+				DisplayName:         "GPT 5.3 Codex",
+				MaxCompletionTokens: 128000,
+				Thinking: &Thinking{
+					Supported: true,
+					Levels:    []string{"low", "medium", "high", "xhigh"},
+				},
+			},
 		},
 	}
 
-	config := generateOpenCodeConfig(models)
+	metadata := CodexClientMetadataIndex{
+		"gpt-5.5": {
+			SupportsPriorityServiceTier: true,
+			SupportsVerbosity:           true,
+			DefaultVerbosity:            "low",
+			SupportsReasoningSummaries:  true,
+			DefaultReasoningSummary:     "none",
+		},
+		"gpt-5.3-codex": {
+			SupportsPriorityServiceTier: false,
+			SupportsVerbosity:           false,
+			SupportsReasoningSummaries:  true,
+			DefaultReasoningSummary:     "auto",
+		},
+	}
+
+	config := generateOpenCodeConfig(models, metadata)
 	openaiProvider := config.Provider["ai-proxy-openai"]
 	if openaiProvider == nil {
 		t.Fatal("expected OpenAI provider in OpenCode config")
@@ -481,7 +624,13 @@ func TestGenerateOpenCodeConfig_CodexFastAliasModel(t *testing.T) {
 	if fastModel.Name != "GPT 5.5 (Fast)" {
 		t.Fatalf("fast model name = %q, want %q", fastModel.Name, "GPT 5.5 (Fast)")
 	}
-	if fastModel.Variants["high"] == nil || fastModel.Variants["high"].ReasoningEffort != "high" {
+	if fastModel.Variants["high"] == nil || fastModel.Variants["high"].ReasoningEffort != "high" || fastModel.Variants["high"].ReasoningSummary != "none" {
 		t.Fatalf("expected fast OpenCode model to keep high reasoning variant, got %#v", fastModel.Variants["high"])
+	}
+	if fastModel.Variants["verbose"] == nil || fastModel.Variants["verbose"].TextVerbosity != "high" {
+		t.Fatalf("expected fast OpenCode model to include verbose variant, got %#v", fastModel.Variants["verbose"])
+	}
+	if openaiProvider.Models["gpt-5.3-codex(fast)"] != nil {
+		t.Fatal("did not expect OpenCode config to include gpt-5.3-codex(fast)")
 	}
 }

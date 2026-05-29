@@ -13,9 +13,10 @@ import (
 )
 
 const (
-	modelDefsURL      = "https://raw.githubusercontent.com/router-for-me/CLIProxyAPI/main/internal/registry/model_definitions.go"
-	registryModelsURL = "https://raw.githubusercontent.com/router-for-me/models/refs/heads/main/models.json"
-	modelsDevURL      = "https://models.dev/api.json"
+	modelDefsURL         = "https://raw.githubusercontent.com/router-for-me/CLIProxyAPI/main/internal/registry/model_definitions.go"
+	registryModelsURL    = "https://raw.githubusercontent.com/router-for-me/models/refs/heads/main/models.json"
+	codexClientModelsURL = "https://raw.githubusercontent.com/router-for-me/CLIProxyAPI/main/internal/registry/models/codex_client_models.json"
+	modelsDevURL         = "https://models.dev/api.json"
 )
 
 // Canonical model with merged metadata
@@ -97,6 +98,40 @@ type indexedModelsDevModel struct {
 	Model    *ModelsDevModel
 }
 
+type CodexClientMetadataIndex map[string]*CodexClientMetadata
+
+type CodexClientMetadata struct {
+	SupportsPriorityServiceTier bool
+	SupportsVerbosity           bool
+	DefaultVerbosity            string
+	SupportsReasoningSummaries  bool
+	DefaultReasoningSummary     string
+	ReasoningLevels             []string
+}
+
+type codexClientModelsPayload struct {
+	Models []codexClientModel `json:"models"`
+}
+
+type codexClientModel struct {
+	Slug                       string                      `json:"slug"`
+	SupportsVerbosity          bool                        `json:"support_verbosity"`
+	DefaultVerbosity           string                      `json:"default_verbosity"`
+	SupportsReasoningSummaries bool                        `json:"supports_reasoning_summaries"`
+	DefaultReasoningSummary    string                      `json:"default_reasoning_summary"`
+	ServiceTiers               []codexClientServiceTier    `json:"service_tiers"`
+	AdditionalSpeedTiers       []string                    `json:"additional_speed_tiers"`
+	SupportedReasoningLevels   []codexClientReasoningLevel `json:"supported_reasoning_levels"`
+}
+
+type codexClientServiceTier struct {
+	ID string `json:"id"`
+}
+
+type codexClientReasoningLevel struct {
+	Effort string `json:"effort"`
+}
+
 // Factory config types (settings.json format - camelCase)
 type FactoryModel struct {
 	Model           string                 `json:"model"`
@@ -138,6 +173,7 @@ func main() {
 	opencodeFile := flag.String("opencode", "", "Generate OpenCode CLI config file")
 	localModelDefs := flag.String("local-modeldefs", "", "Use local model_definitions.go")
 	localRegistryModels := flag.String("local-registry-models", "", "Use local model catalog models.json")
+	localCodexClientModels := flag.String("local-codex-client-models", "", "Use local Codex client models JSON")
 	localModelsDev := flag.String("local-modelsdev", "", "Use local models.dev api.json")
 	flag.Parse()
 
@@ -185,6 +221,27 @@ func main() {
 		registryModelsSource = string(data)
 	}
 
+	var codexClientModelsSource string
+	if *localCodexClientModels != "" {
+		data, err := os.ReadFile(*localCodexClientModels)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error reading local Codex client models JSON: %v\n", err)
+			os.Exit(1)
+		}
+		codexClientModelsSource = string(data)
+		fmt.Printf("Using local Codex client models JSON: %s\n", *localCodexClientModels)
+	} else {
+		fmt.Printf("Downloading Codex client models catalog...\n")
+		resp, err := http.Get(codexClientModelsURL)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error downloading Codex client models catalog: %v\n", err)
+			os.Exit(1)
+		}
+		data, _ := io.ReadAll(resp.Body)
+		resp.Body.Close()
+		codexClientModelsSource = string(data)
+	}
+
 	// Download/load models.dev API
 	var modelsDevData ModelsDevAPI
 	if *localModelsDev != "" {
@@ -213,10 +270,15 @@ func main() {
 
 	// Parse CLIProxyAPI models and enrich with models.dev
 	models := parseAndEnrichModels(modelDefsSource, registryModelsSource, modelsDevIndex)
+	codexMetadata, err := buildCodexClientMetadataIndex(codexClientModelsSource)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error parsing Codex client models catalog: %v\n", err)
+		os.Exit(1)
+	}
 
 	config := CanonicalConfig{
 		Version: "2.0",
-		Sources: []string{modelDefsURL, registryModelsURL, modelsDevURL},
+		Sources: []string{modelDefsURL, registryModelsURL, codexClientModelsURL, modelsDevURL},
 		Models:  models,
 	}
 
@@ -235,7 +297,7 @@ func main() {
 
 	// Generate Factory config
 	if *factoryFile != "" {
-		factoryConfig := generateFactoryConfig(models)
+		factoryConfig := generateFactoryConfig(models, codexMetadata)
 		data, err := marshalFactoryConfig(factoryConfig)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Error generating Factory config: %v\n", err)
@@ -250,7 +312,7 @@ func main() {
 
 	// Generate OpenCode config
 	if *opencodeFile != "" {
-		opencodeConfig := generateOpenCodeConfig(models)
+		opencodeConfig := generateOpenCodeConfig(models, codexMetadata)
 		data, _ := json.MarshalIndent(opencodeConfig, "", "  ")
 		os.WriteFile(*opencodeFile, data, 0644)
 		fmt.Printf("Written OpenCode config to: %s\n", *opencodeFile)
@@ -412,6 +474,64 @@ func normalizeModelID(id string) string {
 	re := regexp.MustCompile(`-\d{8}$`)
 	normalized := re.ReplaceAllString(id, "")
 	return strings.ToLower(normalized)
+}
+
+func buildCodexClientMetadataIndex(source string) (CodexClientMetadataIndex, error) {
+	var payload codexClientModelsPayload
+	if err := json.Unmarshal([]byte(source), &payload); err != nil {
+		return nil, err
+	}
+
+	index := make(CodexClientMetadataIndex, len(payload.Models))
+	for _, model := range payload.Models {
+		slug := strings.TrimSpace(model.Slug)
+		if slug == "" {
+			continue
+		}
+
+		metadata := &CodexClientMetadata{
+			SupportsVerbosity:          model.SupportsVerbosity,
+			DefaultVerbosity:           normalizeCodexOption(model.DefaultVerbosity),
+			SupportsReasoningSummaries: model.SupportsReasoningSummaries,
+			DefaultReasoningSummary:    normalizeCodexOption(model.DefaultReasoningSummary),
+			ReasoningLevels:            normalizeCodexReasoningLevels(model.SupportedReasoningLevels),
+		}
+
+		for _, tier := range model.ServiceTiers {
+			if strings.EqualFold(strings.TrimSpace(tier.ID), "priority") {
+				metadata.SupportsPriorityServiceTier = true
+				break
+			}
+		}
+		if !metadata.SupportsPriorityServiceTier {
+			for _, tier := range model.AdditionalSpeedTiers {
+				if strings.EqualFold(strings.TrimSpace(tier), "fast") {
+					metadata.SupportsPriorityServiceTier = true
+					break
+				}
+			}
+		}
+
+		index[slug] = metadata
+	}
+
+	return index, nil
+}
+
+func normalizeCodexReasoningLevels(levels []codexClientReasoningLevel) []string {
+	out := make([]string, 0, len(levels))
+	for _, rawLevel := range levels {
+		level := normalizeCodexOption(rawLevel.Effort)
+		if level == "" {
+			continue
+		}
+		out = append(out, level)
+	}
+	return out
+}
+
+func normalizeCodexOption(value string) string {
+	return strings.ToLower(strings.TrimSpace(value))
 }
 
 func parseAndEnrichModels(source, registryModelsSource string, modelsDevIndex map[string]*ModelsDevModel) map[string][]Model {
@@ -847,7 +967,7 @@ func inferModalities(modelID, modelType string) *Modalities {
 	return m
 }
 
-func generateFactoryConfig(models map[string][]Model) FactoryConfig {
+func generateFactoryConfig(models map[string][]Model, codexMetadata CodexClientMetadataIndex) FactoryConfig {
 	var factoryModels []FactoryModel
 
 	// Provider config: provider value must be "anthropic", "openai", or "generic-chat-completion-api"
@@ -986,7 +1106,7 @@ func generateFactoryConfig(models map[string][]Model) FactoryConfig {
 				}
 			}
 
-			if isCodexFastTierModel(m) {
+			if codexSupportsPriorityServiceTier(m, codexMetadata) {
 				factoryModels = append(factoryModels, FactoryModel{
 					Model:           fmt.Sprintf("%s(fast)", m.ID),
 					DisplayName:     fmt.Sprintf("[%s] %s (Fast)", prefix, m.DisplayName),
@@ -1009,6 +1129,30 @@ func generateFactoryConfig(models map[string][]Model) FactoryConfig {
 					})
 				}
 			}
+
+			if codexSupportsVerbosity(m, codexMetadata) {
+				factoryModels = append(factoryModels, FactoryModel{
+					Model:           fmt.Sprintf("%s(verbose)", m.ID),
+					DisplayName:     fmt.Sprintf("[%s] %s (Verbose)", prefix, m.DisplayName),
+					BaseURL:         cfg.baseURL,
+					APIKey:          "dummy",
+					Provider:        cfg.provider,
+					MaxOutputTokens: m.MaxCompletionTokens,
+					SupportsImages:  supportsImages,
+				})
+
+				for _, level := range codexFastReasoningLevels(m) {
+					factoryModels = append(factoryModels, FactoryModel{
+						Model:           fmt.Sprintf("%s(%s-verbose)", m.ID, level),
+						DisplayName:     fmt.Sprintf("[%s] %s (%s Verbose)", prefix, m.DisplayName, strings.Title(level)),
+						BaseURL:         cfg.baseURL,
+						APIKey:          "dummy",
+						Provider:        cfg.provider,
+						MaxOutputTokens: m.MaxCompletionTokens,
+						SupportsImages:  supportsImages,
+					})
+				}
+			}
 		}
 	}
 
@@ -1023,7 +1167,12 @@ func generateFactoryConfig(models map[string][]Model) FactoryConfig {
 }
 
 func isClaudeAdaptiveOnlyModel(model Model) bool {
-	return model.ID == "claude-opus-4-7"
+	switch model.ID {
+	case "claude-opus-4-7", "claude-opus-4-8":
+		return true
+	default:
+		return false
+	}
 }
 
 func claudeAdaptiveLevels(model Model) []string {
@@ -1066,12 +1215,8 @@ func claudeManualBudgetForLevel(level string) int {
 	}
 }
 
-func isCodexFastTierModel(model Model) bool {
-	return model.Provider == "codex" && strings.HasPrefix(model.ID, "gpt-")
-}
-
 func codexFastReasoningLevels(model Model) []string {
-	if !isCodexFastTierModel(model) || model.Thinking == nil {
+	if model.Provider != "codex" || model.Thinking == nil {
 		return nil
 	}
 
@@ -1084,6 +1229,26 @@ func codexFastReasoningLevels(model Model) []string {
 		levels = append(levels, level)
 	}
 	return levels
+}
+
+func codexSupportsPriorityServiceTier(model Model, metadata CodexClientMetadataIndex) bool {
+	if model.Provider != "codex" {
+		return false
+	}
+	if modelMetadata := metadata[model.ID]; modelMetadata != nil {
+		return modelMetadata.SupportsPriorityServiceTier
+	}
+	return false
+}
+
+func codexSupportsVerbosity(model Model, metadata CodexClientMetadataIndex) bool {
+	if model.Provider != "codex" {
+		return false
+	}
+	if modelMetadata := metadata[model.ID]; modelMetadata != nil {
+		return modelMetadata.SupportsVerbosity
+	}
+	return false
 }
 
 func marshalFactoryConfig(config FactoryConfig) ([]byte, error) {
@@ -1229,7 +1394,7 @@ type OpenCodeVariant struct {
 	Thinking         *OpenCodeThinking `json:"thinking,omitempty"`
 }
 
-func generateOpenCodeConfig(models map[string][]Model) OpenCodeConfig {
+func generateOpenCodeConfig(models map[string][]Model, codexMetadata CodexClientMetadataIndex) OpenCodeConfig {
 	config := OpenCodeConfig{
 		Schema:   "https://opencode.ai/config.json",
 		Provider: make(map[string]*OpenCodeProvider),
@@ -1297,14 +1462,15 @@ func generateOpenCodeConfig(models map[string][]Model) OpenCodeConfig {
 				Modalities: m.Modalities,
 			}
 
-			ocModel.Variants = codexOpenCodeVariants(m)
+			metadata := codexMetadata[m.ID]
+			ocModel.Variants = codexOpenCodeVariants(m, metadata)
 
 			openaiProvider.Models[m.ID] = ocModel
 
-			if isCodexFastTierModel(m) {
+			if codexSupportsPriorityServiceTier(m, codexMetadata) {
 				openaiProvider.Models[fmt.Sprintf("%s(fast)", m.ID)] = &OpenCodeModel{
 					Name:       fmt.Sprintf("%s (Fast)", m.DisplayName),
-					Variants:   codexOpenCodeVariants(m),
+					Variants:   codexOpenCodeVariants(m, metadata),
 					Modalities: m.Modalities,
 				}
 			}
@@ -1343,18 +1509,59 @@ func generateOpenCodeConfig(models map[string][]Model) OpenCodeConfig {
 	return config
 }
 
-func codexOpenCodeVariants(model Model) map[string]*OpenCodeVariant {
-	if model.Thinking == nil || len(model.Thinking.Levels) == 0 {
+func codexOpenCodeVariants(model Model, metadata *CodexClientMetadata) map[string]*OpenCodeVariant {
+	levels := codexOpenCodeReasoningLevels(model, metadata)
+	if len(levels) == 0 && (metadata == nil || !metadata.SupportsVerbosity) {
 		return nil
 	}
 
+	textVerbosity := codexDefaultVerbosity(metadata)
+	reasoningSummary := codexDefaultReasoningSummary(metadata)
+
 	variants := make(map[string]*OpenCodeVariant)
-	for _, level := range model.Thinking.Levels {
+	for _, level := range levels {
 		variants[level] = &OpenCodeVariant{
 			ReasoningEffort:  level,
-			TextVerbosity:    "low",
-			ReasoningSummary: "auto",
+			TextVerbosity:    textVerbosity,
+			ReasoningSummary: reasoningSummary,
+		}
+		if metadata != nil && metadata.SupportsVerbosity {
+			variants[level+"-verbose"] = &OpenCodeVariant{
+				ReasoningEffort:  level,
+				TextVerbosity:    "high",
+				ReasoningSummary: reasoningSummary,
+			}
+		}
+	}
+	if metadata != nil && metadata.SupportsVerbosity {
+		variants["verbose"] = &OpenCodeVariant{
+			TextVerbosity:    "high",
+			ReasoningSummary: reasoningSummary,
 		}
 	}
 	return variants
+}
+
+func codexOpenCodeReasoningLevels(model Model, metadata *CodexClientMetadata) []string {
+	if metadata != nil && len(metadata.ReasoningLevels) > 0 {
+		return append([]string(nil), metadata.ReasoningLevels...)
+	}
+	if model.Thinking == nil || len(model.Thinking.Levels) == 0 {
+		return nil
+	}
+	return append([]string(nil), model.Thinking.Levels...)
+}
+
+func codexDefaultVerbosity(metadata *CodexClientMetadata) string {
+	if metadata != nil && metadata.DefaultVerbosity != "" {
+		return metadata.DefaultVerbosity
+	}
+	return "low"
+}
+
+func codexDefaultReasoningSummary(metadata *CodexClientMetadata) string {
+	if metadata != nil && metadata.SupportsReasoningSummaries && metadata.DefaultReasoningSummary != "" {
+		return metadata.DefaultReasoningSummary
+	}
+	return "auto"
 }

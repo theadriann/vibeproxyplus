@@ -3,6 +3,7 @@
   "sources": [
     "https://raw.githubusercontent.com/router-for-me/CLIProxyAPI/main/internal/registry/model_definitions.go",
     "https://raw.githubusercontent.com/router-for-me/models/refs/heads/main/models.json",
+    "https://raw.githubusercontent.com/router-for-me/CLIProxyAPI/main/internal/registry/models/codex_client_models.json",
     "https://models.dev/api.json"
   ],
   "models": {
@@ -115,7 +116,7 @@
         "cost": {
           "input": 0.1,
           "output": 0.4,
-          "cache_read": 0.025
+          "cache_read": 0.01
         }
       },
       {
@@ -206,8 +207,8 @@
         "family": "gemini-pro",
         "type": "gemini",
         "owned_by": "google",
-        "context_length": 1000000,
-        "max_completion_tokens": 64000,
+        "context_length": 1048576,
+        "max_completion_tokens": 65536,
         "thinking": {
           "supported": true,
           "min": 128,
@@ -281,8 +282,7 @@
         "cost": {
           "input": 0.25,
           "output": 1.5,
-          "cache_read": 0.025,
-          "cache_write": 1
+          "cache_read": 0.025
         }
       },
       {
@@ -323,6 +323,52 @@
           "input": 2,
           "output": 12,
           "cache_read": 0.2
+        }
+      },
+      {
+        "id": "gemini-3.5-flash",
+        "provider": "aistudio",
+        "display_name": "Gemini 3.5 Flash",
+        "description": "Our most intelligent model built for speed, combining frontier intelligence with superior search and grounding.",
+        "family": "gemini-flash",
+        "type": "gemini",
+        "owned_by": "google",
+        "context_length": 1048576,
+        "max_completion_tokens": 65536,
+        "thinking": {
+          "supported": true,
+          "min": 128,
+          "max": 32768,
+          "levels": [
+            "minimal",
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "video",
+            "audio",
+            "pdf"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": true,
+          "attachment": true,
+          "temperature": true
+        },
+        "cost": {
+          "input": 1.5,
+          "output": 9,
+          "cache_read": 0.15
         }
       },
       {
@@ -567,6 +613,52 @@
         }
       },
       {
+        "id": "gemini-3-flash-agent",
+        "provider": "antigravity",
+        "display_name": "Gemini 3.5 Flash",
+        "description": "Gemini 3.5 Flash",
+        "family": "gemini-flash",
+        "type": "antigravity",
+        "owned_by": "antigravity",
+        "context_length": 1048576,
+        "max_completion_tokens": 65536,
+        "thinking": {
+          "supported": true,
+          "min": 128,
+          "max": 32768,
+          "levels": [
+            "minimal",
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "video",
+            "audio",
+            "pdf"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": true,
+          "attachment": true,
+          "temperature": true
+        },
+        "cost": {
+          "input": 0.5,
+          "output": 3,
+          "cache_read": 0.05
+        }
+      },
+      {
         "id": "gemini-3-pro-high",
         "provider": "antigravity",
         "display_name": "Gemini 3 Pro (High)",
@@ -728,8 +820,7 @@
         "cost": {
           "input": 0.25,
           "output": 1.5,
-          "cache_read": 0.025,
-          "cache_write": 1
+          "cache_read": 0.025
         }
       },
       {
@@ -775,6 +866,51 @@
           "input": 2,
           "output": 12,
           "cache_read": 0.2
+        }
+      },
+      {
+        "id": "gemini-3.5-flash-low",
+        "provider": "antigravity",
+        "display_name": "Gemini 3.5 Flash (Low)",
+        "description": "Gemini 3.5 Flash (Low)",
+        "family": "gemini-flash",
+        "type": "antigravity",
+        "owned_by": "antigravity",
+        "context_length": 1048576,
+        "max_completion_tokens": 65535,
+        "thinking": {
+          "supported": true,
+          "min": 1,
+          "max": 65535,
+          "levels": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "video",
+            "audio",
+            "pdf"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": true,
+          "attachment": true,
+          "temperature": true
+        },
+        "cost": {
+          "input": 1.5,
+          "output": 9,
+          "cache_read": 0.15
         }
       },
       {
@@ -1109,6 +1245,51 @@
         "id": "claude-opus-4-7",
         "provider": "claude",
         "display_name": "Claude Opus 4.7",
+        "description": "Premium model combining maximum intelligence with practical performance",
+        "family": "claude-opus",
+        "type": "claude",
+        "owned_by": "anthropic",
+        "context_length": 1000000,
+        "max_completion_tokens": 128000,
+        "thinking": {
+          "supported": true,
+          "min": 1024,
+          "max": 128000,
+          "zero_allowed": true,
+          "levels": [
+            "low",
+            "medium",
+            "high",
+            "xhigh",
+            "max"
+          ]
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "pdf"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "attachment": true
+        },
+        "cost": {
+          "input": 5,
+          "output": 25,
+          "cache_read": 0.5,
+          "cache_write": 6.25
+        }
+      },
+      {
+        "id": "claude-opus-4-8",
+        "provider": "claude",
+        "display_name": "Claude Opus 4.8",
         "description": "Premium model combining maximum intelligence with practical performance",
         "family": "claude-opus",
         "type": "claude",
@@ -1625,7 +1806,7 @@
         "cost": {
           "input": 0.1,
           "output": 0.4,
-          "cache_read": 0.025
+          "cache_read": 0.01
         }
       },
       {
@@ -1758,8 +1939,8 @@
         "family": "gemini-pro",
         "type": "gemini",
         "owned_by": "google",
-        "context_length": 1000000,
-        "max_completion_tokens": 64000,
+        "context_length": 1048576,
+        "max_completion_tokens": 65536,
         "thinking": {
           "supported": true,
           "min": 128,
@@ -1802,8 +1983,8 @@
         "family": "gemini-flash",
         "type": "gemini",
         "owned_by": "google",
-        "context_length": 131072,
-        "max_completion_tokens": 32768,
+        "context_length": 65536,
+        "max_completion_tokens": 65536,
         "thinking": {
           "supported": true,
           "min": 128,
@@ -1830,7 +2011,7 @@
           "temperature": true
         },
         "cost": {
-          "input": 0.25,
+          "input": 0.5,
           "output": 60
         }
       },
@@ -1875,8 +2056,7 @@
         "cost": {
           "input": 0.25,
           "output": 1.5,
-          "cache_read": 0.025,
-          "cache_write": 1
+          "cache_read": 0.025
         }
       },
       {
@@ -1922,6 +2102,52 @@
           "input": 2,
           "output": 12,
           "cache_read": 0.2
+        }
+      },
+      {
+        "id": "gemini-3.5-flash",
+        "provider": "gemini",
+        "display_name": "Gemini 3.5 Flash",
+        "description": "Our most intelligent model built for speed, combining frontier intelligence with superior search and grounding.",
+        "family": "gemini-flash",
+        "type": "gemini",
+        "owned_by": "google",
+        "context_length": 1048576,
+        "max_completion_tokens": 65536,
+        "thinking": {
+          "supported": true,
+          "min": 128,
+          "max": 32768,
+          "levels": [
+            "minimal",
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "video",
+            "audio",
+            "pdf"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": true,
+          "attachment": true,
+          "temperature": true
+        },
+        "cost": {
+          "input": 1.5,
+          "output": 9,
+          "cache_read": 0.15
         }
       }
     ],
@@ -2003,7 +2229,7 @@
         "cost": {
           "input": 0.1,
           "output": 0.4,
-          "cache_read": 0.025
+          "cache_read": 0.01
         }
       },
       {
@@ -2100,8 +2326,8 @@
         "family": "gemini-pro",
         "type": "gemini",
         "owned_by": "google",
-        "context_length": 1000000,
-        "max_completion_tokens": 64000,
+        "context_length": 1048576,
+        "max_completion_tokens": 65536,
         "thinking": {
           "supported": true,
           "min": 128,
@@ -2179,8 +2405,7 @@
         "cost": {
           "input": 0.25,
           "output": 1.5,
-          "cache_read": 0.025,
-          "cache_write": 1
+          "cache_read": 0.025
         }
       },
       {
@@ -2405,6 +2630,42 @@
         }
       },
       {
+        "id": "gemini-2.5-flash-image",
+        "provider": "vertex",
+        "display_name": "Gemini 2.5 Flash Image",
+        "description": "Our state-of-the-art image generation and editing model.",
+        "family": "gemini-flash",
+        "type": "gemini",
+        "owned_by": "google",
+        "context_length": 32768,
+        "max_completion_tokens": 32768,
+        "thinking": {
+          "supported": true,
+          "max": 24576,
+          "zero_allowed": true
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "image"
+          ],
+          "output": [
+            "text",
+            "image"
+          ]
+        },
+        "capabilities": {
+          "reasoning": true,
+          "attachment": true,
+          "temperature": true
+        },
+        "cost": {
+          "input": 0.3,
+          "output": 30,
+          "cache_read": 0.075
+        }
+      },
+      {
         "id": "gemini-2.5-flash-lite",
         "provider": "vertex",
         "display_name": "Gemini 2.5 Flash Lite",
@@ -2441,7 +2702,7 @@
         "cost": {
           "input": 0.1,
           "output": 0.4,
-          "cache_read": 0.025
+          "cache_read": 0.01
         }
       },
       {
@@ -2574,8 +2835,8 @@
         "family": "gemini-pro",
         "type": "gemini",
         "owned_by": "google",
-        "context_length": 1000000,
-        "max_completion_tokens": 64000,
+        "context_length": 1048576,
+        "max_completion_tokens": 65536,
         "thinking": {
           "supported": true,
           "min": 128,
@@ -2618,8 +2879,8 @@
         "family": "gemini-flash",
         "type": "gemini",
         "owned_by": "google",
-        "context_length": 131072,
-        "max_completion_tokens": 32768,
+        "context_length": 65536,
+        "max_completion_tokens": 65536,
         "thinking": {
           "supported": true,
           "min": 128,
@@ -2646,7 +2907,7 @@
           "temperature": true
         },
         "cost": {
-          "input": 0.25,
+          "input": 0.5,
           "output": 60
         }
       },
@@ -2693,8 +2954,7 @@
         "cost": {
           "input": 0.25,
           "output": 1.5,
-          "cache_read": 0.025,
-          "cache_write": 1
+          "cache_read": 0.025
         }
       },
       {
@@ -2740,6 +3000,52 @@
           "input": 2,
           "output": 12,
           "cache_read": 0.2
+        }
+      },
+      {
+        "id": "gemini-3.5-flash",
+        "provider": "vertex",
+        "display_name": "Gemini 3.5 Flash",
+        "description": "Our most intelligent model built for speed, combining frontier intelligence with superior search and grounding.",
+        "family": "gemini-flash",
+        "type": "gemini",
+        "owned_by": "google",
+        "context_length": 1048576,
+        "max_completion_tokens": 65536,
+        "thinking": {
+          "supported": true,
+          "min": 128,
+          "max": 32768,
+          "levels": [
+            "minimal",
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "video",
+            "audio",
+            "pdf"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": true,
+          "attachment": true,
+          "temperature": true
+        },
+        "cost": {
+          "input": 1.5,
+          "output": 9,
+          "cache_read": 0.15
         }
       },
       {

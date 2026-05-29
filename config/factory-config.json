@@ -89,6 +89,24 @@
       "supportsImages": true
     },
     {
+      "model": "gemini-3-flash-agent",
+      "displayName": "[AG] Gemini 3.5 Flash",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 65536,
+      "supportsImages": true
+    },
+    {
+      "model": "gemini-3.5-flash-low",
+      "displayName": "[AG] Gemini 3.5 Flash (Low)",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 65535,
+      "supportsImages": true
+    },
+    {
       "model": "claude-3-5-haiku-20241022",
       "displayName": "[Claude] Claude 3.5 Haiku",
       "baseUrl": "http://localhost:8317",
@@ -593,6 +611,69 @@
       "supportsImages": true
     },
     {
+      "model": "claude-opus-4-8",
+      "displayName": "[Claude] Claude Opus 4.8",
+      "baseUrl": "http://localhost:8317",
+      "apiKey": "dummy",
+      "provider": "anthropic",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
+      "model": "claude-opus-4-8(auto)",
+      "displayName": "[Claude] Claude Opus 4.8 (Auto)",
+      "baseUrl": "http://localhost:8317",
+      "apiKey": "dummy",
+      "provider": "anthropic",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
+      "model": "claude-opus-4-8(high)",
+      "displayName": "[Claude] Claude Opus 4.8 (High)",
+      "baseUrl": "http://localhost:8317",
+      "apiKey": "dummy",
+      "provider": "anthropic",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
+      "model": "claude-opus-4-8(low)",
+      "displayName": "[Claude] Claude Opus 4.8 (Low)",
+      "baseUrl": "http://localhost:8317",
+      "apiKey": "dummy",
+      "provider": "anthropic",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
+      "model": "claude-opus-4-8(max)",
+      "displayName": "[Claude] Claude Opus 4.8 (Max)",
+      "baseUrl": "http://localhost:8317",
+      "apiKey": "dummy",
+      "provider": "anthropic",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
+      "model": "claude-opus-4-8(medium)",
+      "displayName": "[Claude] Claude Opus 4.8 (Medium)",
+      "baseUrl": "http://localhost:8317",
+      "apiKey": "dummy",
+      "provider": "anthropic",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
+      "model": "claude-opus-4-8(xhigh)",
+      "displayName": "[Claude] Claude Opus 4.8 (Xhigh)",
+      "baseUrl": "http://localhost:8317",
+      "apiKey": "dummy",
+      "provider": "anthropic",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
       "model": "gemini-2.5-flash",
       "displayName": "[Gemini] Gemini 2.5 Flash",
       "baseUrl": "http://localhost:8317/v1",
@@ -643,7 +724,7 @@
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
       "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 64000,
+      "maxOutputTokens": 65536,
       "supportsImages": true
     },
     {
@@ -652,7 +733,7 @@
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
       "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 32768,
+      "maxOutputTokens": 65536,
       "supportsImages": true
     },
     {
@@ -674,8 +755,25 @@
       "supportsImages": true
     },
     {
+      "model": "gemini-3.5-flash",
+      "displayName": "[Gemini] Gemini 3.5 Flash",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 65536,
+      "supportsImages": true
+    },
+    {
       "model": "codex-auto-review",
       "displayName": "[OpenAI] Codex Auto Review",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "openai",
+      "maxOutputTokens": 128000
+    },
+    {
+      "model": "codex-auto-review(high-verbose)",
+      "displayName": "[OpenAI] Codex Auto Review (High Verbose)",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
       "provider": "openai",
@@ -690,6 +788,14 @@
       "maxOutputTokens": 128000
     },
     {
+      "model": "codex-auto-review(low-verbose)",
+      "displayName": "[OpenAI] Codex Auto Review (Low Verbose)",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "openai",
+      "maxOutputTokens": 128000
+    },
+    {
       "model": "codex-auto-review(low)",
       "displayName": "[OpenAI] Codex Auto Review (Low)",
       "baseUrl": "http://localhost:8317/v1",
@@ -698,8 +804,32 @@
       "maxOutputTokens": 128000
     },
     {
+      "model": "codex-auto-review(medium-verbose)",
+      "displayName": "[OpenAI] Codex Auto Review (Medium Verbose)",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "openai",
+      "maxOutputTokens": 128000
+    },
+    {
       "model": "codex-auto-review(medium)",
       "displayName": "[OpenAI] Codex Auto Review (Medium)",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "openai",
+      "maxOutputTokens": 128000
+    },
+    {
+      "model": "codex-auto-review(verbose)",
+      "displayName": "[OpenAI] Codex Auto Review (Verbose)",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "openai",
+      "maxOutputTokens": 128000
+    },
+    {
+      "model": "codex-auto-review(xhigh-verbose)",
+      "displayName": "[OpenAI] Codex Auto Review (Xhigh Verbose)",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
       "provider": "openai",
@@ -723,17 +853,8 @@
       "supportsImages": true
     },
     {
-      "model": "gpt-5.2(fast)",
-      "displayName": "[OpenAI] GPT 5.2 (Fast)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "openai",
-      "maxOutputTokens": 128000,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5.2(high-fast)",
-      "displayName": "[OpenAI] GPT 5.2 (High Fast)",
+      "model": "gpt-5.2(high-verbose)",
+      "displayName": "[OpenAI] GPT 5.2 (High Verbose)",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
       "provider": "openai",
@@ -750,8 +871,8 @@
       "supportsImages": true
     },
     {
-      "model": "gpt-5.2(low-fast)",
-      "displayName": "[OpenAI] GPT 5.2 (Low Fast)",
+      "model": "gpt-5.2(low-verbose)",
+      "displayName": "[OpenAI] GPT 5.2 (Low Verbose)",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
       "provider": "openai",
@@ -768,8 +889,8 @@
       "supportsImages": true
     },
     {
-      "model": "gpt-5.2(medium-fast)",
-      "displayName": "[OpenAI] GPT 5.2 (Medium Fast)",
+      "model": "gpt-5.2(medium-verbose)",
+      "displayName": "[OpenAI] GPT 5.2 (Medium Verbose)",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
       "provider": "openai",
@@ -786,8 +907,17 @@
       "supportsImages": true
     },
     {
-      "model": "gpt-5.2(xhigh-fast)",
-      "displayName": "[OpenAI] GPT 5.2 (Xhigh Fast)",
+      "model": "gpt-5.2(verbose)",
+      "displayName": "[OpenAI] GPT 5.2 (Verbose)",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "openai",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
+      "model": "gpt-5.2(xhigh-verbose)",
+      "displayName": "[OpenAI] GPT 5.2 (Xhigh Verbose)",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
       "provider": "openai",
@@ -813,17 +943,8 @@
       "supportsImages": true
     },
     {
-      "model": "gpt-5.3-codex(fast)",
-      "displayName": "[OpenAI] GPT 5.3 Codex (Fast)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "openai",
-      "maxOutputTokens": 128000,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5.3-codex(high-fast)",
-      "displayName": "[OpenAI] GPT 5.3 Codex (High Fast)",
+      "model": "gpt-5.3-codex(high-verbose)",
+      "displayName": "[OpenAI] GPT 5.3 Codex (High Verbose)",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
       "provider": "openai",
@@ -840,8 +961,8 @@
       "supportsImages": true
     },
     {
-      "model": "gpt-5.3-codex(low-fast)",
-      "displayName": "[OpenAI] GPT 5.3 Codex (Low Fast)",
+      "model": "gpt-5.3-codex(low-verbose)",
+      "displayName": "[OpenAI] GPT 5.3 Codex (Low Verbose)",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
       "provider": "openai",
@@ -858,8 +979,8 @@
       "supportsImages": true
     },
     {
-      "model": "gpt-5.3-codex(medium-fast)",
-      "displayName": "[OpenAI] GPT 5.3 Codex (Medium Fast)",
+      "model": "gpt-5.3-codex(medium-verbose)",
+      "displayName": "[OpenAI] GPT 5.3 Codex (Medium Verbose)",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
       "provider": "openai",
@@ -876,8 +997,17 @@
       "supportsImages": true
     },
     {
-      "model": "gpt-5.3-codex(xhigh-fast)",
-      "displayName": "[OpenAI] GPT 5.3 Codex (Xhigh Fast)",
+      "model": "gpt-5.3-codex(verbose)",
+      "displayName": "[OpenAI] GPT 5.3 Codex (Verbose)",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "openai",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
+      "model": "gpt-5.3-codex(xhigh-verbose)",
+      "displayName": "[OpenAI] GPT 5.3 Codex (Xhigh Verbose)",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
       "provider": "openai",
@@ -903,35 +1033,8 @@
       "supportsImages": true
     },
     {
-      "model": "gpt-5.3-codex-spark(fast)",
-      "displayName": "[OpenAI] GPT 5.3 Codex Spark (Fast)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "openai",
-      "maxOutputTokens": 128000,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5.3-codex-spark(high-fast)",
-      "displayName": "[OpenAI] GPT 5.3 Codex Spark (High Fast)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "openai",
-      "maxOutputTokens": 128000,
-      "supportsImages": true
-    },
-    {
       "model": "gpt-5.3-codex-spark(high)",
       "displayName": "[OpenAI] GPT 5.3 Codex Spark (High)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "openai",
-      "maxOutputTokens": 128000,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5.3-codex-spark(low-fast)",
-      "displayName": "[OpenAI] GPT 5.3 Codex Spark (Low Fast)",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
       "provider": "openai",
@@ -948,26 +1051,8 @@
       "supportsImages": true
     },
     {
-      "model": "gpt-5.3-codex-spark(medium-fast)",
-      "displayName": "[OpenAI] GPT 5.3 Codex Spark (Medium Fast)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "openai",
-      "maxOutputTokens": 128000,
-      "supportsImages": true
-    },
-    {
       "model": "gpt-5.3-codex-spark(medium)",
       "displayName": "[OpenAI] GPT 5.3 Codex Spark (Medium)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "openai",
-      "maxOutputTokens": 128000,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5.3-codex-spark(xhigh-fast)",
-      "displayName": "[OpenAI] GPT 5.3 Codex Spark (Xhigh Fast)",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
       "provider": "openai",
@@ -1011,6 +1096,15 @@
       "supportsImages": true
     },
     {
+      "model": "gpt-5.4(high-verbose)",
+      "displayName": "[OpenAI] GPT 5.4 (High Verbose)",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "openai",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
       "model": "gpt-5.4(high)",
       "displayName": "[OpenAI] GPT 5.4 (High)",
       "baseUrl": "http://localhost:8317/v1",
@@ -1022,6 +1116,15 @@
     {
       "model": "gpt-5.4(low-fast)",
       "displayName": "[OpenAI] GPT 5.4 (Low Fast)",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "openai",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
+      "model": "gpt-5.4(low-verbose)",
+      "displayName": "[OpenAI] GPT 5.4 (Low Verbose)",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
       "provider": "openai",
@@ -1047,6 +1150,15 @@
       "supportsImages": true
     },
     {
+      "model": "gpt-5.4(medium-verbose)",
+      "displayName": "[OpenAI] GPT 5.4 (Medium Verbose)",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "openai",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
       "model": "gpt-5.4(medium)",
       "displayName": "[OpenAI] GPT 5.4 (Medium)",
       "baseUrl": "http://localhost:8317/v1",
@@ -1056,8 +1168,26 @@
       "supportsImages": true
     },
     {
+      "model": "gpt-5.4(verbose)",
+      "displayName": "[OpenAI] GPT 5.4 (Verbose)",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "openai",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
       "model": "gpt-5.4(xhigh-fast)",
       "displayName": "[OpenAI] GPT 5.4 (Xhigh Fast)",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "openai",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
+      "model": "gpt-5.4(xhigh-verbose)",
+      "displayName": "[OpenAI] GPT 5.4 (Xhigh Verbose)",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
       "provider": "openai",
@@ -1083,17 +1213,8 @@
       "supportsImages": true
     },
     {
-      "model": "gpt-5.4-mini(fast)",
-      "displayName": "[OpenAI] GPT 5.4 Mini (Fast)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "openai",
-      "maxOutputTokens": 128000,
-      "supportsImages": true
-    },
-    {
-      "model": "gpt-5.4-mini(high-fast)",
-      "displayName": "[OpenAI] GPT 5.4 Mini (High Fast)",
+      "model": "gpt-5.4-mini(high-verbose)",
+      "displayName": "[OpenAI] GPT 5.4 Mini (High Verbose)",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
       "provider": "openai",
@@ -1110,8 +1231,8 @@
       "supportsImages": true
     },
     {
-      "model": "gpt-5.4-mini(low-fast)",
-      "displayName": "[OpenAI] GPT 5.4 Mini (Low Fast)",
+      "model": "gpt-5.4-mini(low-verbose)",
+      "displayName": "[OpenAI] GPT 5.4 Mini (Low Verbose)",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
       "provider": "openai",
@@ -1128,8 +1249,8 @@
       "supportsImages": true
     },
     {
-      "model": "gpt-5.4-mini(medium-fast)",
-      "displayName": "[OpenAI] GPT 5.4 Mini (Medium Fast)",
+      "model": "gpt-5.4-mini(medium-verbose)",
+      "displayName": "[OpenAI] GPT 5.4 Mini (Medium Verbose)",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
       "provider": "openai",
@@ -1146,8 +1267,17 @@
       "supportsImages": true
     },
     {
-      "model": "gpt-5.4-mini(xhigh-fast)",
-      "displayName": "[OpenAI] GPT 5.4 Mini (Xhigh Fast)",
+      "model": "gpt-5.4-mini(verbose)",
+      "displayName": "[OpenAI] GPT 5.4 Mini (Verbose)",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "openai",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
+      "model": "gpt-5.4-mini(xhigh-verbose)",
+      "displayName": "[OpenAI] GPT 5.4 Mini (Xhigh Verbose)",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
       "provider": "openai",
@@ -1191,6 +1321,15 @@
       "supportsImages": true
     },
     {
+      "model": "gpt-5.5(high-verbose)",
+      "displayName": "[OpenAI] GPT 5.5 (High Verbose)",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "openai",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
       "model": "gpt-5.5(high)",
       "displayName": "[OpenAI] GPT 5.5 (High)",
       "baseUrl": "http://localhost:8317/v1",
@@ -1202,6 +1341,15 @@
     {
       "model": "gpt-5.5(low-fast)",
       "displayName": "[OpenAI] GPT 5.5 (Low Fast)",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "openai",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
+      "model": "gpt-5.5(low-verbose)",
+      "displayName": "[OpenAI] GPT 5.5 (Low Verbose)",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
       "provider": "openai",
@@ -1227,6 +1375,15 @@
       "supportsImages": true
     },
     {
+      "model": "gpt-5.5(medium-verbose)",
+      "displayName": "[OpenAI] GPT 5.5 (Medium Verbose)",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "openai",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
       "model": "gpt-5.5(medium)",
       "displayName": "[OpenAI] GPT 5.5 (Medium)",
       "baseUrl": "http://localhost:8317/v1",
@@ -1236,8 +1393,26 @@
       "supportsImages": true
     },
     {
+      "model": "gpt-5.5(verbose)",
+      "displayName": "[OpenAI] GPT 5.5 (Verbose)",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "openai",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
       "model": "gpt-5.5(xhigh-fast)",
       "displayName": "[OpenAI] GPT 5.5 (Xhigh Fast)",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "openai",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
+      "model": "gpt-5.5(xhigh-verbose)",
+      "displayName": "[OpenAI] GPT 5.5 (Xhigh Verbose)",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
       "provider": "openai",

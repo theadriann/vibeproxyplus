@@ -171,7 +171,7 @@ func parseParentheticalThinkingSuffix(model string) (string, claudeThinkingConfi
 	return model, claudeThinkingConfig{}, false
 }
 
-func isCodexFastReasoningLevel(level string) bool {
+func isCodexAliasReasoningLevel(level string) bool {
 	switch level {
 	case "minimal", "none", "auto", "low", "medium", "high", "xhigh", "max":
 		return true
@@ -180,36 +180,53 @@ func isCodexFastReasoningLevel(level string) bool {
 	}
 }
 
-func parseCodexFastAlias(model string) (string, string, bool) {
+type codexAliasConfig struct {
+	Model            string
+	ServiceTier      string
+	TextVerbosity    string
+	ReasoningSummary string
+	HasAlias         bool
+}
+
+func parseCodexAlias(model string) codexAliasConfig {
 	cleanModel, rawSuffix, ok := splitParentheticalSuffix(model)
 	if !ok || !isCodexModel(cleanModel) {
-		return model, "", false
+		return codexAliasConfig{Model: model}
 	}
 
-	switch rawSuffix {
-	case "fast", "priority":
-		return cleanModel, "priority", true
-	}
+	tokens := strings.Split(rawSuffix, "-")
+	config := codexAliasConfig{Model: cleanModel}
+	reasoningLevel := ""
 
-	for _, tierSuffix := range []string{"-fast", "-priority"} {
-		if strings.HasSuffix(rawSuffix, tierSuffix) {
-			level := strings.TrimSuffix(rawSuffix, tierSuffix)
-			if isCodexFastReasoningLevel(level) {
-				return cleanModel + "(" + level + ")", "priority", true
+	for _, token := range tokens {
+		switch token {
+		case "fast", "priority":
+			config.ServiceTier = "priority"
+		case "verbose":
+			config.TextVerbosity = "high"
+		case "terse", "concise":
+			config.TextVerbosity = "low"
+		case "summary":
+			config.ReasoningSummary = "auto"
+		case "nosummary":
+			config.ReasoningSummary = "none"
+		default:
+			if isCodexAliasReasoningLevel(token) {
+				reasoningLevel = token
 			}
 		}
 	}
 
-	for _, tierPrefix := range []string{"fast-", "priority-"} {
-		if strings.HasPrefix(rawSuffix, tierPrefix) {
-			level := strings.TrimPrefix(rawSuffix, tierPrefix)
-			if isCodexFastReasoningLevel(level) {
-				return cleanModel + "(" + level + ")", "priority", true
-			}
-		}
+	if reasoningLevel != "" {
+		config.Model = cleanModel + "(" + reasoningLevel + ")"
 	}
 
-	return model, "", false
+	config.HasAlias = config.Model != cleanModel || config.ServiceTier != "" || config.TextVerbosity != "" || config.ReasoningSummary != ""
+	if !config.HasAlias {
+		return codexAliasConfig{Model: model}
+	}
+
+	return config
 }
 
 func containsString(values []string, target string) bool {
@@ -231,7 +248,7 @@ func claudeProfileForModel(model string) claudeThinkingProfile {
 	}
 
 	switch {
-	case strings.HasPrefix(model, "claude-opus-4-7"):
+	case strings.HasPrefix(model, "claude-opus-4-8"), strings.HasPrefix(model, "claude-opus-4-7"):
 		return claudeThinkingProfile{
 			MaxOutputTokens:  128000,
 			AdaptiveOnly:     true,
@@ -343,6 +360,15 @@ func setOutputConfigField(data map[string]interface{}, key string, value interfa
 		data["output_config"] = outputConfig
 	}
 	outputConfig[key] = value
+}
+
+func setMapField(data map[string]interface{}, objectKey, fieldKey string, value interface{}) {
+	object, _ := data[objectKey].(map[string]interface{})
+	if object == nil {
+		object = make(map[string]interface{})
+		data[objectKey] = object
+	}
+	object[fieldKey] = value
 }
 
 func cleanupOutputConfig(data map[string]interface{}) {
@@ -524,10 +550,18 @@ func TransformRequestBody(path string, body []byte) ([]byte, []string, error) {
 		return output, nil, err
 	}
 
-	if cleanModel, serviceTier, hasFastAlias := parseCodexFastAlias(model); hasFastAlias {
-		data["model"] = cleanModel
-		data["service_tier"] = serviceTier
-		model = cleanModel
+	if alias := parseCodexAlias(model); alias.HasAlias {
+		data["model"] = alias.Model
+		if alias.ServiceTier != "" {
+			data["service_tier"] = alias.ServiceTier
+		}
+		if alias.TextVerbosity != "" {
+			setMapField(data, "text", "verbosity", alias.TextVerbosity)
+		}
+		if alias.ReasoningSummary != "" {
+			setMapField(data, "reasoning", "summary", alias.ReasoningSummary)
+		}
+		model = alias.Model
 		modified = true
 	}
 
