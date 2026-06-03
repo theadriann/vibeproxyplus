@@ -101,6 +101,17 @@ func TestRepositoryTargetsCLIProxyAPIInsteadOfPlus(t *testing.T) {
 	}
 }
 
+func TestMakeAuthCopilotDoesNotUseRemovedCLIProxyFlag(t *testing.T) {
+	data, err := os.ReadFile("../../Makefile")
+	if err != nil {
+		t.Fatalf("read Makefile: %v", err)
+	}
+	removedCommand := "./bin/cli-proxy-api -config config/cliproxy.yaml -github-copilot-login"
+	if strings.Contains(string(data), removedCommand) {
+		t.Fatal("Makefile auth-copilot executes removed CLIProxyAPI -github-copilot-login flag")
+	}
+}
+
 func TestBuildModelsDevIndex_PopulatesNormalizedID(t *testing.T) {
 	api := ModelsDevAPI{
 		"anthropic": {
@@ -187,6 +198,51 @@ func TestBuildCodexClientMetadataIndex_ReturnsErrorForInvalidJSON(t *testing.T) 
 	}
 	if index != nil {
 		t.Fatalf("expected nil index on invalid JSON, got %#v", index)
+	}
+}
+
+func TestCodexDefaultReasoningSummaryOmitsNone(t *testing.T) {
+	metadata := &CodexClientMetadata{
+		SupportsReasoningSummaries: true,
+		DefaultReasoningSummary:    "none",
+	}
+
+	if got := codexDefaultReasoningSummary(metadata); got != "" {
+		t.Fatalf("reasoning summary = %q, want empty string", got)
+	}
+}
+
+func TestGenerateOpenCodeConfig_OmitsUnsupportedNoneReasoningSummary(t *testing.T) {
+	models := map[string][]Model{
+		"codex": {
+			{
+				ID:          "gpt-5.5",
+				Provider:    "codex",
+				DisplayName: "GPT 5.5",
+				Type:        "openai",
+				OwnedBy:     "openai",
+				Thinking:    &Thinking{Supported: true, Levels: []string{"high"}},
+				Modalities:  &Modalities{Input: []string{"text"}, Output: []string{"text"}},
+			},
+		},
+	}
+	metadata := CodexClientMetadataIndex{
+		"gpt-5.5": {
+			SupportsVerbosity:          true,
+			DefaultVerbosity:           "low",
+			SupportsReasoningSummaries: true,
+			DefaultReasoningSummary:    "none",
+			ReasoningLevels:            []string{"high"},
+		},
+	}
+
+	config := generateOpenCodeConfig(models, metadata)
+	variant := config.Provider["ai-proxy-openai"].Models["gpt-5.5"].Variants["high"]
+	if variant == nil {
+		t.Fatal("missing high variant")
+	}
+	if variant.ReasoningSummary != "" {
+		t.Fatalf("reasoning summary = %q, want omitted empty value", variant.ReasoningSummary)
 	}
 }
 
@@ -624,7 +680,7 @@ func TestGenerateOpenCodeConfig_CodexFastAliasModel(t *testing.T) {
 	if fastModel.Name != "GPT 5.5 (Fast)" {
 		t.Fatalf("fast model name = %q, want %q", fastModel.Name, "GPT 5.5 (Fast)")
 	}
-	if fastModel.Variants["high"] == nil || fastModel.Variants["high"].ReasoningEffort != "high" || fastModel.Variants["high"].ReasoningSummary != "none" {
+	if fastModel.Variants["high"] == nil || fastModel.Variants["high"].ReasoningEffort != "high" || fastModel.Variants["high"].ReasoningSummary != "" {
 		t.Fatalf("expected fast OpenCode model to keep high reasoning variant, got %#v", fastModel.Variants["high"])
 	}
 	if fastModel.Variants["verbose"] == nil || fastModel.Variants["verbose"].TextVerbosity != "high" {

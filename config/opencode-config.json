@@ -515,47 +515,38 @@
           "variants": {
             "high": {
               "reasoningEffort": "high",
-              "textVerbosity": "low",
-              "reasoningSummary": "none"
+              "textVerbosity": "low"
             },
             "high-verbose": {
               "reasoningEffort": "high",
-              "textVerbosity": "high",
-              "reasoningSummary": "none"
+              "textVerbosity": "high"
             },
             "low": {
               "reasoningEffort": "low",
-              "textVerbosity": "low",
-              "reasoningSummary": "none"
+              "textVerbosity": "low"
             },
             "low-verbose": {
               "reasoningEffort": "low",
-              "textVerbosity": "high",
-              "reasoningSummary": "none"
+              "textVerbosity": "high"
             },
             "medium": {
               "reasoningEffort": "medium",
-              "textVerbosity": "low",
-              "reasoningSummary": "none"
+              "textVerbosity": "low"
             },
             "medium-verbose": {
               "reasoningEffort": "medium",
-              "textVerbosity": "high",
-              "reasoningSummary": "none"
+              "textVerbosity": "high"
             },
             "verbose": {
-              "textVerbosity": "high",
-              "reasoningSummary": "none"
+              "textVerbosity": "high"
             },
             "xhigh": {
               "reasoningEffort": "xhigh",
-              "textVerbosity": "low",
-              "reasoningSummary": "none"
+              "textVerbosity": "low"
             },
             "xhigh-verbose": {
               "reasoningEffort": "xhigh",
-              "textVerbosity": "high",
-              "reasoningSummary": "none"
+              "textVerbosity": "high"
             }
           },
           "modalities": {
@@ -1222,123 +1213,6 @@
             ]
           }
         },
-        "gpt-5.2": {
-          "name": "GPT 5.2",
-          "variants": {
-            "high": {
-              "reasoningEffort": "high",
-              "textVerbosity": "low",
-              "reasoningSummary": "auto"
-            },
-            "high-verbose": {
-              "reasoningEffort": "high",
-              "textVerbosity": "high",
-              "reasoningSummary": "auto"
-            },
-            "low": {
-              "reasoningEffort": "low",
-              "textVerbosity": "low",
-              "reasoningSummary": "auto"
-            },
-            "low-verbose": {
-              "reasoningEffort": "low",
-              "textVerbosity": "high",
-              "reasoningSummary": "auto"
-            },
-            "medium": {
-              "reasoningEffort": "medium",
-              "textVerbosity": "low",
-              "reasoningSummary": "auto"
-            },
-            "medium-verbose": {
-              "reasoningEffort": "medium",
-              "textVerbosity": "high",
-              "reasoningSummary": "auto"
-            },
-            "verbose": {
-              "textVerbosity": "high",
-              "reasoningSummary": "auto"
-            },
-            "xhigh": {
-              "reasoningEffort": "xhigh",
-              "textVerbosity": "low",
-              "reasoningSummary": "auto"
-            },
-            "xhigh-verbose": {
-              "reasoningEffort": "xhigh",
-              "textVerbosity": "high",
-              "reasoningSummary": "auto"
-            }
-          },
-          "modalities": {
-            "input": [
-              "text",
-              "image"
-            ],
-            "output": [
-              "text"
-            ]
-          }
-        },
-        "gpt-5.3-codex": {
-          "name": "GPT 5.3 Codex",
-          "variants": {
-            "high": {
-              "reasoningEffort": "high",
-              "textVerbosity": "low",
-              "reasoningSummary": "none"
-            },
-            "high-verbose": {
-              "reasoningEffort": "high",
-              "textVerbosity": "high",
-              "reasoningSummary": "none"
-            },
-            "low": {
-              "reasoningEffort": "low",
-              "textVerbosity": "low",
-              "reasoningSummary": "none"
-            },
-            "low-verbose": {
-              "reasoningEffort": "low",
-              "textVerbosity": "high",
-              "reasoningSummary": "none"
-            },
-            "medium": {
-              "reasoningEffort": "medium",
-              "textVerbosity": "low",
-              "reasoningSummary": "none"
-            },
-            "medium-verbose": {
-              "reasoningEffort": "medium",
-              "textVerbosity": "high",
-              "reasoningSummary": "none"
-            },
-            "verbose": {
-              "textVerbosity": "high",
-              "reasoningSummary": "none"
-            },
-            "xhigh": {
-              "reasoningEffort": "xhigh",
-              "textVerbosity": "low",
-              "reasoningSummary": "none"
-            },
-            "xhigh-verbose": {
-              "reasoningEffort": "xhigh",
-              "textVerbosity": "high",
-              "reasoningSummary": "none"
-            }
-          },
-          "modalities": {
-            "input": [
-              "text",
-              "image",
-              "pdf"
-            ],
-            "output": [
-              "text"
-            ]
-          }
-        },
         "gpt-5.3-codex-spark": {
           "name": "GPT 5.3 Codex Spark",
           "variants": {
@@ -1379,47 +1253,38 @@
           "variants": {
             "high": {
               "reasoningEffort": "high",
-              "textVerbosity": "low",
-              "reasoningSummary": "none"
+              "textVerbosity": "low"
             },
             "high-verbose": {
               "reasoningEffort": "high",
-              "textVerbosity": "high",
-              "reasoningSummary": "none"
+              "textVerbosity": "high"
             },
             "low": {
               "reasoningEffort": "low",
-              "textVerbosity": "low",
-              "reasoningSummary": "none"
+              "textVerbosity": "low"
             },
             "low-verbose": {
               "reasoningEffort": "low",
-              "textVerbosity": "high",
-              "reasoningSummary": "none"
+              "textVerbosity": "high"
             },
             "medium": {
               "reasoningEffort": "medium",
-              "textVerbosity": "low",
-              "reasoningSummary": "none"
+              "textVerbosity": "low"
             },
             "medium-verbose": {
               "reasoningEffort": "medium",
-              "textVerbosity": "high",
-              "reasoningSummary": "none"
+              "textVerbosity": "high"
             },
             "verbose": {
-              "textVerbosity": "high",
-              "reasoningSummary": "none"
+              "textVerbosity": "high"
             },
             "xhigh": {
               "reasoningEffort": "xhigh",
-              "textVerbosity": "low",
-              "reasoningSummary": "none"
+              "textVerbosity": "low"
             },
             "xhigh-verbose": {
               "reasoningEffort": "xhigh",
-              "textVerbosity": "high",
-              "reasoningSummary": "none"
+              "textVerbosity": "high"
             }
           },
           "modalities": {
@@ -1438,47 +1303,38 @@
           "variants": {
             "high": {
               "reasoningEffort": "high",
-              "textVerbosity": "low",
-              "reasoningSummary": "none"
+              "textVerbosity": "low"
             },
             "high-verbose": {
               "reasoningEffort": "high",
-              "textVerbosity": "high",
-              "reasoningSummary": "none"
+              "textVerbosity": "high"
             },
             "low": {
               "reasoningEffort": "low",
-              "textVerbosity": "low",
-              "reasoningSummary": "none"
+              "textVerbosity": "low"
             },
             "low-verbose": {
               "reasoningEffort": "low",
-              "textVerbosity": "high",
-              "reasoningSummary": "none"
+              "textVerbosity": "high"
             },
             "medium": {
               "reasoningEffort": "medium",
-              "textVerbosity": "low",
-              "reasoningSummary": "none"
+              "textVerbosity": "low"
             },
             "medium-verbose": {
               "reasoningEffort": "medium",
-              "textVerbosity": "high",
-              "reasoningSummary": "none"
+              "textVerbosity": "high"
             },
             "verbose": {
-              "textVerbosity": "high",
-              "reasoningSummary": "none"
+              "textVerbosity": "high"
             },
             "xhigh": {
               "reasoningEffort": "xhigh",
-              "textVerbosity": "low",
-              "reasoningSummary": "none"
+              "textVerbosity": "low"
             },
             "xhigh-verbose": {
               "reasoningEffort": "xhigh",
-              "textVerbosity": "high",
-              "reasoningSummary": "none"
+              "textVerbosity": "high"
             }
           },
           "modalities": {
@@ -1497,47 +1353,38 @@
           "variants": {
             "high": {
               "reasoningEffort": "high",
-              "textVerbosity": "medium",
-              "reasoningSummary": "none"
+              "textVerbosity": "medium"
             },
             "high-verbose": {
               "reasoningEffort": "high",
-              "textVerbosity": "high",
-              "reasoningSummary": "none"
+              "textVerbosity": "high"
             },
             "low": {
               "reasoningEffort": "low",
-              "textVerbosity": "medium",
-              "reasoningSummary": "none"
+              "textVerbosity": "medium"
             },
             "low-verbose": {
               "reasoningEffort": "low",
-              "textVerbosity": "high",
-              "reasoningSummary": "none"
+              "textVerbosity": "high"
             },
             "medium": {
               "reasoningEffort": "medium",
-              "textVerbosity": "medium",
-              "reasoningSummary": "none"
+              "textVerbosity": "medium"
             },
             "medium-verbose": {
               "reasoningEffort": "medium",
-              "textVerbosity": "high",
-              "reasoningSummary": "none"
+              "textVerbosity": "high"
             },
             "verbose": {
-              "textVerbosity": "high",
-              "reasoningSummary": "none"
+              "textVerbosity": "high"
             },
             "xhigh": {
               "reasoningEffort": "xhigh",
-              "textVerbosity": "medium",
-              "reasoningSummary": "none"
+              "textVerbosity": "medium"
             },
             "xhigh-verbose": {
               "reasoningEffort": "xhigh",
-              "textVerbosity": "high",
-              "reasoningSummary": "none"
+              "textVerbosity": "high"
             }
           },
           "modalities": {
@@ -1555,47 +1402,38 @@
           "variants": {
             "high": {
               "reasoningEffort": "high",
-              "textVerbosity": "low",
-              "reasoningSummary": "none"
+              "textVerbosity": "low"
             },
             "high-verbose": {
               "reasoningEffort": "high",
-              "textVerbosity": "high",
-              "reasoningSummary": "none"
+              "textVerbosity": "high"
             },
             "low": {
               "reasoningEffort": "low",
-              "textVerbosity": "low",
-              "reasoningSummary": "none"
+              "textVerbosity": "low"
             },
             "low-verbose": {
               "reasoningEffort": "low",
-              "textVerbosity": "high",
-              "reasoningSummary": "none"
+              "textVerbosity": "high"
             },
             "medium": {
               "reasoningEffort": "medium",
-              "textVerbosity": "low",
-              "reasoningSummary": "none"
+              "textVerbosity": "low"
             },
             "medium-verbose": {
               "reasoningEffort": "medium",
-              "textVerbosity": "high",
-              "reasoningSummary": "none"
+              "textVerbosity": "high"
             },
             "verbose": {
-              "textVerbosity": "high",
-              "reasoningSummary": "none"
+              "textVerbosity": "high"
             },
             "xhigh": {
               "reasoningEffort": "xhigh",
-              "textVerbosity": "low",
-              "reasoningSummary": "none"
+              "textVerbosity": "low"
             },
             "xhigh-verbose": {
               "reasoningEffort": "xhigh",
-              "textVerbosity": "high",
-              "reasoningSummary": "none"
+              "textVerbosity": "high"
             }
           },
           "modalities": {
@@ -1614,47 +1452,38 @@
           "variants": {
             "high": {
               "reasoningEffort": "high",
-              "textVerbosity": "low",
-              "reasoningSummary": "none"
+              "textVerbosity": "low"
             },
             "high-verbose": {
               "reasoningEffort": "high",
-              "textVerbosity": "high",
-              "reasoningSummary": "none"
+              "textVerbosity": "high"
             },
             "low": {
               "reasoningEffort": "low",
-              "textVerbosity": "low",
-              "reasoningSummary": "none"
+              "textVerbosity": "low"
             },
             "low-verbose": {
               "reasoningEffort": "low",
-              "textVerbosity": "high",
-              "reasoningSummary": "none"
+              "textVerbosity": "high"
             },
             "medium": {
               "reasoningEffort": "medium",
-              "textVerbosity": "low",
-              "reasoningSummary": "none"
+              "textVerbosity": "low"
             },
             "medium-verbose": {
               "reasoningEffort": "medium",
-              "textVerbosity": "high",
-              "reasoningSummary": "none"
+              "textVerbosity": "high"
             },
             "verbose": {
-              "textVerbosity": "high",
-              "reasoningSummary": "none"
+              "textVerbosity": "high"
             },
             "xhigh": {
               "reasoningEffort": "xhigh",
-              "textVerbosity": "low",
-              "reasoningSummary": "none"
+              "textVerbosity": "low"
             },
             "xhigh-verbose": {
               "reasoningEffort": "xhigh",
-              "textVerbosity": "high",
-              "reasoningSummary": "none"
+              "textVerbosity": "high"
             }
           },
           "modalities": {

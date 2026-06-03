@@ -72,7 +72,7 @@ Auth helper commands (pass through to CLIProxyAPI):
 - `make auth-codex`
 - `make auth-gemini`
 - `make auth-antigravity`
-- `make auth-copilot`
+- `make auth-copilot` currently reports that CLIProxyAPI no longer exposes the old Copilot login flag.
 
 ## Model Sync Commands and Outputs
 - `make sync-models`
@@ -85,6 +85,7 @@ Auth helper commands (pass through to CLIProxyAPI):
 Current behavior:
 - Model sync is deterministic run-to-run against the same upstream payloads.
 - Codex/OpenAI fast, verbosity, and reasoning-summary config variants are derived from CLIProxyAPI's Codex client model catalog.
+- Current synced CLIProxyAPI catalog exposes 5 Codex/OpenAI models; upstream removed legacy GPT 5.2 and GPT 5.3 Codex base entries from generated Factory/OpenCode configs.
 - Output can still change over time when upstream model metadata changes.
 
 ## Validation Checklist for Changes
@@ -141,5 +142,8 @@ Rules:
 - ThinkingProxy listens on `127.0.0.1:8317` and forwards to `127.0.0.1:8318`.
 - Claude thinking transforms are done in proxy-layer request rewrite; Claude Opus 4.7 and 4.8 use adaptive level-based thinking aliases.
 - Codex responses input normalization (string -> list payload form) is handled in proxy-layer request rewrite for `/v1/responses` paths.
-- Codex aliases such as `gpt-5.5(fast)`, `gpt-5.5(high-fast)`, and `gpt-5.5(high-fast-verbose-summary)` are translated into OpenAI request fields in proxy-layer request rewrite.
+- Codex aliases such as `gpt-5.5(fast)`, `gpt-5.5(high-fast)`, and `gpt-5.5(high-fast-verbose-summary)` are translated into OpenAI request fields in proxy-layer request rewrite; known Codex models whose client catalog disables reasoning summaries omit unsolicited `reasoning.summary: "auto"` because OpenAI rejects `reasoning.summary: "none"`.
+- Droid summarizer/compaction requests with an explicit `reasoning.effort` preserve that body effort instead of re-applying Codex model reasoning suffixes such as `(high)` and set `truncation: "auto"`, which avoids unnecessarily shrinking usable input context on very large compactions.
+- Opt-in traffic debugging is controlled by `VIBEPROXYPLUS_TRAFFIC_DEBUG=1`; logs are written to `~/.vibeproxyplus/logs/traffic-debug` unless `VIBEPROXYPLUS_TRAFFIC_DEBUG_DIR` is set.
+- Droid summarizer/compaction responses that return HTTP 2xx with no usable Responses API text are converted to HTTP 502 so clients can treat them as failures instead of empty successful summaries.
 - Desktop auth account lists derive providers from management auth-files `provider` or `type`; if the management list is empty/unavailable, local `~/.cli-proxy-api` files are used.

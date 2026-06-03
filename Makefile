@@ -135,7 +135,8 @@ auth-antigravity:
 	./bin/cli-proxy-api -config config/cliproxy.yaml -antigravity-login
 
 auth-copilot:
-	./bin/cli-proxy-api -config config/cliproxy.yaml -github-copilot-login
+	@echo "CLIProxyAPI no longer exposes -github-copilot-login; configure GitHub Copilot auth through CLIProxyAPI's supported auth flow or management UI."
+	@exit 1
 
 clean:
 	rm -rf bin/thinking-proxy bin/model-sync

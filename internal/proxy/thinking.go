@@ -181,11 +181,15 @@ func isCodexAliasReasoningLevel(level string) bool {
 }
 
 type codexAliasConfig struct {
-	Model            string
-	ServiceTier      string
-	TextVerbosity    string
-	ReasoningSummary string
-	HasAlias         bool
+	BaseModel                   string
+	Model                       string
+	ReasoningLevel              string
+	ServiceTier                 string
+	TextVerbosity               string
+	ReasoningSummary            string
+	SuppressReasoningSummary    bool
+	HasExplicitReasoningSummary bool
+	HasAlias                    bool
 }
 
 func parseCodexAlias(model string) codexAliasConfig {
@@ -195,7 +199,7 @@ func parseCodexAlias(model string) codexAliasConfig {
 	}
 
 	tokens := strings.Split(rawSuffix, "-")
-	config := codexAliasConfig{Model: cleanModel}
+	config := codexAliasConfig{BaseModel: cleanModel, Model: cleanModel}
 	reasoningLevel := ""
 
 	for _, token := range tokens {
@@ -208,8 +212,10 @@ func parseCodexAlias(model string) codexAliasConfig {
 			config.TextVerbosity = "low"
 		case "summary":
 			config.ReasoningSummary = "auto"
+			config.HasExplicitReasoningSummary = true
 		case "nosummary":
-			config.ReasoningSummary = "none"
+			config.SuppressReasoningSummary = true
+			config.HasExplicitReasoningSummary = true
 		default:
 			if isCodexAliasReasoningLevel(token) {
 				reasoningLevel = token
@@ -218,15 +224,80 @@ func parseCodexAlias(model string) codexAliasConfig {
 	}
 
 	if reasoningLevel != "" {
+		config.ReasoningLevel = reasoningLevel
 		config.Model = cleanModel + "(" + reasoningLevel + ")"
 	}
 
-	config.HasAlias = config.Model != cleanModel || config.ServiceTier != "" || config.TextVerbosity != "" || config.ReasoningSummary != ""
+	config.HasAlias = config.Model != cleanModel || config.ServiceTier != "" || config.TextVerbosity != "" || config.ReasoningSummary != "" || config.SuppressReasoningSummary
 	if !config.HasAlias {
 		return codexAliasConfig{Model: model}
 	}
 
 	return config
+}
+
+func shouldPreserveExplicitCodexReasoningForSummarizer(path string, data map[string]interface{}, alias codexAliasConfig) bool {
+	if !isCodexResponsesPath(path) || alias.ReasoningLevel == "" || alias.BaseModel == "" {
+		return false
+	}
+
+	reasoning, ok := data["reasoning"].(map[string]interface{})
+	if !ok {
+		return false
+	}
+	if _, ok := reasoning["effort"].(string); !ok {
+		return false
+	}
+
+	instructions, _ := data["instructions"].(string)
+	instructions = strings.ToLower(instructions)
+	return strings.Contains(instructions, "creating and maintaining summaries") ||
+		strings.Contains(instructions, "return your final summary") ||
+		strings.Contains(instructions, "<summary>")
+}
+
+func codexModelDefaultsToNoSummary(model string) bool {
+	baseModel := model
+	if cleanModel, _, ok := splitParentheticalSuffix(model); ok {
+		baseModel = cleanModel
+	}
+
+	switch {
+	case baseModel == "gpt-5.3-codex":
+		return true
+	case strings.HasPrefix(baseModel, "gpt-5.4"):
+		return true
+	case strings.HasPrefix(baseModel, "gpt-5.5"):
+		return true
+	default:
+		return false
+	}
+}
+
+func normalizeCodexReasoningSummary(data map[string]interface{}, model string, alias codexAliasConfig) bool {
+	if alias.HasExplicitReasoningSummary || !codexModelDefaultsToNoSummary(model) {
+		return false
+	}
+
+	return suppressCodexReasoningSummary(data, true)
+}
+
+func suppressCodexReasoningSummary(data map[string]interface{}, onlyAuto bool) bool {
+	reasoning, ok := data["reasoning"].(map[string]interface{})
+	if !ok {
+		return false
+	}
+	summary, ok := reasoning["summary"].(string)
+	normalizedSummary := strings.ToLower(strings.TrimSpace(summary))
+	if !ok || (onlyAuto && normalizedSummary != "auto" && normalizedSummary != "none") {
+		return false
+	}
+
+	delete(reasoning, "summary")
+	if len(reasoning) == 0 {
+		delete(data, "reasoning")
+	}
+	return true
 }
 
 func containsString(values []string, target string) bool {
@@ -550,8 +621,15 @@ func TransformRequestBody(path string, body []byte) ([]byte, []string, error) {
 		return output, nil, err
 	}
 
-	if alias := parseCodexAlias(model); alias.HasAlias {
-		data["model"] = alias.Model
+	alias := parseCodexAlias(model)
+	if alias.HasAlias {
+		effectiveModel := alias.Model
+		isSummarizerRequest := shouldPreserveExplicitCodexReasoningForSummarizer(path, data, alias)
+		if isSummarizerRequest {
+			effectiveModel = alias.BaseModel
+			data["truncation"] = "auto"
+		}
+		data["model"] = effectiveModel
 		if alias.ServiceTier != "" {
 			data["service_tier"] = alias.ServiceTier
 		}
@@ -561,7 +639,14 @@ func TransformRequestBody(path string, body []byte) ([]byte, []string, error) {
 		if alias.ReasoningSummary != "" {
 			setMapField(data, "reasoning", "summary", alias.ReasoningSummary)
 		}
-		model = alias.Model
+		if alias.SuppressReasoningSummary && suppressCodexReasoningSummary(data, false) {
+			modified = true
+		}
+		model = effectiveModel
+		modified = true
+	}
+
+	if isCodexModel(model) && normalizeCodexReasoningSummary(data, model, alias) {
 		modified = true
 	}
 

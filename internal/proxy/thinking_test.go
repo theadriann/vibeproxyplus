@@ -342,6 +342,136 @@ func TestTransformRequestBody_CodexCombinedAliasAddsPriorityVerbosityAndSummary(
 	}
 }
 
+func TestTransformRequestBody_CodexAliasOmitsNoSummaryDefault(t *testing.T) {
+	input := `{"model":"gpt-5.5(high)","reasoning":{"effort":"medium","summary":"auto"},"messages":[{"role":"user","content":"hi"}]}`
+
+	output, betas, err := TransformRequestBody("/v1/responses", []byte(input))
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if len(betas) != 0 {
+		t.Fatalf("expected no betas for codex alias, got %v", betas)
+	}
+
+	var body map[string]interface{}
+	if err := json.Unmarshal(output, &body); err != nil {
+		t.Fatalf("invalid output json: %v", err)
+	}
+	if got := body["model"]; got != "gpt-5.5(high)" {
+		t.Fatalf("model = %v, want %q", got, "gpt-5.5(high)")
+	}
+	reasoning, ok := body["reasoning"].(map[string]interface{})
+	if !ok {
+		t.Fatalf("expected reasoning object, got %T", body["reasoning"])
+	}
+	if _, ok := reasoning["summary"]; ok {
+		t.Fatalf("did not expect reasoning.summary because OpenAI rejects %q for this field, got %#v", "none", reasoning["summary"])
+	}
+	if got := reasoning["effort"]; got != "medium" {
+		t.Fatalf("reasoning.effort = %v, want %q", got, "medium")
+	}
+}
+
+func TestTransformRequestBody_CodexAliasOmitsInvalidNoneSummaryDefault(t *testing.T) {
+	input := `{"model":"gpt-5.5(high)","reasoning":{"effort":"medium","summary":"none"},"messages":[{"role":"user","content":"hi"}]}`
+
+	output, _, err := TransformRequestBody("/v1/responses", []byte(input))
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	var body map[string]interface{}
+	if err := json.Unmarshal(output, &body); err != nil {
+		t.Fatalf("invalid output json: %v", err)
+	}
+	reasoning, ok := body["reasoning"].(map[string]interface{})
+	if !ok {
+		t.Fatalf("expected reasoning object, got %T", body["reasoning"])
+	}
+	if _, ok := reasoning["summary"]; ok {
+		t.Fatalf("did not expect unsupported reasoning.summary none, got %#v", reasoning["summary"])
+	}
+	if got := reasoning["effort"]; got != "medium" {
+		t.Fatalf("reasoning.effort = %v, want %q", got, "medium")
+	}
+}
+
+func TestTransformRequestBody_CodexSummarizerHonorsExplicitReasoningEffort(t *testing.T) {
+	input := `{"model":"gpt-5.5(high)","stream":true,"instructions":"You excel at creating and maintaining summaries that capture the most salient details from technical conversations. Return your final summary with the following wrapped in <summary> tags.","reasoning":{"effort":"medium","summary":"auto"},"input":[{"role":"user","content":"large session"}]}`
+
+	output, betas, err := TransformRequestBody("/v1/responses", []byte(input))
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if len(betas) != 0 {
+		t.Fatalf("expected no betas for codex summarizer request, got %v", betas)
+	}
+
+	var body map[string]interface{}
+	if err := json.Unmarshal(output, &body); err != nil {
+		t.Fatalf("invalid output json: %v", err)
+	}
+	if got := body["model"]; got != "gpt-5.5" {
+		t.Fatalf("model = %v, want %q", got, "gpt-5.5")
+	}
+	reasoning, ok := body["reasoning"].(map[string]interface{})
+	if !ok {
+		t.Fatalf("expected reasoning object, got %T", body["reasoning"])
+	}
+	if got := reasoning["effort"]; got != "medium" {
+		t.Fatalf("reasoning.effort = %v, want %q", got, "medium")
+	}
+	if _, ok := reasoning["summary"]; ok {
+		t.Fatalf("did not expect reasoning.summary for no-summary Codex model, got %#v", reasoning["summary"])
+	}
+	if got := body["truncation"]; got != "auto" {
+		t.Fatalf("truncation = %v, want %q", got, "auto")
+	}
+}
+
+func TestTransformRequestBody_CodexNoSummaryAliasOmitsSummaryField(t *testing.T) {
+	input := `{"model":"gpt-5.5(high-nosummary)","reasoning":{"summary":"auto"},"messages":[{"role":"user","content":"hi"}]}`
+
+	output, _, err := TransformRequestBody("/v1/responses", []byte(input))
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	var body map[string]interface{}
+	if err := json.Unmarshal(output, &body); err != nil {
+		t.Fatalf("invalid output json: %v", err)
+	}
+	if got := body["model"]; got != "gpt-5.5(high)" {
+		t.Fatalf("model = %v, want %q", got, "gpt-5.5(high)")
+	}
+	if reasoning, ok := body["reasoning"].(map[string]interface{}); ok {
+		if _, ok := reasoning["summary"]; ok {
+			t.Fatalf("did not expect reasoning.summary for nosummary alias, got %#v", reasoning["summary"])
+		}
+	}
+}
+
+func TestTransformRequestBody_CodexAutoSummaryDefaultIsPreserved(t *testing.T) {
+	input := `{"model":"gpt-5.3-codex-spark(high)","reasoning":{"effort":"medium","summary":"auto"},"messages":[{"role":"user","content":"hi"}]}`
+
+	output, _, err := TransformRequestBody("/v1/responses", []byte(input))
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	var body map[string]interface{}
+	if err := json.Unmarshal(output, &body); err != nil {
+		t.Fatalf("invalid output json: %v", err)
+	}
+	reasoning, ok := body["reasoning"].(map[string]interface{})
+	if !ok {
+		t.Fatalf("expected reasoning object, got %T", body["reasoning"])
+	}
+	if got := reasoning["summary"]; got != "auto" {
+		t.Fatalf("reasoning.summary = %v, want %q", got, "auto")
+	}
+}
+
 func TestTransformRequestBody_ClaudeOpus47AdaptiveSuffix(t *testing.T) {
 	input := `{"model":"claude-opus-4-7(xhigh)","messages":[{"role":"user","content":"hi"}]}`
 

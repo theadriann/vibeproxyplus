@@ -36,7 +36,8 @@ func newThinkingProxyWithTarget(target *url.URL) *ThinkingProxy {
 		resolveRealtimeAPIKey: resolveRealtimeAPIKey,
 	}
 	tp.proxy = &httputil.ReverseProxy{
-		Director: tp.director,
+		Director:       tp.director,
+		ModifyResponse: tp.modifyResponse,
 	}
 	return tp
 }
@@ -45,6 +46,14 @@ func (tp *ThinkingProxy) director(req *http.Request) {
 	req.URL.Scheme = tp.target.Scheme
 	req.URL.Host = tp.target.Host
 	req.Host = tp.target.Host
+}
+
+func (tp *ThinkingProxy) modifyResponse(resp *http.Response) error {
+	if err := guardCompactionNoTextResponse(resp); err != nil {
+		return err
+	}
+	wrapTrafficDebugResponse(resp)
+	return nil
 }
 
 func (tp *ThinkingProxy) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -95,6 +104,12 @@ func (tp *ThinkingProxy) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 		log.Printf("Transformed request: thinking enabled")
 	}
+
+	if debug := newTrafficDebugRecord(r); debug.Enabled {
+		debug.LogRequest(r, body, newBody)
+		r = debug.Attach(r)
+	}
+	r = attachCompactionNoTextGuard(r, newBody)
 
 	// Update request
 	r.Body = io.NopCloser(bytes.NewReader(newBody))

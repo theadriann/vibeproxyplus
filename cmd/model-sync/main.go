@@ -1561,6 +1561,9 @@ func codexDefaultVerbosity(metadata *CodexClientMetadata) string {
 
 func codexDefaultReasoningSummary(metadata *CodexClientMetadata) string {
 	if metadata != nil && metadata.SupportsReasoningSummaries && metadata.DefaultReasoningSummary != "" {
+		if metadata.DefaultReasoningSummary == "none" {
+			return ""
+		}
 		return metadata.DefaultReasoningSummary
 	}
 	return "auto"
