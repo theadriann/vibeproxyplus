@@ -1046,6 +1046,46 @@
         }
       },
       {
+        "id": "claude-fable-5",
+        "provider": "claude",
+        "display_name": "Claude Fable 5",
+        "description": "Anthropic's most capable widely released model, for the most demanding reasoning and long-horizon agentic work.",
+        "family": "claude-fable",
+        "type": "anthropic",
+        "owned_by": "anthropic",
+        "context_length": 1000000,
+        "max_completion_tokens": 128000,
+        "thinking": {
+          "supported": true,
+          "levels": [
+            "low",
+            "medium",
+            "high",
+            "xhigh",
+            "max"
+          ]
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "image"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "attachment": true,
+          "temperature": true
+        },
+        "cost": {
+          "input": 10,
+          "output": 50
+        }
+      },
+      {
         "id": "claude-haiku-4-5-20251001",
         "provider": "claude",
         "display_name": "Claude 4.5 Haiku",
@@ -1818,10 +1858,11 @@
         "provider": "gemini",
         "display_name": "Gemini 3 Pro Image Preview",
         "description": "Gemini 3 Pro Image Preview",
+        "family": "gemini-pro",
         "type": "gemini",
         "owned_by": "google",
-        "context_length": 32768,
-        "max_completion_tokens": 64000,
+        "context_length": 131072,
+        "max_completion_tokens": 32768,
         "thinking": {
           "supported": true,
           "min": 128,
@@ -1837,10 +1878,12 @@
             "image"
           ],
           "output": [
-            "text"
+            "text",
+            "image"
           ]
         },
         "capabilities": {
+          "reasoning": true,
           "attachment": true,
           "temperature": true
         },
@@ -2714,10 +2757,11 @@
         "provider": "vertex",
         "display_name": "Gemini 3 Pro Image Preview",
         "description": "Gemini 3 Pro Image Preview",
+        "family": "gemini-pro",
         "type": "gemini",
         "owned_by": "google",
-        "context_length": 32768,
-        "max_completion_tokens": 64000,
+        "context_length": 131072,
+        "max_completion_tokens": 32768,
         "thinking": {
           "supported": true,
           "min": 128,
@@ -2733,10 +2777,12 @@
             "image"
           ],
           "output": [
-            "text"
+            "text",
+            "image"
           ]
         },
         "capabilities": {
+          "reasoning": true,
           "attachment": true,
           "temperature": true
         },

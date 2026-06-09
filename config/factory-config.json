@@ -548,6 +548,69 @@
       "supportsImages": true
     },
     {
+      "model": "claude-fable-5",
+      "displayName": "[Claude] Claude Fable 5",
+      "baseUrl": "http://localhost:8317",
+      "apiKey": "dummy",
+      "provider": "anthropic",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
+      "model": "claude-fable-5(auto)",
+      "displayName": "[Claude] Claude Fable 5 (Auto)",
+      "baseUrl": "http://localhost:8317",
+      "apiKey": "dummy",
+      "provider": "anthropic",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
+      "model": "claude-fable-5(high)",
+      "displayName": "[Claude] Claude Fable 5 (High)",
+      "baseUrl": "http://localhost:8317",
+      "apiKey": "dummy",
+      "provider": "anthropic",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
+      "model": "claude-fable-5(low)",
+      "displayName": "[Claude] Claude Fable 5 (Low)",
+      "baseUrl": "http://localhost:8317",
+      "apiKey": "dummy",
+      "provider": "anthropic",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
+      "model": "claude-fable-5(max)",
+      "displayName": "[Claude] Claude Fable 5 (Max)",
+      "baseUrl": "http://localhost:8317",
+      "apiKey": "dummy",
+      "provider": "anthropic",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
+      "model": "claude-fable-5(medium)",
+      "displayName": "[Claude] Claude Fable 5 (Medium)",
+      "baseUrl": "http://localhost:8317",
+      "apiKey": "dummy",
+      "provider": "anthropic",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
+      "model": "claude-fable-5(xhigh)",
+      "displayName": "[Claude] Claude Fable 5 (Xhigh)",
+      "baseUrl": "http://localhost:8317",
+      "apiKey": "dummy",
+      "provider": "anthropic",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
       "model": "claude-opus-4-7",
       "displayName": "[Claude] Claude Opus 4.7",
       "baseUrl": "http://localhost:8317",
@@ -715,7 +778,7 @@
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
       "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 64000,
+      "maxOutputTokens": 32768,
       "supportsImages": true
     },
     {

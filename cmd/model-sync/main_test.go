@@ -101,6 +101,41 @@ func TestRepositoryTargetsCLIProxyAPIInsteadOfPlus(t *testing.T) {
 	}
 }
 
+func TestParseAndEnrichModels_IncludesClaudeFable5Supplement(t *testing.T) {
+	models := parseAndEnrichModels("", "", nil)
+	claudeModels := models["claude"]
+
+	var fable *Model
+	for i := range claudeModels {
+		if claudeModels[i].ID == "claude-fable-5" {
+			fable = &claudeModels[i]
+			break
+		}
+	}
+
+	if fable == nil {
+		t.Fatal("expected supplemental claude-fable-5 model")
+	}
+	if fable.DisplayName != "Claude Fable 5" {
+		t.Fatalf("display name = %q, want %q", fable.DisplayName, "Claude Fable 5")
+	}
+	if fable.ContextLength != 1000000 {
+		t.Fatalf("context length = %d, want 1000000", fable.ContextLength)
+	}
+	if fable.MaxCompletionTokens != 128000 {
+		t.Fatalf("max completion tokens = %d, want 128000", fable.MaxCompletionTokens)
+	}
+	if fable.Thinking == nil || !fable.Thinking.Supported {
+		t.Fatalf("expected adaptive thinking support, got %#v", fable.Thinking)
+	}
+	if got := strings.Join(fable.Thinking.Levels, ","); got != "low,medium,high,xhigh,max" {
+		t.Fatalf("thinking levels = %q, want low,medium,high,xhigh,max", got)
+	}
+	if fable.Cost == nil || fable.Cost.Input != 10 || fable.Cost.Output != 50 {
+		t.Fatalf("cost = %#v, want input 10 output 50", fable.Cost)
+	}
+}
+
 func TestMakeAuthCopilotDoesNotUseRemovedCLIProxyFlag(t *testing.T) {
 	data, err := os.ReadFile("../../Makefile")
 	if err != nil {
@@ -388,8 +423,8 @@ func GetCodexProModels() []*ModelInfo {
 
 	models := parseAndEnrichModels(source, staticModelsJSON, nil)
 
-	if got := len(models["claude"]); got != 1 {
-		t.Fatalf("expected 1 claude model, got %d", got)
+	if got := len(models["claude"]); got != 2 {
+		t.Fatalf("expected 2 claude models including supplemental Claude Fable 5, got %d", got)
 	}
 
 	if got := len(models["codex"]); got != 2 {

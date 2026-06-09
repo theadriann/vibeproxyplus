@@ -567,6 +567,7 @@ func parseAndEnrichModels(source, registryModelsSource string, modelsDevIndex ma
 	// Parse Antigravity
 	antigravityModels := parseAntigravityModels(source, modelsDevIndex)
 	mergeModels(models, "antigravity", antigravityModels)
+	mergeModels(models, "claude", supplementalAnthropicModels())
 
 	for provider := range models {
 		sort.Slice(models[provider], func(i, j int) bool {
@@ -575,6 +576,40 @@ func parseAndEnrichModels(source, registryModelsSource string, modelsDevIndex ma
 	}
 
 	return models
+}
+
+func supplementalAnthropicModels() []Model {
+	return []Model{
+		{
+			ID:                  "claude-fable-5",
+			Provider:            "claude",
+			DisplayName:         "Claude Fable 5",
+			Description:         "Anthropic's most capable widely released model, for the most demanding reasoning and long-horizon agentic work.",
+			Family:              "claude-fable",
+			Type:                "anthropic",
+			OwnedBy:             "anthropic",
+			ContextLength:       1000000,
+			MaxCompletionTokens: 128000,
+			Thinking: &Thinking{
+				Supported: true,
+				Levels:    []string{"low", "medium", "high", "xhigh", "max"},
+			},
+			Modalities: &Modalities{
+				Input:  []string{"text", "image"},
+				Output: []string{"text"},
+			},
+			Capabilities: &Capabilities{
+				Reasoning:   true,
+				ToolCall:    true,
+				Attachment:  true,
+				Temperature: true,
+			},
+			Cost: &Cost{
+				Input:  10,
+				Output: 50,
+			},
+		},
+	}
 }
 
 func parseRegistryModelsJSON(source string, modelsDevIndex map[string]*ModelsDevModel) map[string][]Model {
@@ -1168,7 +1203,7 @@ func generateFactoryConfig(models map[string][]Model, codexMetadata CodexClientM
 
 func isClaudeAdaptiveOnlyModel(model Model) bool {
 	switch model.ID {
-	case "claude-opus-4-7", "claude-opus-4-8":
+	case "claude-fable-5", "claude-opus-4-7", "claude-opus-4-8":
 		return true
 	default:
 		return false
