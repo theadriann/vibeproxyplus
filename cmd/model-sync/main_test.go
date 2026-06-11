@@ -486,7 +486,7 @@ func GetCodexProModels() []*ModelInfo {
 	}
 }
 
-func TestGenerateFactoryConfig_ClaudeAdaptiveAndManualVariants(t *testing.T) {
+func TestGenerateFactoryConfig_OmitsClaudeThinkingVariants(t *testing.T) {
 	models := map[string][]Model{
 		"claude": {
 			{
@@ -526,41 +526,24 @@ func TestGenerateFactoryConfig_ClaudeAdaptiveAndManualVariants(t *testing.T) {
 
 	config := generateFactoryConfig(models, nil)
 
-	var foundAdaptiveAuto, foundAdaptiveXHigh, foundOpus48Auto, foundOpus48LegacyBudget, foundManualHigh, foundLegacyBudget bool
+	foundBaseModels := map[string]bool{
+		"claude-opus-4-7":          false,
+		"claude-opus-4-8":          false,
+		"claude-opus-4-5-20251101": false,
+	}
 	for _, model := range config.CustomModels {
-		switch model.Model {
-		case "claude-opus-4-7(auto)":
-			foundAdaptiveAuto = true
-		case "claude-opus-4-7(xhigh)":
-			foundAdaptiveXHigh = true
-		case "claude-opus-4-8(auto)":
-			foundOpus48Auto = true
-		case "claude-opus-4-8-thinking-10000":
-			foundOpus48LegacyBudget = true
-		case "claude-opus-4-5-20251101(high)":
-			foundManualHigh = true
-		case "claude-opus-4-5-20251101-thinking-10000":
-			foundLegacyBudget = true
+		if _, ok := foundBaseModels[model.Model]; ok {
+			foundBaseModels[model.Model] = true
+		}
+		if strings.Contains(model.Model, "(") || strings.Contains(model.Model, "-thinking-") {
+			t.Fatalf("did not expect Factory config to include Claude thinking variant %q", model.Model)
 		}
 	}
 
-	if !foundAdaptiveAuto {
-		t.Fatal("expected Claude Opus 4.7 auto adaptive Factory variant")
-	}
-	if !foundAdaptiveXHigh {
-		t.Fatal("expected Claude Opus 4.7 xhigh adaptive Factory variant")
-	}
-	if !foundOpus48Auto {
-		t.Fatal("expected Claude Opus 4.8 auto adaptive Factory variant")
-	}
-	if foundOpus48LegacyBudget {
-		t.Fatal("did not expect Claude Opus 4.8 legacy budget Factory variant")
-	}
-	if !foundManualHigh {
-		t.Fatal("expected Claude Opus 4.5 high Factory variant")
-	}
-	if !foundLegacyBudget {
-		t.Fatal("expected Claude Opus 4.5 legacy budget Factory variant")
+	for model, found := range foundBaseModels {
+		if !found {
+			t.Fatalf("expected Factory config to include base Claude model %q", model)
+		}
 	}
 }
 
@@ -605,17 +588,24 @@ func TestGenerateFactoryConfig_CodexFastVariants(t *testing.T) {
 	config := generateFactoryConfig(models, metadata)
 
 	wantModels := map[string]bool{
-		"gpt-5.5(fast)":         false,
-		"gpt-5.5(low-fast)":     false,
-		"gpt-5.5(medium-fast)":  false,
-		"gpt-5.5(high-fast)":    false,
-		"gpt-5.5(xhigh-fast)":   false,
-		"gpt-5.5(verbose)":      false,
-		"gpt-5.5(high-verbose)": false,
+		"gpt-5.5(fast)":    false,
+		"gpt-5.5(verbose)": false,
 	}
 	unwantedModels := map[string]bool{
-		"gpt-5.3-codex(fast)":    true,
-		"gpt-5.3-codex(verbose)": true,
+		"gpt-5.5(low)":            true,
+		"gpt-5.5(medium)":         true,
+		"gpt-5.5(high)":           true,
+		"gpt-5.5(xhigh)":          true,
+		"gpt-5.5(low-fast)":       true,
+		"gpt-5.5(medium-fast)":    true,
+		"gpt-5.5(high-fast)":      true,
+		"gpt-5.5(xhigh-fast)":     true,
+		"gpt-5.5(low-verbose)":    true,
+		"gpt-5.5(medium-verbose)": true,
+		"gpt-5.5(high-verbose)":   true,
+		"gpt-5.5(xhigh-verbose)":  true,
+		"gpt-5.3-codex(fast)":     true,
+		"gpt-5.3-codex(verbose)":  true,
 	}
 	for _, model := range config.CustomModels {
 		if _, ok := wantModels[model.Model]; ok {

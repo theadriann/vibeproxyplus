@@ -1100,76 +1100,6 @@ func generateFactoryConfig(models map[string][]Model, codexMetadata CodexClientM
 			}
 			factoryModels = append(factoryModels, fm)
 
-			if m.Provider == "claude" && m.Thinking != nil && m.Thinking.Supported {
-				if levels := claudeAdaptiveLevels(m); len(levels) > 0 {
-					factoryModels = append(factoryModels, FactoryModel{
-						Model:           fmt.Sprintf("%s(auto)", m.ID),
-						DisplayName:     fmt.Sprintf("[%s] %s (Auto)", prefix, m.DisplayName),
-						BaseURL:         cfg.baseURL,
-						APIKey:          "dummy",
-						Provider:        cfg.provider,
-						MaxOutputTokens: m.MaxCompletionTokens,
-						SupportsImages:  supportsImages,
-					})
-					for _, level := range levels {
-						factoryModels = append(factoryModels, FactoryModel{
-							Model:           fmt.Sprintf("%s(%s)", m.ID, level),
-							DisplayName:     fmt.Sprintf("[%s] %s (%s)", prefix, m.DisplayName, strings.Title(level)),
-							BaseURL:         cfg.baseURL,
-							APIKey:          "dummy",
-							Provider:        cfg.provider,
-							MaxOutputTokens: m.MaxCompletionTokens,
-							SupportsImages:  supportsImages,
-						})
-					}
-				}
-
-				for _, level := range claudeManualEffortLevels(m) {
-					factoryModels = append(factoryModels, FactoryModel{
-						Model:           fmt.Sprintf("%s(%s)", m.ID, level),
-						DisplayName:     fmt.Sprintf("[%s] %s (%s)", prefix, m.DisplayName, strings.Title(level)),
-						BaseURL:         cfg.baseURL,
-						APIKey:          "dummy",
-						Provider:        cfg.provider,
-						MaxOutputTokens: m.MaxCompletionTokens,
-						SupportsImages:  supportsImages,
-					})
-				}
-
-				for _, budget := range claudeLegacyBudgetVariants(m) {
-					fm := FactoryModel{
-						Model:           fmt.Sprintf("%s-thinking-%d", m.ID, budget),
-						DisplayName:     fmt.Sprintf("[%s] %s (Thinking %dk)", prefix, m.DisplayName, budget/1000),
-						BaseURL:         cfg.baseURL,
-						APIKey:          "dummy",
-						Provider:        cfg.provider,
-						MaxOutputTokens: m.MaxCompletionTokens,
-						SupportsImages:  supportsImages,
-					}
-					factoryModels = append(factoryModels, fm)
-				}
-			}
-
-			// Add reasoning effort variants for Codex/OpenAI models with thinking levels
-			if m.Provider == "codex" && m.Thinking != nil && len(m.Thinking.Levels) > 0 {
-				for _, level := range m.Thinking.Levels {
-					// Skip "none" level as it's the default/base model
-					if level == "none" {
-						continue
-					}
-					fm := FactoryModel{
-						Model:           fmt.Sprintf("%s(%s)", m.ID, level),
-						DisplayName:     fmt.Sprintf("[%s] %s (%s)", prefix, m.DisplayName, strings.Title(level)),
-						BaseURL:         cfg.baseURL,
-						APIKey:          "dummy",
-						Provider:        cfg.provider,
-						MaxOutputTokens: m.MaxCompletionTokens,
-						SupportsImages:  supportsImages,
-					}
-					factoryModels = append(factoryModels, fm)
-				}
-			}
-
 			if codexSupportsPriorityServiceTier(m, codexMetadata) {
 				factoryModels = append(factoryModels, FactoryModel{
 					Model:           fmt.Sprintf("%s(fast)", m.ID),
@@ -1180,18 +1110,6 @@ func generateFactoryConfig(models map[string][]Model, codexMetadata CodexClientM
 					MaxOutputTokens: m.MaxCompletionTokens,
 					SupportsImages:  supportsImages,
 				})
-
-				for _, level := range codexFastReasoningLevels(m) {
-					factoryModels = append(factoryModels, FactoryModel{
-						Model:           fmt.Sprintf("%s(%s-fast)", m.ID, level),
-						DisplayName:     fmt.Sprintf("[%s] %s (%s Fast)", prefix, m.DisplayName, strings.Title(level)),
-						BaseURL:         cfg.baseURL,
-						APIKey:          "dummy",
-						Provider:        cfg.provider,
-						MaxOutputTokens: m.MaxCompletionTokens,
-						SupportsImages:  supportsImages,
-					})
-				}
 			}
 
 			if codexSupportsVerbosity(m, codexMetadata) {
@@ -1204,18 +1122,6 @@ func generateFactoryConfig(models map[string][]Model, codexMetadata CodexClientM
 					MaxOutputTokens: m.MaxCompletionTokens,
 					SupportsImages:  supportsImages,
 				})
-
-				for _, level := range codexFastReasoningLevels(m) {
-					factoryModels = append(factoryModels, FactoryModel{
-						Model:           fmt.Sprintf("%s(%s-verbose)", m.ID, level),
-						DisplayName:     fmt.Sprintf("[%s] %s (%s Verbose)", prefix, m.DisplayName, strings.Title(level)),
-						BaseURL:         cfg.baseURL,
-						APIKey:          "dummy",
-						Provider:        cfg.provider,
-						MaxOutputTokens: m.MaxCompletionTokens,
-						SupportsImages:  supportsImages,
-					})
-				}
 			}
 		}
 	}
@@ -1277,22 +1183,6 @@ func claudeManualBudgetForLevel(level string) int {
 	default:
 		return 0
 	}
-}
-
-func codexFastReasoningLevels(model Model) []string {
-	if model.Provider != "codex" || model.Thinking == nil {
-		return nil
-	}
-
-	levels := make([]string, 0, len(model.Thinking.Levels))
-	for _, level := range model.Thinking.Levels {
-		level = strings.TrimSpace(strings.ToLower(level))
-		if level == "" || level == "none" {
-			continue
-		}
-		levels = append(levels, level)
-	}
-	return levels
 }
 
 func codexSupportsPriorityServiceTier(model Model, metadata CodexClientMetadataIndex) bool {

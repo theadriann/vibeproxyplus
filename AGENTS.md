@@ -85,7 +85,8 @@ Auth helper commands (pass through to CLIProxyAPI):
 Current behavior:
 - Model sync is deterministic run-to-run against the same upstream payloads.
 - Model sync supplements upstream catalogs with Anthropic Claude Fable 5 and Claude Mythos 5 when CLIProxyAPI/shared catalogs have not caught up yet.
-- Codex/OpenAI fast, verbosity, and reasoning-summary config variants are derived from CLIProxyAPI's Codex client model catalog.
+- Factory config generation keeps only base models plus non-thinking Codex aliases such as `(fast)` and `(verbose)`; Droid controls reasoning effort through its own model setting.
+- OpenCode still receives explicit Claude/Codex reasoning variants because its config schema supports provider-specific reasoning fields.
 - Current synced CLIProxyAPI catalog exposes 5 Codex/OpenAI models; upstream removed legacy GPT 5.2 and GPT 5.3 Codex base entries from generated Factory/OpenCode configs.
 - Output can still change over time when upstream model metadata changes.
 
@@ -141,7 +142,7 @@ Rules:
 
 ## Current Known Invariants
 - ThinkingProxy listens on `127.0.0.1:8317` and forwards to `127.0.0.1:8318`.
-- Claude thinking transforms are done in proxy-layer request rewrite; Claude Fable 5, Claude Mythos 5, and Claude Opus 4.7/4.8 use adaptive level-based thinking aliases.
+- Claude thinking transforms are done in proxy-layer request rewrite; Claude Fable 5, Claude Mythos 5, and Claude Opus 4.7/4.8 use adaptive level-based thinking aliases when clients send suffixed model IDs.
 - Codex responses input normalization (string -> list payload form) is handled in proxy-layer request rewrite for `/v1/responses` paths.
 - Codex aliases such as `gpt-5.5(fast)`, `gpt-5.5(high-fast)`, and `gpt-5.5(high-fast-verbose-summary)` are translated into OpenAI request fields in proxy-layer request rewrite; known Codex models whose client catalog disables reasoning summaries omit unsolicited `reasoning.summary: "auto"` because OpenAI rejects `reasoning.summary: "none"`.
 - Droid summarizer/compaction requests with an explicit `reasoning.effort` preserve that body effort instead of re-applying Codex model reasoning suffixes such as `(high)` and set `truncation: "auto"`, which avoids unnecessarily shrinking usable input context on very large compactions.

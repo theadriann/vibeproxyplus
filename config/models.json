@@ -971,8 +971,8 @@
           "temperature": true
         },
         "cost": {
-          "input": 0.15,
-          "output": 0.6
+          "input": 0.35,
+          "output": 0.75
         }
       }
     ],
@@ -1049,14 +1049,17 @@
         "id": "claude-fable-5",
         "provider": "claude",
         "display_name": "Claude Fable 5",
-        "description": "Anthropic's most capable widely released model, for the most demanding reasoning and long-horizon agentic work.",
+        "description": "Anthropic's most capable widely released model, for the most demanding reasoning and long-horizon agentic work",
         "family": "claude-fable",
-        "type": "anthropic",
+        "type": "claude",
         "owned_by": "anthropic",
         "context_length": 1000000,
         "max_completion_tokens": 128000,
         "thinking": {
           "supported": true,
+          "min": 1024,
+          "max": 128000,
+          "zero_allowed": true,
           "levels": [
             "low",
             "medium",
@@ -1068,7 +1071,8 @@
         "modalities": {
           "input": [
             "text",
-            "image"
+            "image",
+            "pdf"
           ],
           "output": [
             "text"
@@ -1077,12 +1081,13 @@
         "capabilities": {
           "reasoning": true,
           "tool_call": true,
-          "attachment": true,
-          "temperature": true
+          "attachment": true
         },
         "cost": {
           "input": 10,
-          "output": 50
+          "output": 50,
+          "cache_read": 1,
+          "cache_write": 12.5
         }
       },
       {
