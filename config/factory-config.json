@@ -611,6 +611,69 @@
       "supportsImages": true
     },
     {
+      "model": "claude-mythos-5",
+      "displayName": "[Claude] Claude Mythos 5",
+      "baseUrl": "http://localhost:8317",
+      "apiKey": "dummy",
+      "provider": "anthropic",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
+      "model": "claude-mythos-5(auto)",
+      "displayName": "[Claude] Claude Mythos 5 (Auto)",
+      "baseUrl": "http://localhost:8317",
+      "apiKey": "dummy",
+      "provider": "anthropic",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
+      "model": "claude-mythos-5(high)",
+      "displayName": "[Claude] Claude Mythos 5 (High)",
+      "baseUrl": "http://localhost:8317",
+      "apiKey": "dummy",
+      "provider": "anthropic",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
+      "model": "claude-mythos-5(low)",
+      "displayName": "[Claude] Claude Mythos 5 (Low)",
+      "baseUrl": "http://localhost:8317",
+      "apiKey": "dummy",
+      "provider": "anthropic",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
+      "model": "claude-mythos-5(max)",
+      "displayName": "[Claude] Claude Mythos 5 (Max)",
+      "baseUrl": "http://localhost:8317",
+      "apiKey": "dummy",
+      "provider": "anthropic",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
+      "model": "claude-mythos-5(medium)",
+      "displayName": "[Claude] Claude Mythos 5 (Medium)",
+      "baseUrl": "http://localhost:8317",
+      "apiKey": "dummy",
+      "provider": "anthropic",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
+      "model": "claude-mythos-5(xhigh)",
+      "displayName": "[Claude] Claude Mythos 5 (Xhigh)",
+      "baseUrl": "http://localhost:8317",
+      "apiKey": "dummy",
+      "provider": "anthropic",
+      "maxOutputTokens": 128000,
+      "supportsImages": true
+    },
+    {
       "model": "claude-opus-4-7",
       "displayName": "[Claude] Claude Opus 4.7",
       "baseUrl": "http://localhost:8317",

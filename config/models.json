@@ -1124,6 +1124,46 @@
         }
       },
       {
+        "id": "claude-mythos-5",
+        "provider": "claude",
+        "display_name": "Claude Mythos 5",
+        "description": "Limited-availability Project Glasswing model, successor to Claude Mythos Preview.",
+        "family": "claude-mythos",
+        "type": "anthropic",
+        "owned_by": "anthropic",
+        "context_length": 1000000,
+        "max_completion_tokens": 128000,
+        "thinking": {
+          "supported": true,
+          "levels": [
+            "low",
+            "medium",
+            "high",
+            "xhigh",
+            "max"
+          ]
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "image"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "attachment": true,
+          "temperature": true
+        },
+        "cost": {
+          "input": 10,
+          "output": 50
+        }
+      },
+      {
         "id": "claude-opus-4-1-20250805",
         "provider": "claude",
         "display_name": "Claude 4.1 Opus",

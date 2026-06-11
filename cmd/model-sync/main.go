@@ -609,6 +609,35 @@ func supplementalAnthropicModels() []Model {
 				Output: 50,
 			},
 		},
+		{
+			ID:                  "claude-mythos-5",
+			Provider:            "claude",
+			DisplayName:         "Claude Mythos 5",
+			Description:         "Limited-availability Project Glasswing model, successor to Claude Mythos Preview.",
+			Family:              "claude-mythos",
+			Type:                "anthropic",
+			OwnedBy:             "anthropic",
+			ContextLength:       1000000,
+			MaxCompletionTokens: 128000,
+			Thinking: &Thinking{
+				Supported: true,
+				Levels:    []string{"low", "medium", "high", "xhigh", "max"},
+			},
+			Modalities: &Modalities{
+				Input:  []string{"text", "image"},
+				Output: []string{"text"},
+			},
+			Capabilities: &Capabilities{
+				Reasoning:   true,
+				ToolCall:    true,
+				Attachment:  true,
+				Temperature: true,
+			},
+			Cost: &Cost{
+				Input:  10,
+				Output: 50,
+			},
+		},
 	}
 }
 
@@ -1203,7 +1232,7 @@ func generateFactoryConfig(models map[string][]Model, codexMetadata CodexClientM
 
 func isClaudeAdaptiveOnlyModel(model Model) bool {
 	switch model.ID {
-	case "claude-fable-5", "claude-opus-4-7", "claude-opus-4-8":
+	case "claude-fable-5", "claude-mythos-5", "claude-opus-4-7", "claude-opus-4-8":
 		return true
 	default:
 		return false

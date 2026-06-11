@@ -568,6 +568,30 @@ func TestTransformRequestBody_ClaudeFable5UsesAdaptiveThinking(t *testing.T) {
 	}
 }
 
+func TestTransformRequestBody_ClaudeMythos5UsesAdaptiveThinking(t *testing.T) {
+	input := `{"model":"claude-mythos-5(xhigh)","messages":[{"role":"user","content":"hi"}]}`
+
+	output, betas, err := TransformRequestBody("/v1/messages", []byte(input))
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if len(betas) != 0 {
+		t.Fatalf("expected no betas for adaptive thinking, got %v", betas)
+	}
+	if !strings.Contains(string(output), `"model":"claude-mythos-5"`) {
+		t.Fatalf("expected transformed model id, got %s", output)
+	}
+	if !strings.Contains(string(output), `"type":"adaptive"`) {
+		t.Fatalf("expected adaptive thinking, got %s", output)
+	}
+	if !strings.Contains(string(output), `"effort":"xhigh"`) {
+		t.Fatalf("expected xhigh effort, got %s", output)
+	}
+	if strings.Contains(string(output), `"budget_tokens"`) {
+		t.Fatalf("did not expect manual budget tokens, got %s", output)
+	}
+}
+
 func TestTransformRequestBody_ClaudeOpus45LevelUsesManualBudgetAndEffort(t *testing.T) {
 	input := `{"model":"claude-opus-4-5-20251101(high)","messages":[{"role":"user","content":"hi"}]}`
 

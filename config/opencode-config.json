@@ -135,6 +135,55 @@
             ]
           }
         },
+        "claude-mythos-5": {
+          "name": "Claude Mythos 5",
+          "variants": {
+            "auto": {
+              "thinking": {
+                "type": "adaptive"
+              }
+            },
+            "high": {
+              "reasoningEffort": "high",
+              "thinking": {
+                "type": "adaptive"
+              }
+            },
+            "low": {
+              "reasoningEffort": "low",
+              "thinking": {
+                "type": "adaptive"
+              }
+            },
+            "max": {
+              "reasoningEffort": "max",
+              "thinking": {
+                "type": "adaptive"
+              }
+            },
+            "medium": {
+              "reasoningEffort": "medium",
+              "thinking": {
+                "type": "adaptive"
+              }
+            },
+            "xhigh": {
+              "reasoningEffort": "xhigh",
+              "thinking": {
+                "type": "adaptive"
+              }
+            }
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
         "claude-opus-4-1-20250805": {
           "name": "Claude 4.1 Opus",
           "variants": {
