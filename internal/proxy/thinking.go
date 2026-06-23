@@ -206,6 +206,8 @@ func parseCodexAlias(model string) codexAliasConfig {
 		switch token {
 		case "fast", "priority":
 			config.ServiceTier = "priority"
+		case "flex":
+			config.ServiceTier = "flex"
 		case "verbose":
 			config.TextVerbosity = "high"
 		case "terse", "concise":

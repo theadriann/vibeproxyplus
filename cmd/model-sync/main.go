@@ -102,6 +102,7 @@ type CodexClientMetadataIndex map[string]*CodexClientMetadata
 
 type CodexClientMetadata struct {
 	SupportsPriorityServiceTier bool
+	SupportsFlexServiceTier     bool
 	SupportsVerbosity           bool
 	DefaultVerbosity            string
 	SupportsReasoningSummaries  bool
@@ -498,9 +499,11 @@ func buildCodexClientMetadataIndex(source string) (CodexClientMetadataIndex, err
 		}
 
 		for _, tier := range model.ServiceTiers {
-			if strings.EqualFold(strings.TrimSpace(tier.ID), "priority") {
+			switch strings.ToLower(strings.TrimSpace(tier.ID)) {
+			case "priority":
 				metadata.SupportsPriorityServiceTier = true
-				break
+			case "flex":
+				metadata.SupportsFlexServiceTier = true
 			}
 		}
 		if !metadata.SupportsPriorityServiceTier {
@@ -510,6 +513,9 @@ func buildCodexClientMetadataIndex(source string) (CodexClientMetadataIndex, err
 					break
 				}
 			}
+		}
+		if !metadata.SupportsFlexServiceTier && metadata.SupportsPriorityServiceTier {
+			metadata.SupportsFlexServiceTier = true
 		}
 
 		index[slug] = metadata
@@ -1089,6 +1095,18 @@ func generateFactoryConfig(models map[string][]Model, codexMetadata CodexClientM
 				})
 			}
 
+			if codexSupportsFlexServiceTier(m, codexMetadata) {
+				factoryModels = append(factoryModels, FactoryModel{
+					Model:           fmt.Sprintf("%s(flex)", m.ID),
+					DisplayName:     fmt.Sprintf("[%s] %s (Flex)", prefix, m.DisplayName),
+					BaseURL:         cfg.baseURL,
+					APIKey:          "dummy",
+					Provider:        cfg.provider,
+					MaxOutputTokens: m.MaxCompletionTokens,
+					SupportsImages:  supportsImages,
+				})
+			}
+
 			if codexSupportsVerbosity(m, codexMetadata) {
 				factoryModels = append(factoryModels, FactoryModel{
 					Model:           fmt.Sprintf("%s(verbose)", m.ID),
@@ -1168,6 +1186,16 @@ func codexSupportsPriorityServiceTier(model Model, metadata CodexClientMetadataI
 	}
 	if modelMetadata := metadata[model.ID]; modelMetadata != nil {
 		return modelMetadata.SupportsPriorityServiceTier
+	}
+	return false
+}
+
+func codexSupportsFlexServiceTier(model Model, metadata CodexClientMetadataIndex) bool {
+	if model.Provider != "codex" {
+		return false
+	}
+	if modelMetadata := metadata[model.ID]; modelMetadata != nil {
+		return modelMetadata.SupportsFlexServiceTier
 	}
 	return false
 }
@@ -1401,6 +1429,13 @@ func generateOpenCodeConfig(models map[string][]Model, codexMetadata CodexClient
 			if codexSupportsPriorityServiceTier(m, codexMetadata) {
 				openaiProvider.Models[fmt.Sprintf("%s(fast)", m.ID)] = &OpenCodeModel{
 					Name:       fmt.Sprintf("%s (Fast)", m.DisplayName),
+					Variants:   codexOpenCodeVariants(m, metadata),
+					Modalities: m.Modalities,
+				}
+			}
+			if codexSupportsFlexServiceTier(m, codexMetadata) {
+				openaiProvider.Models[fmt.Sprintf("%s(flex)", m.ID)] = &OpenCodeModel{
+					Name:       fmt.Sprintf("%s (Flex)", m.DisplayName),
 					Variants:   codexOpenCodeVariants(m, metadata),
 					Modalities: m.Modalities,
 				}

@@ -211,7 +211,7 @@ func TestBuildCodexClientMetadataIndex(t *testing.T) {
       "default_verbosity": "low",
       "default_reasoning_summary": "none",
       "supports_reasoning_summaries": true,
-      "service_tiers": [{"id": "priority", "name": "Fast"}],
+      "service_tiers": [{"id": "priority", "name": "Fast"}, {"id": "flex", "name": "Flex"}],
       "additional_speed_tiers": ["fast"],
       "supported_reasoning_levels": [{"effort": "low"}, {"effort": "medium"}, {"effort": "high"}]
     },
@@ -219,6 +219,12 @@ func TestBuildCodexClientMetadataIndex(t *testing.T) {
       "slug": "gpt-5.3-codex",
       "support_verbosity": false,
       "service_tiers": [],
+      "supported_reasoning_levels": [{"effort": "low"}]
+    },
+    {
+      "slug": "gpt-5.4",
+      "support_verbosity": true,
+      "service_tiers": [{"id": "priority", "name": "Fast"}],
       "supported_reasoning_levels": [{"effort": "low"}]
     }
   ]
@@ -236,6 +242,9 @@ func TestBuildCodexClientMetadataIndex(t *testing.T) {
 	if !gpt55.SupportsPriorityServiceTier {
 		t.Fatal("expected gpt-5.5 to support priority service tier")
 	}
+	if !gpt55.SupportsFlexServiceTier {
+		t.Fatal("expected gpt-5.5 to support flex service tier")
+	}
 	if !gpt55.SupportsVerbosity || gpt55.DefaultVerbosity != "low" {
 		t.Fatalf("unexpected verbosity metadata: %#v", gpt55)
 	}
@@ -246,12 +255,23 @@ func TestBuildCodexClientMetadataIndex(t *testing.T) {
 		t.Fatalf("reasoning levels = %q, want %q", got, "low,medium,high")
 	}
 
+	gpt54 := index["gpt-5.4"]
+	if gpt54 == nil {
+		t.Fatal("missing gpt-5.4 metadata")
+	}
+	if !gpt54.SupportsFlexServiceTier {
+		t.Fatal("expected priority-capable gpt-5.4 to also expose flex service tier")
+	}
+
 	codex53 := index["gpt-5.3-codex"]
 	if codex53 == nil {
 		t.Fatal("missing gpt-5.3-codex metadata")
 	}
 	if codex53.SupportsPriorityServiceTier {
 		t.Fatal("did not expect gpt-5.3-codex to support priority service tier")
+	}
+	if codex53.SupportsFlexServiceTier {
+		t.Fatal("did not expect gpt-5.3-codex to support flex service tier")
 	}
 	if codex53.SupportsVerbosity {
 		t.Fatal("did not expect gpt-5.3-codex to support verbosity")
@@ -593,6 +613,7 @@ func TestGenerateFactoryConfig_CodexFastVariants(t *testing.T) {
 	metadata := CodexClientMetadataIndex{
 		"gpt-5.5": {
 			SupportsPriorityServiceTier: true,
+			SupportsFlexServiceTier:     true,
 			SupportsVerbosity:           true,
 			DefaultVerbosity:            "low",
 		},
@@ -606,6 +627,7 @@ func TestGenerateFactoryConfig_CodexFastVariants(t *testing.T) {
 
 	wantModels := map[string]bool{
 		"gpt-5.5(fast)":    false,
+		"gpt-5.5(flex)":    false,
 		"gpt-5.5(verbose)": false,
 	}
 	unwantedModels := map[string]bool{
@@ -617,11 +639,16 @@ func TestGenerateFactoryConfig_CodexFastVariants(t *testing.T) {
 		"gpt-5.5(medium-fast)":    true,
 		"gpt-5.5(high-fast)":      true,
 		"gpt-5.5(xhigh-fast)":     true,
+		"gpt-5.5(low-flex)":       true,
+		"gpt-5.5(medium-flex)":    true,
+		"gpt-5.5(high-flex)":      true,
+		"gpt-5.5(xhigh-flex)":     true,
 		"gpt-5.5(low-verbose)":    true,
 		"gpt-5.5(medium-verbose)": true,
 		"gpt-5.5(high-verbose)":   true,
 		"gpt-5.5(xhigh-verbose)":  true,
 		"gpt-5.3-codex(fast)":     true,
+		"gpt-5.3-codex(flex)":     true,
 		"gpt-5.3-codex(verbose)":  true,
 	}
 	for _, model := range config.CustomModels {
@@ -821,6 +848,7 @@ func TestGenerateOpenCodeConfig_CodexFastAliasModel(t *testing.T) {
 	metadata := CodexClientMetadataIndex{
 		"gpt-5.5": {
 			SupportsPriorityServiceTier: true,
+			SupportsFlexServiceTier:     true,
 			SupportsVerbosity:           true,
 			DefaultVerbosity:            "low",
 			SupportsReasoningSummaries:  true,
@@ -855,5 +883,18 @@ func TestGenerateOpenCodeConfig_CodexFastAliasModel(t *testing.T) {
 	}
 	if openaiProvider.Models["gpt-5.3-codex(fast)"] != nil {
 		t.Fatal("did not expect OpenCode config to include gpt-5.3-codex(fast)")
+	}
+	flexModel := openaiProvider.Models["gpt-5.5(flex)"]
+	if flexModel == nil {
+		t.Fatal("expected OpenCode config to include gpt-5.5(flex)")
+	}
+	if flexModel.Name != "GPT 5.5 (Flex)" {
+		t.Fatalf("flex model name = %q, want %q", flexModel.Name, "GPT 5.5 (Flex)")
+	}
+	if flexModel.Variants["high"] == nil || flexModel.Variants["high"].ReasoningEffort != "high" || flexModel.Variants["high"].ReasoningSummary != "" {
+		t.Fatalf("expected flex OpenCode model to keep high reasoning variant, got %#v", flexModel.Variants["high"])
+	}
+	if openaiProvider.Models["gpt-5.3-codex(flex)"] != nil {
+		t.Fatal("did not expect OpenCode config to include gpt-5.3-codex(flex)")
 	}
 }
