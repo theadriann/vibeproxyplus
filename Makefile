@@ -1,4 +1,4 @@
-.PHONY: build run run-all run-cliproxy run-thinking-proxy download-cliproxy update-cliproxy update-and-run auth-claude auth-codex auth-gemini auth-antigravity auth-copilot test clean sync-models traffic-debug
+.PHONY: build run run-all run-cliproxy run-thinking-proxy download-cliproxy update-cliproxy update-and-run auth-claude auth-codex auth-codex-device auth-gemini auth-antigravity auth-kimi auth-xai auth-copilot test clean sync-models traffic-debug
 
 # Detect OS and architecture
 ifeq ($(OS),Windows_NT)
@@ -128,11 +128,20 @@ auth-claude:
 auth-codex:
 	./bin/cli-proxy-api -config config/cliproxy.yaml -codex-login
 
+auth-codex-device:
+	./bin/cli-proxy-api -config config/cliproxy.yaml -codex-device-login
+
 auth-gemini:
 	./bin/cli-proxy-api -config config/cliproxy.yaml -login
 
 auth-antigravity:
 	./bin/cli-proxy-api -config config/cliproxy.yaml -antigravity-login
+
+auth-kimi:
+	./bin/cli-proxy-api -config config/cliproxy.yaml -kimi-login
+
+auth-xai:
+	./bin/cli-proxy-api -config config/cliproxy.yaml -xai-login
 
 auth-copilot:
 	@echo "CLIProxyAPI no longer exposes -github-copilot-login; configure GitHub Copilot auth through CLIProxyAPI's supported auth flow or management UI."

@@ -136,55 +136,6 @@
             ]
           }
         },
-        "claude-mythos-5": {
-          "name": "Claude Mythos 5",
-          "variants": {
-            "auto": {
-              "thinking": {
-                "type": "adaptive"
-              }
-            },
-            "high": {
-              "reasoningEffort": "high",
-              "thinking": {
-                "type": "adaptive"
-              }
-            },
-            "low": {
-              "reasoningEffort": "low",
-              "thinking": {
-                "type": "adaptive"
-              }
-            },
-            "max": {
-              "reasoningEffort": "max",
-              "thinking": {
-                "type": "adaptive"
-              }
-            },
-            "medium": {
-              "reasoningEffort": "medium",
-              "thinking": {
-                "type": "adaptive"
-              }
-            },
-            "xhigh": {
-              "reasoningEffort": "xhigh",
-              "thinking": {
-                "type": "adaptive"
-              }
-            }
-          },
-          "modalities": {
-            "input": [
-              "text",
-              "image"
-            ],
-            "output": [
-              "text"
-            ]
-          }
-        },
         "claude-opus-4-1-20250805": {
           "name": "Claude 4.1 Opus",
           "variants": {
@@ -513,6 +464,12 @@
             },
             "low": {
               "reasoningEffort": "low",
+              "thinking": {
+                "type": "adaptive"
+              }
+            },
+            "max": {
+              "reasoningEffort": "max",
               "thinking": {
                 "type": "adaptive"
               }
@@ -867,41 +824,6 @@
             ]
           }
         },
-        "gemini-3-pro-high": {
-          "name": "Gemini 3 Pro (High)",
-          "variants": {
-            "high": {
-              "thinking": {
-                "type": "enabled",
-                "budgetTokens": 32000
-              }
-            },
-            "low": {
-              "thinking": {
-                "type": "enabled",
-                "budgetTokens": 4000
-              }
-            },
-            "medium": {
-              "thinking": {
-                "type": "enabled",
-                "budgetTokens": 10000
-              }
-            }
-          },
-          "modalities": {
-            "input": [
-              "text",
-              "image",
-              "video",
-              "audio",
-              "pdf"
-            ],
-            "output": [
-              "text"
-            ]
-          }
-        },
         "gemini-3-pro-image-preview": {
           "name": "Gemini 3 Pro Image Preview",
           "variants": {
@@ -932,41 +854,6 @@
             "output": [
               "text",
               "image"
-            ]
-          }
-        },
-        "gemini-3-pro-low": {
-          "name": "Gemini 3 Pro (Low)",
-          "variants": {
-            "high": {
-              "thinking": {
-                "type": "enabled",
-                "budgetTokens": 32000
-              }
-            },
-            "low": {
-              "thinking": {
-                "type": "enabled",
-                "budgetTokens": 4000
-              }
-            },
-            "medium": {
-              "thinking": {
-                "type": "enabled",
-                "budgetTokens": 10000
-              }
-            }
-          },
-          "modalities": {
-            "input": [
-              "text",
-              "image",
-              "video",
-              "audio",
-              "pdf"
-            ],
-            "output": [
-              "text"
             ]
           }
         },
@@ -1602,6 +1489,280 @@
           "modalities": {
             "input": [
               "text"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "grok-3-mini": {
+          "name": "Grok 3 Mini",
+          "variants": {
+            "high": {
+              "reasoningEffort": "high"
+            },
+            "low": {
+              "reasoningEffort": "low"
+            },
+            "medium": {
+              "reasoningEffort": "medium"
+            }
+          },
+          "modalities": {
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "grok-3-mini-fast": {
+          "name": "Grok 3 Mini Fast",
+          "variants": {
+            "high": {
+              "reasoningEffort": "high"
+            },
+            "low": {
+              "reasoningEffort": "low"
+            },
+            "medium": {
+              "reasoningEffort": "medium"
+            }
+          },
+          "modalities": {
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "grok-4.20-0309-non-reasoning": {
+          "name": "Grok 4.20 0309 Non Reasoning",
+          "modalities": {
+            "input": [
+              "text",
+              "image",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "grok-4.20-0309-reasoning": {
+          "name": "Grok 4.20 0309 Reasoning",
+          "modalities": {
+            "input": [
+              "text",
+              "image",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "grok-4.20-multi-agent-0309": {
+          "name": "Grok 4.20 Multi Agent 0309",
+          "variants": {
+            "high": {
+              "reasoningEffort": "high"
+            },
+            "low": {
+              "reasoningEffort": "low"
+            },
+            "medium": {
+              "reasoningEffort": "medium"
+            }
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "grok-4.3": {
+          "name": "Grok 4.3",
+          "variants": {
+            "high": {
+              "reasoningEffort": "high"
+            },
+            "low": {
+              "reasoningEffort": "low"
+            },
+            "medium": {
+              "reasoningEffort": "medium"
+            },
+            "none": {
+              "reasoningEffort": "none"
+            }
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "grok-build-0.1": {
+          "name": "Grok Build 0.1",
+          "modalities": {
+            "input": [
+              "text",
+              "image",
+              "pdf"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "grok-composer-2.5-fast": {
+          "name": "Composer 2.5 Fast",
+          "modalities": {
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "kimi-k2": {
+          "name": "Kimi K2",
+          "modalities": {
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "kimi-k2-thinking": {
+          "name": "Kimi K2 Thinking",
+          "variants": {
+            "high": {
+              "reasoningEffort": "high"
+            },
+            "low": {
+              "reasoningEffort": "low"
+            },
+            "medium": {
+              "reasoningEffort": "medium"
+            }
+          },
+          "modalities": {
+            "input": [
+              "text"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "kimi-k2.5": {
+          "name": "Kimi K2.5",
+          "variants": {
+            "high": {
+              "reasoningEffort": "high"
+            },
+            "low": {
+              "reasoningEffort": "low"
+            },
+            "medium": {
+              "reasoningEffort": "medium"
+            }
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image",
+              "video"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "kimi-k2.6": {
+          "name": "Kimi K2.6",
+          "variants": {
+            "high": {
+              "reasoningEffort": "high"
+            },
+            "low": {
+              "reasoningEffort": "low"
+            },
+            "medium": {
+              "reasoningEffort": "medium"
+            }
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image",
+              "video"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "kimi-k2.7-code": {
+          "name": "Kimi K2.7 Code",
+          "variants": {
+            "high": {
+              "reasoningEffort": "high"
+            },
+            "low": {
+              "reasoningEffort": "low"
+            },
+            "medium": {
+              "reasoningEffort": "medium"
+            }
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image",
+              "video"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "kimi-k2.7-code-highspeed": {
+          "name": "Kimi K2.7 Code HighSpeed",
+          "variants": {
+            "high": {
+              "reasoningEffort": "high"
+            },
+            "low": {
+              "reasoningEffort": "low"
+            },
+            "medium": {
+              "reasoningEffort": "medium"
+            }
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image",
+              "video"
             ],
             "output": [
               "text"

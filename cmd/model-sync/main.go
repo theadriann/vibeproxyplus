@@ -557,6 +557,7 @@ func parseAndEnrichModels(source, registryModelsSource string, modelsDevIndex ma
 		{"GetGitHubCopilotModels", "github-copilot"},
 		{"GetKiroModels", "kiro"},
 		{"GetAmazonQModels", "amazonq"},
+		{"GetXAIModels", "xai"},
 	}
 
 	for _, p := range parsers {
@@ -586,35 +587,6 @@ func supplementalAnthropicModels() []Model {
 			DisplayName:         "Claude Fable 5",
 			Description:         "Anthropic's most capable widely released model, for the most demanding reasoning and long-horizon agentic work.",
 			Family:              "claude-fable",
-			Type:                "anthropic",
-			OwnedBy:             "anthropic",
-			ContextLength:       1000000,
-			MaxCompletionTokens: 128000,
-			Thinking: &Thinking{
-				Supported: true,
-				Levels:    []string{"low", "medium", "high", "xhigh", "max"},
-			},
-			Modalities: &Modalities{
-				Input:  []string{"text", "image"},
-				Output: []string{"text"},
-			},
-			Capabilities: &Capabilities{
-				Reasoning:   true,
-				ToolCall:    true,
-				Attachment:  true,
-				Temperature: true,
-			},
-			Cost: &Cost{
-				Input:  10,
-				Output: 50,
-			},
-		},
-		{
-			ID:                  "claude-mythos-5",
-			Provider:            "claude",
-			DisplayName:         "Claude Mythos 5",
-			Description:         "Limited-availability Project Glasswing model, successor to Claude Mythos Preview.",
-			Family:              "claude-mythos",
 			Type:                "anthropic",
 			OwnedBy:             "anthropic",
 			ContextLength:       1000000,
@@ -670,6 +642,7 @@ func parseRegistryModelsJSON(source string, modelsDevIndex map[string]*ModelsDev
 		{"iflow", "iflow"},
 		{"kimi", "kimi"},
 		{"antigravity", "antigravity"},
+		{"xai", "xai"},
 	}
 
 	for _, group := range providerGroups {
@@ -1051,6 +1024,8 @@ func generateFactoryConfig(models map[string][]Model, codexMetadata CodexClientM
 		"qwen":           {baseURL: "http://localhost:8317/v1", provider: "generic-chat-completion-api", include: true},
 		"github-copilot": {baseURL: "http://localhost:8317/v1", provider: "generic-chat-completion-api", include: true},
 		"kiro":           {baseURL: "http://localhost:8317/v1", provider: "generic-chat-completion-api", include: true},
+		"kimi":           {baseURL: "http://localhost:8317/v1", provider: "generic-chat-completion-api", include: true},
+		"xai":            {baseURL: "http://localhost:8317/v1", provider: "generic-chat-completion-api", include: true},
 	}
 
 	// Human-readable prefixes for display names
@@ -1063,6 +1038,8 @@ func generateFactoryConfig(models map[string][]Model, codexMetadata CodexClientM
 		"qwen":           "Qwen",
 		"github-copilot": "Copilot",
 		"kiro":           "Kiro",
+		"kimi":           "Kimi",
+		"xai":            "Grok",
 	}
 
 	for providerKey, providerModels := range models {
@@ -1138,7 +1115,7 @@ func generateFactoryConfig(models map[string][]Model, codexMetadata CodexClientM
 
 func isClaudeAdaptiveOnlyModel(model Model) bool {
 	switch model.ID {
-	case "claude-fable-5", "claude-mythos-5", "claude-opus-4-7", "claude-opus-4-8":
+	case "claude-fable-5", "claude-opus-4-7", "claude-opus-4-8":
 		return true
 	default:
 		return false
@@ -1432,7 +1409,7 @@ func generateOpenCodeConfig(models map[string][]Model, codexMetadata CodexClient
 	}
 
 	// Process other providers
-	for _, providerKey := range []string{"gemini", "antigravity", "kiro", "github-copilot", "qwen"} {
+	for _, providerKey := range []string{"gemini", "antigravity", "kiro", "github-copilot", "qwen", "kimi", "xai"} {
 		if providerModels, ok := models[providerKey]; ok {
 			for _, m := range providerModels {
 				ocModel := &OpenCodeModel{
@@ -1441,10 +1418,15 @@ func generateOpenCodeConfig(models map[string][]Model, codexMetadata CodexClient
 				}
 
 				if m.Thinking != nil && m.Thinking.Supported {
-					ocModel.Variants = map[string]*OpenCodeVariant{
-						"low":    {Thinking: &OpenCodeThinking{Type: "enabled", BudgetTokens: 4000}},
-						"medium": {Thinking: &OpenCodeThinking{Type: "enabled", BudgetTokens: 10000}},
-						"high":   {Thinking: &OpenCodeThinking{Type: "enabled", BudgetTokens: 32000}},
+					switch providerKey {
+					case "kimi", "xai":
+						ocModel.Variants = openCodeReasoningEffortVariants(m)
+					default:
+						ocModel.Variants = map[string]*OpenCodeVariant{
+							"low":    {Thinking: &OpenCodeThinking{Type: "enabled", BudgetTokens: 4000}},
+							"medium": {Thinking: &OpenCodeThinking{Type: "enabled", BudgetTokens: 10000}},
+							"high":   {Thinking: &OpenCodeThinking{Type: "enabled", BudgetTokens: 32000}},
+						}
 					}
 				}
 
@@ -1461,6 +1443,27 @@ func generateOpenCodeConfig(models map[string][]Model, codexMetadata CodexClient
 	}
 
 	return config
+}
+
+func openCodeReasoningEffortVariants(model Model) map[string]*OpenCodeVariant {
+	if model.Thinking == nil || !model.Thinking.Supported {
+		return nil
+	}
+
+	levels := model.Thinking.Levels
+	if len(levels) == 0 {
+		levels = []string{"low", "medium", "high"}
+	}
+
+	variants := make(map[string]*OpenCodeVariant, len(levels))
+	for _, level := range levels {
+		level = normalizeCodexOption(level)
+		if level == "" {
+			continue
+		}
+		variants[level] = &OpenCodeVariant{ReasoningEffort: level}
+	}
+	return variants
 }
 
 func codexOpenCodeVariants(model Model, metadata *CodexClientMetadata) map[string]*OpenCodeVariant {

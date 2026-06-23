@@ -136,38 +136,14 @@ func TestParseAndEnrichModels_IncludesClaudeFable5Supplement(t *testing.T) {
 	}
 }
 
-func TestParseAndEnrichModels_IncludesClaudeMythos5Supplement(t *testing.T) {
+func TestParseAndEnrichModels_DoesNotSupplementUnsupportedClaudeMythos5(t *testing.T) {
 	models := parseAndEnrichModels("", "", nil)
 	claudeModels := models["claude"]
 
-	var mythos *Model
 	for i := range claudeModels {
 		if claudeModels[i].ID == "claude-mythos-5" {
-			mythos = &claudeModels[i]
-			break
+			t.Fatal("did not expect supplemental claude-mythos-5 without CLIProxyAPI registry support")
 		}
-	}
-
-	if mythos == nil {
-		t.Fatal("expected supplemental claude-mythos-5 model")
-	}
-	if mythos.DisplayName != "Claude Mythos 5" {
-		t.Fatalf("display name = %q, want %q", mythos.DisplayName, "Claude Mythos 5")
-	}
-	if mythos.ContextLength != 1000000 {
-		t.Fatalf("context length = %d, want 1000000", mythos.ContextLength)
-	}
-	if mythos.MaxCompletionTokens != 128000 {
-		t.Fatalf("max completion tokens = %d, want 128000", mythos.MaxCompletionTokens)
-	}
-	if mythos.Thinking == nil || !mythos.Thinking.Supported {
-		t.Fatalf("expected adaptive thinking support, got %#v", mythos.Thinking)
-	}
-	if got := strings.Join(mythos.Thinking.Levels, ","); got != "low,medium,high,xhigh,max" {
-		t.Fatalf("thinking levels = %q, want low,medium,high,xhigh,max", got)
-	}
-	if mythos.Cost == nil || mythos.Cost.Input != 10 || mythos.Cost.Output != 50 {
-		t.Fatalf("cost = %#v, want input 10 output 50", mythos.Cost)
 	}
 }
 
@@ -179,6 +155,27 @@ func TestMakeAuthCopilotDoesNotUseRemovedCLIProxyFlag(t *testing.T) {
 	removedCommand := "./bin/cli-proxy-api -config config/cliproxy.yaml -github-copilot-login"
 	if strings.Contains(string(data), removedCommand) {
 		t.Fatal("Makefile auth-copilot executes removed CLIProxyAPI -github-copilot-login flag")
+	}
+}
+
+func TestMakefileIncludesCurrentCLIProxyAuthHelpers(t *testing.T) {
+	data, err := os.ReadFile("../../Makefile")
+	if err != nil {
+		t.Fatalf("read Makefile: %v", err)
+	}
+	content := string(data)
+
+	for _, want := range []string{
+		"auth-codex-device:",
+		"./bin/cli-proxy-api -config config/cliproxy.yaml -codex-device-login",
+		"auth-kimi:",
+		"./bin/cli-proxy-api -config config/cliproxy.yaml -kimi-login",
+		"auth-xai:",
+		"./bin/cli-proxy-api -config config/cliproxy.yaml -xai-login",
+	} {
+		if !strings.Contains(content, want) {
+			t.Fatalf("expected Makefile to contain %q", want)
+		}
 	}
 }
 
@@ -409,6 +406,10 @@ func GetCodexFreeModels() []*ModelInfo {
 func GetCodexProModels() []*ModelInfo {
 	return cloneModelInfos(getModels().CodexPro)
 }
+
+func GetXAIModels() []*ModelInfo {
+	return cloneModelInfos(getModels().XAI)
+}
 `
 
 	staticModelsJSON := `{
@@ -453,17 +454,33 @@ func GetCodexProModels() []*ModelInfo {
         "levels": ["none", "low", "medium", "high"]
       }
     }
+  ],
+  "xai": [
+    {
+      "id": "grok-4.3",
+      "owned_by": "xai",
+      "type": "xai",
+      "display_name": "Grok 4.3",
+      "max_completion_tokens": 65536,
+      "thinking": {
+        "levels": ["none", "low", "medium", "high"],
+        "zero_allowed": true
+      }
+    }
   ]
 }`
 
 	models := parseAndEnrichModels(source, staticModelsJSON, nil)
 
-	if got := len(models["claude"]); got != 3 {
-		t.Fatalf("expected 3 claude models including supplemental Claude Fable 5 and Claude Mythos 5, got %d", got)
+	if got := len(models["claude"]); got != 2 {
+		t.Fatalf("expected 2 claude models including supplemental Claude Fable 5, got %d", got)
 	}
 
 	if got := len(models["codex"]); got != 2 {
 		t.Fatalf("expected 2 deduplicated codex models, got %d", got)
+	}
+	if got := len(models["xai"]); got != 1 {
+		t.Fatalf("expected 1 xAI model, got %d", got)
 	}
 
 	config := generateFactoryConfig(models, nil)
@@ -622,6 +639,47 @@ func TestGenerateFactoryConfig_CodexFastVariants(t *testing.T) {
 	}
 }
 
+func TestGenerateFactoryConfig_IncludesKimiAndXAIModels(t *testing.T) {
+	models := map[string][]Model{
+		"kimi": {
+			{
+				ID:                  "kimi-k2.7-code",
+				Provider:            "kimi",
+				DisplayName:         "Kimi K2.7 Code",
+				MaxCompletionTokens: 65536,
+			},
+		},
+		"xai": {
+			{
+				ID:                  "grok-4.3",
+				Provider:            "xai",
+				DisplayName:         "Grok 4.3",
+				MaxCompletionTokens: 65536,
+			},
+		},
+	}
+
+	config := generateFactoryConfig(models, nil)
+	found := map[string]string{
+		"kimi-k2.7-code": "[Kimi] Kimi K2.7 Code",
+		"grok-4.3":       "[Grok] Grok 4.3",
+	}
+	for _, model := range config.CustomModels {
+		if wantDisplay, ok := found[model.Model]; ok {
+			if model.DisplayName != wantDisplay {
+				t.Fatalf("display name for %q = %q, want %q", model.Model, model.DisplayName, wantDisplay)
+			}
+			if model.Provider != "generic-chat-completion-api" {
+				t.Fatalf("provider for %q = %q, want generic-chat-completion-api", model.Model, model.Provider)
+			}
+			delete(found, model.Model)
+		}
+	}
+	for model := range found {
+		t.Fatalf("expected Factory config to include %q", model)
+	}
+}
+
 func TestGenerateOpenCodeConfig_ClaudeVariantsMatchThinkingMode(t *testing.T) {
 	models := map[string][]Model{
 		"claude": {
@@ -682,6 +740,55 @@ func TestGenerateOpenCodeConfig_ClaudeVariantsMatchThinkingMode(t *testing.T) {
 	}
 	if got := opus45.Variants["high"].ReasoningEffort; got != "high" {
 		t.Fatalf("expected Claude Opus 4.5 high variant to keep high effort, got %q", got)
+	}
+}
+
+func TestGenerateOpenCodeConfig_KimiAndXAIReasoningVariants(t *testing.T) {
+	models := map[string][]Model{
+		"kimi": {
+			{
+				ID:          "kimi-k2.7-code",
+				Provider:    "kimi",
+				DisplayName: "Kimi K2.7 Code",
+				Thinking: &Thinking{
+					Supported: true,
+					Levels:    []string{"low", "medium", "high"},
+				},
+			},
+		},
+		"xai": {
+			{
+				ID:          "grok-4.3",
+				Provider:    "xai",
+				DisplayName: "Grok 4.3",
+				Thinking: &Thinking{
+					Supported: true,
+					Levels:    []string{"none", "low", "medium", "high"},
+				},
+			},
+		},
+	}
+
+	config := generateOpenCodeConfig(models, nil)
+	openaiProvider := config.Provider["ai-proxy-openai"]
+	if openaiProvider == nil {
+		t.Fatal("expected OpenAI provider in OpenCode config")
+	}
+
+	kimi := openaiProvider.Models["kimi-k2.7-code"]
+	if kimi == nil {
+		t.Fatal("expected OpenCode config to include Kimi model")
+	}
+	if kimi.Variants["high"] == nil || kimi.Variants["high"].ReasoningEffort != "high" {
+		t.Fatalf("expected Kimi high reasoning variant, got %#v", kimi.Variants["high"])
+	}
+
+	grok := openaiProvider.Models["grok-4.3"]
+	if grok == nil {
+		t.Fatal("expected OpenCode config to include Grok model")
+	}
+	if grok.Variants["none"] == nil || grok.Variants["none"].ReasoningEffort != "none" {
+		t.Fatalf("expected Grok none reasoning variant, got %#v", grok.Variants["none"])
 	}
 }
 

@@ -36,24 +36,6 @@
       "supportsImages": true
     },
     {
-      "model": "gemini-3-pro-high",
-      "displayName": "[AG] Gemini 3 Pro (High)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 65535,
-      "supportsImages": true
-    },
-    {
-      "model": "gemini-3-pro-low",
-      "displayName": "[AG] Gemini 3 Pro (Low)",
-      "baseUrl": "http://localhost:8317/v1",
-      "apiKey": "dummy",
-      "provider": "generic-chat-completion-api",
-      "maxOutputTokens": 65535,
-      "supportsImages": true
-    },
-    {
       "model": "gemini-3.1-flash-image",
       "displayName": "[AG] Gemini 3.1 Flash Image",
       "baseUrl": "http://localhost:8317/v1",
@@ -206,15 +188,6 @@
       "supportsImages": true
     },
     {
-      "model": "claude-mythos-5",
-      "displayName": "[Claude] Claude Mythos 5",
-      "baseUrl": "http://localhost:8317",
-      "apiKey": "dummy",
-      "provider": "anthropic",
-      "maxOutputTokens": 128000,
-      "supportsImages": true
-    },
-    {
       "model": "claude-opus-4-7",
       "displayName": "[Claude] Claude Opus 4.7",
       "baseUrl": "http://localhost:8317",
@@ -316,6 +289,127 @@
     {
       "model": "gemini-3.5-flash",
       "displayName": "[Gemini] Gemini 3.5 Flash",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 65536,
+      "supportsImages": true
+    },
+    {
+      "model": "grok-composer-2.5-fast",
+      "displayName": "[Grok] Composer 2.5 Fast",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 32768
+    },
+    {
+      "model": "grok-3-mini",
+      "displayName": "[Grok] Grok 3 Mini",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 32768
+    },
+    {
+      "model": "grok-3-mini-fast",
+      "displayName": "[Grok] Grok 3 Mini Fast",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 32768
+    },
+    {
+      "model": "grok-4.20-0309-non-reasoning",
+      "displayName": "[Grok] Grok 4.20 0309 Non Reasoning",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 65536,
+      "supportsImages": true
+    },
+    {
+      "model": "grok-4.20-0309-reasoning",
+      "displayName": "[Grok] Grok 4.20 0309 Reasoning",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 65536,
+      "supportsImages": true
+    },
+    {
+      "model": "grok-4.20-multi-agent-0309",
+      "displayName": "[Grok] Grok 4.20 Multi Agent 0309",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 65536,
+      "supportsImages": true
+    },
+    {
+      "model": "grok-4.3",
+      "displayName": "[Grok] Grok 4.3",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 65536,
+      "supportsImages": true
+    },
+    {
+      "model": "grok-build-0.1",
+      "displayName": "[Grok] Grok Build 0.1",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 256000,
+      "supportsImages": true
+    },
+    {
+      "model": "kimi-k2",
+      "displayName": "[Kimi] Kimi K2",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 32768
+    },
+    {
+      "model": "kimi-k2-thinking",
+      "displayName": "[Kimi] Kimi K2 Thinking",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 32768
+    },
+    {
+      "model": "kimi-k2.5",
+      "displayName": "[Kimi] Kimi K2.5",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 32768,
+      "supportsImages": true
+    },
+    {
+      "model": "kimi-k2.6",
+      "displayName": "[Kimi] Kimi K2.6",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 65536,
+      "supportsImages": true
+    },
+    {
+      "model": "kimi-k2.7-code",
+      "displayName": "[Kimi] Kimi K2.7 Code",
+      "baseUrl": "http://localhost:8317/v1",
+      "apiKey": "dummy",
+      "provider": "generic-chat-completion-api",
+      "maxOutputTokens": 65536,
+      "supportsImages": true
+    },
+    {
+      "model": "kimi-k2.7-code-highspeed",
+      "displayName": "[Kimi] Kimi K2.7 Code HighSpeed",
       "baseUrl": "http://localhost:8317/v1",
       "apiKey": "dummy",
       "provider": "generic-chat-completion-api",

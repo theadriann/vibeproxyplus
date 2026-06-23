@@ -319,7 +319,7 @@ func claudeProfileForModel(model string) claudeThinkingProfile {
 	}
 
 	switch {
-	case strings.HasPrefix(model, "claude-fable-5"), strings.HasPrefix(model, "claude-mythos-5"):
+	case strings.HasPrefix(model, "claude-fable-5"):
 		return claudeThinkingProfile{
 			MaxOutputTokens:  128000,
 			AdaptiveOnly:     true,
