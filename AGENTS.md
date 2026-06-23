@@ -81,6 +81,8 @@ Auth helper commands (pass through to CLIProxyAPI):
     - `/Users/brojbean/code/ai-tools/oss/vibeproxyplus/config/models.json`
     - `/Users/brojbean/code/ai-tools/oss/vibeproxyplus/config/factory-config.json`
     - `/Users/brojbean/code/ai-tools/oss/vibeproxyplus/config/opencode-config.json`
+- `make traffic-debug ARGS="..."`
+  - Parses grouped traffic captures from `~/.vibeproxyplus/logs/traffic-debug` or a custom `-root`/`-capture`; use `-full`, `-out`, or `-export-dir` for untruncated reports and explorable JSON/text artifacts.
 
 Current behavior:
 - Model sync is deterministic run-to-run against the same upstream payloads.
@@ -146,6 +148,6 @@ Rules:
 - Codex responses input normalization (string -> list payload form) is handled in proxy-layer request rewrite for `/v1/responses` paths.
 - Codex aliases such as `gpt-5.5(fast)`, `gpt-5.5(high-fast)`, and `gpt-5.5(high-fast-verbose-summary)` are translated into OpenAI request fields in proxy-layer request rewrite; known Codex models whose client catalog disables reasoning summaries omit unsolicited `reasoning.summary: "auto"` because OpenAI rejects `reasoning.summary: "none"`.
 - Droid summarizer/compaction requests with an explicit `reasoning.effort` preserve that body effort instead of re-applying Codex model reasoning suffixes such as `(high)` and set `truncation: "auto"`, which avoids unnecessarily shrinking usable input context on very large compactions.
-- Opt-in traffic debugging is controlled by `VIBEPROXYPLUS_TRAFFIC_DEBUG=1`; logs are written to `~/.vibeproxyplus/logs/traffic-debug` unless `VIBEPROXYPLUS_TRAFFIC_DEBUG_DIR` is set.
+- Opt-in traffic debugging is controlled by `VIBEPROXYPLUS_TRAFFIC_DEBUG=1`; grouped request/response captures are written under `~/.vibeproxyplus/logs/traffic-debug/YYYY-MM-DD/<time>-<request-id>/` unless `VIBEPROXYPLUS_TRAFFIC_DEBUG_DIR` is set, with a daily `index.ndjson` for later browsing.
 - Droid summarizer/compaction responses that return HTTP 2xx with no usable Responses API text are converted to HTTP 502 so clients can treat them as failures instead of empty successful summaries.
 - Desktop auth account lists derive providers from management auth-files `provider` or `type`; if the management list is empty/unavailable, local `~/.cli-proxy-api` files are used.

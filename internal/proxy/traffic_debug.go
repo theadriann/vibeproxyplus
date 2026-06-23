@@ -26,6 +26,8 @@ const (
 
 type trafficDebugContextKey struct{}
 
+var trafficDebugIndexMu sync.Mutex
+
 type trafficDebugRecord struct {
 	Enabled   bool
 	ID        string
@@ -205,7 +207,8 @@ func (b *trafficDebugResponseBody) log() {
 }
 
 func (d trafficDebugRecord) write(kind string, entry map[string]any) {
-	if err := os.MkdirAll(d.Dir, 0o700); err != nil {
+	captureDir := d.captureDir()
+	if err := os.MkdirAll(captureDir, 0o700); err != nil {
 		log.Printf("traffic debug: create log dir: %v", err)
 		return
 	}
@@ -217,10 +220,81 @@ func (d trafficDebugRecord) write(kind string, entry map[string]any) {
 	}
 	data = append(data, '\n')
 
-	name := d.StartedAt.Format("20060102T150405.000000000Z") + "-" + d.ID + "-" + kind + ".json"
-	if err := os.WriteFile(filepath.Join(d.Dir, name), data, 0o600); err != nil {
+	name := kind + ".json"
+	path := filepath.Join(captureDir, name)
+	if err := os.WriteFile(path, data, 0o600); err != nil {
 		log.Printf("traffic debug: write %s log: %v", kind, err)
+		return
 	}
+	d.appendIndex(kind, name, entry)
+}
+
+func (d trafficDebugRecord) dayDir() string {
+	return filepath.Join(d.Dir, d.StartedAt.Format("2006-01-02"))
+}
+
+func (d trafficDebugRecord) captureDir() string {
+	name := d.StartedAt.Format("150405.000000000Z") + "-" + d.ID
+	return filepath.Join(d.dayDir(), name)
+}
+
+func (d trafficDebugRecord) appendIndex(kind, fileName string, entry map[string]any) {
+	summary := map[string]any{
+		"timestamp":   entry["timestamp"],
+		"request_id":  d.ID,
+		"direction":   kind,
+		"capture_dir": filepath.ToSlash(filepath.Base(d.captureDir())),
+	}
+	if method, ok := entry["method"].(string); ok && method != "" {
+		summary["method"] = method
+	}
+	if path, ok := entry["path"].(string); ok && path != "" {
+		summary["path"] = path
+	}
+	if statusCode, ok := entry["status_code"].(int); ok {
+		summary["status_code"] = statusCode
+	}
+	if model := trafficDebugModelFromEntry(entry); model != "" {
+		summary["model"] = model
+	}
+	switch kind {
+	case "request":
+		summary["request_file"] = filepath.ToSlash(filepath.Join(filepath.Base(d.captureDir()), fileName))
+	case "response":
+		summary["response_file"] = filepath.ToSlash(filepath.Join(filepath.Base(d.captureDir()), fileName))
+	default:
+		summary["file"] = filepath.ToSlash(filepath.Join(filepath.Base(d.captureDir()), fileName))
+	}
+
+	data, err := json.Marshal(summary)
+	if err != nil {
+		log.Printf("traffic debug: marshal index entry: %v", err)
+		return
+	}
+	data = append(data, '\n')
+
+	trafficDebugIndexMu.Lock()
+	defer trafficDebugIndexMu.Unlock()
+
+	indexPath := filepath.Join(d.dayDir(), "index.ndjson")
+	file, err := os.OpenFile(indexPath, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0o600)
+	if err != nil {
+		log.Printf("traffic debug: open index: %v", err)
+		return
+	}
+	defer file.Close()
+	if _, err := file.Write(data); err != nil {
+		log.Printf("traffic debug: write index: %v", err)
+	}
+}
+
+func trafficDebugModelFromEntry(entry map[string]any) string {
+	body, ok := entry["body"].(map[string]any)
+	if !ok {
+		return ""
+	}
+	model, _ := body["model"].(string)
+	return model
 }
 
 func redactHeaders(headers http.Header) map[string][]string {

@@ -50,7 +50,8 @@ func TestTrafficDebugLoggingWritesRedactedRequestAndResponse(t *testing.T) {
 		t.Fatalf("response body was not preserved: %s", rec.Body.String())
 	}
 
-	requestLog := readTrafficDebugLog(t, debugDir, "-request.json")
+	captureDir := findTrafficDebugCaptureDir(t, debugDir)
+	requestLog := readTrafficDebugJSON(t, filepath.Join(captureDir, "request.json"))
 	if strings.Contains(string(requestLog), "secret") {
 		t.Fatalf("request log leaked sensitive data: %s", requestLog)
 	}
@@ -58,9 +59,17 @@ func TestTrafficDebugLoggingWritesRedactedRequestAndResponse(t *testing.T) {
 		t.Fatalf("request log missing redacted fields: %s", requestLog)
 	}
 
-	responseLog := readTrafficDebugLog(t, debugDir, "-response.json")
+	responseLog := readTrafficDebugJSON(t, filepath.Join(captureDir, "response.json"))
 	if !strings.Contains(string(responseLog), `"status_code": 200`) || !strings.Contains(string(responseLog), `"output_text": "summary"`) {
 		t.Fatalf("response log missing response details: %s", responseLog)
+	}
+
+	indexLog := readTrafficDebugIndex(t, debugDir)
+	if !strings.Contains(string(indexLog), `"direction":"request"`) || !strings.Contains(string(indexLog), `"direction":"response"`) {
+		t.Fatalf("index log missing request/response entries: %s", indexLog)
+	}
+	if !strings.Contains(string(indexLog), `"request_file"`) || !strings.Contains(string(indexLog), `"response_file"`) {
+		t.Fatalf("index log missing capture file references: %s", indexLog)
 	}
 }
 
@@ -93,23 +102,60 @@ func TestTrafficDebugLoggingDisabledByDefault(t *testing.T) {
 	}
 }
 
-func readTrafficDebugLog(t *testing.T, dir, suffix string) []byte {
+func findTrafficDebugCaptureDir(t *testing.T, dir string) string {
 	t.Helper()
 
-	matches, err := filepath.Glob(filepath.Join(dir, "*"+suffix))
+	matches, err := filepath.Glob(filepath.Join(dir, "*", "*"))
 	if err != nil {
-		t.Fatalf("glob debug logs: %v", err)
+		t.Fatalf("glob debug capture dirs: %v", err)
 	}
-	if len(matches) != 1 {
-		t.Fatalf("matches for %s = %v, want one", suffix, matches)
+	var dirs []string
+	for _, match := range matches {
+		info, err := os.Stat(match)
+		if err != nil {
+			t.Fatalf("stat debug capture path: %v", err)
+		}
+		if info.IsDir() {
+			dirs = append(dirs, match)
+		}
 	}
+	if len(dirs) != 1 {
+		t.Fatalf("capture dirs = %v, want one", dirs)
+	}
+	return dirs[0]
+}
 
-	data, err := os.ReadFile(matches[0])
+func readTrafficDebugJSON(t *testing.T, path string) []byte {
+	t.Helper()
+
+	data, err := os.ReadFile(path)
 	if err != nil {
 		t.Fatalf("read debug log: %v", err)
 	}
 	if !json.Valid(data) {
 		t.Fatalf("debug log is not valid JSON: %s", data)
+	}
+	return data
+}
+
+func readTrafficDebugIndex(t *testing.T, dir string) []byte {
+	t.Helper()
+
+	matches, err := filepath.Glob(filepath.Join(dir, "*", "index.ndjson"))
+	if err != nil {
+		t.Fatalf("glob debug indexes: %v", err)
+	}
+	if len(matches) != 1 {
+		t.Fatalf("index files = %v, want one", matches)
+	}
+	data, err := os.ReadFile(matches[0])
+	if err != nil {
+		t.Fatalf("read debug index: %v", err)
+	}
+	for _, line := range strings.Split(strings.TrimSpace(string(data)), "\n") {
+		if !json.Valid([]byte(line)) {
+			t.Fatalf("debug index line is not valid JSON: %s", line)
+		}
 	}
 	return data
 }

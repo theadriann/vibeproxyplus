@@ -1,4 +1,4 @@
-.PHONY: build run run-all run-cliproxy run-thinking-proxy download-cliproxy update-cliproxy update-and-run auth-claude auth-codex auth-gemini auth-antigravity auth-copilot test clean sync-models
+.PHONY: build run run-all run-cliproxy run-thinking-proxy download-cliproxy update-cliproxy update-and-run auth-claude auth-codex auth-gemini auth-antigravity auth-copilot test clean sync-models traffic-debug
 
 # Detect OS and architecture
 ifeq ($(OS),Windows_NT)
@@ -144,3 +144,6 @@ clean:
 sync-models:
 	go build -o bin/model-sync ./cmd/model-sync
 	./bin/model-sync -output config/models.json -factory config/factory-config.json -opencode config/opencode-config.json
+
+traffic-debug:
+	go run ./cmd/traffic-debug $(ARGS)
